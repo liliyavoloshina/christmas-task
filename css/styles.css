@@ -1,0 +1,149 @@
+/*
+All the resets, variables, mixins, and utility classes
+*/
+* {
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+  width: 0.8em;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: pink;
+}
+
+img::-moz-selection {
+  background: transparent;
+}
+
+img::selection {
+  background: transparent;
+}
+
+::-moz-selection {
+  background: #fff;
+}
+
+::selection {
+  background: #fff;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+:root {
+  --root-px: 16px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --root-px: 18px;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  font-size: var(--root-px);
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 2rem;
+}
+
+#app {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  background-color: #868585;
+}
+
+#app .header {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+}
+
+#app .main {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
+}
+
+#app .footer {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+}
+
+/*
+All styles relating to a reusable component
+*/
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.nav__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.nav__link {
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+  }
+  .nav__list {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    height: 100%;
+  }
+}
+
+/*
+Styles for the header, footer, the grid system e.t.c.
+*/
+.footer {
+  padding: 1rem;
+  background-color: white;
+}

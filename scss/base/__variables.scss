@@ -1,0 +1,9 @@
+:root {
+  --root-px: 16px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --root-px: 18px;
+  }
+}

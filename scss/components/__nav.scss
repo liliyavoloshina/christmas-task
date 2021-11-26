@@ -1,0 +1,27 @@
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+
+  &__list {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__link {
+    font-size: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+
+    &__list {
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  &::-webkit-scrollbar {
+    width: 0.8em;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: pink;
+  }
+}
+
+img::selection {
+  background: transparent;
+}
+
+::selection {
+  background: #fff;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
