@@ -1,4 +1,9 @@
 .main {
- padding: 2rem 0;
-//  background: var(--bg-color);
+  padding: 2rem 0;
+  color: var(--white);
+  background: var(--bg-dark);
+
+  @media (min-width: 768px) {
+    margin-left: var(--nav-s);
+  }
 }

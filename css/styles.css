@@ -51,8 +51,9 @@ a {
 
 :root {
   --root-px: 16px;
-  --bg-color: rgba(16 18 27 / 40%);
-  --content-bg-color: rgb(146 151 179 / 13%);
+  --nav-s: 50px;
+  --bg-dark: rgba(16, 18, 27, 40%);
+  --bg-light: rgb(146, 151, 179, 13%);
   --white: #f9fafb;
   --grey: rgba(113, 119, 144, 78%);
   --brown-bright: #ffb01e;
@@ -163,7 +164,7 @@ All styles relating to a reusable component
 }
 
 .nav__link:hover, .nav__link.active {
-  background: var(--bg-color);
+  background: var(--bg-dark);
 }
 
 .nav__link:hover.home, .nav__link.active.home {
@@ -205,9 +206,8 @@ All styles relating to a reusable component
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    width: 50px;
-    border: 1px solid var(--bg-color);
-    background-color: var(--content-bg-color);
+    width: var(--nav-s);
+    background: var(--bg-light);
   }
   .nav__list {
     -webkit-box-orient: vertical;
@@ -259,18 +259,32 @@ All styles relating to a reusable component
 Styles for the header, footer, the grid system e.t.c.
 */
 .header {
-  padding: 2rem;
+  height: var(--nav-s);
+  background-color: var(--bg-dark);
+}
+
+@media (min-width: 768px) {
+  .header {
+    margin-left: var(--nav-s);
+  }
 }
 
 .main {
   padding: 2rem 0;
+  color: var(--white);
+  background: var(--bg-dark);
+}
+
+@media (min-width: 768px) {
+  .main {
+    margin-left: var(--nav-s);
+  }
 }
 
 .footer {
-  padding: .7rem 0;
-  border: 1px solid var(--bg-color);
-  background-color: var(--content-bg-color);
-  font-size: .9rem;
+  padding: 0.7rem 0;
+  background: var(--bg-light);
+  font-size: 0.9rem;
 }
 
 .footer .copyright {
@@ -288,14 +302,10 @@ Styles for the header, footer, the grid system e.t.c.
   color: var(--white);
 }
 
-.footer .container {
-  padding-left: 30px;
-}
-
 @media (min-width: 768px) {
   .footer {
-    margin-left: 50px;
-    border-left: none;
+    margin-left: var(--nav-s);
+    background: var(--bg-dark);
   }
   .footer .copyright {
     display: -webkit-box;

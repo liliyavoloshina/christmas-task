@@ -18,7 +18,7 @@
 
     &:hover,
     &.active {
-      background: var(--bg-color);
+      background: var(--bg-dark);
 
       &.home {
         background: var(--brown-bright);
@@ -46,14 +46,17 @@
     position: fixed;
     top: 0;
     bottom: 0;
+    // top: var(--nav-s);
+    // bottom: var(--nav-s);
     left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
+    width: var(--nav-s);
 
-    border: 1px solid var(--bg-color);
-    background-color: var(--content-bg-color);
+    // border: 1px solid var(--bg-color);
+    // border-bottom: none;
+    background: var(--bg-light);
 
     &__list {
       flex-direction: column;

@@ -1,8 +1,7 @@
 .footer {
-  padding: .7rem 0;
-  border: 1px solid var(--bg-color);
-  background-color: var(--content-bg-color);
-  font-size: .9rem;
+  padding: 0.7rem 0;
+  background: var(--bg-light);
+  font-size: 0.9rem;
 
   .copyright {
     display: none;
@@ -19,14 +18,9 @@
     }
   }
 
-  .container {
-    padding-left: 30px;
-  }
-
   @media (min-width: 768px) {
-    // margin from nav
-    margin-left: 50px;
-    border-left: none;
+    margin-left: var(--nav-s);
+    background: var(--bg-dark);
 
     .copyright {
       display: flex;

@@ -1,6 +1,8 @@
 .header {
-  padding: 2rem;
-  &__logo {
+  height: var(--nav-s);
+  background-color: var(--bg-dark);
 
+  @media (min-width: 768px) {
+    margin-left: var(--nav-s);
   }
 }
