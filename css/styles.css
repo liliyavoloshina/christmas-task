@@ -48,6 +48,13 @@ a {
 
 :root {
   --root-px: 16px;
+  --bg-color: rgba(16 18 27 / 40%);
+  --content-bg-color: rgb(146 151 179 / 13%);
+  --white: #f9fafb;
+  --brown-bright: #ffb01e;
+  --green-bright: #1eff45;
+  --pink-bright: #ff1ec7;
+  --red-bright: #ff1e1e;
 }
 
 @media (min-width: 768px) {
@@ -65,6 +72,9 @@ body {
 body {
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
+  background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg);
+  background-size: cover;
+  background-position: center;
 }
 
 .container {
@@ -76,6 +86,12 @@ body {
   padding: 0 2rem;
 }
 
+@media (min-width: 768px) {
+  .container {
+    padding: 0 80px;
+  }
+}
+
 #app {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -85,7 +101,9 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
   height: 100%;
-  background-color: #868585;
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+  background-color: var(--bg-color);
 }
 
 #app .header {
@@ -112,7 +130,8 @@ All styles relating to a reusable component
 .nav {
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #fff;
+  border: 1px solid var(--bg-color);
+  background-color: var(--content-bg-color);
 }
 
 .nav__list {
@@ -125,7 +144,48 @@ All styles relating to a reusable component
 }
 
 .nav__link {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   font-size: 1rem;
+  padding: 0.5rem;
+  color: var(--white);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.nav__link:hover, .nav__link.active {
+  background: var(--bg-color);
+}
+
+.nav__link:hover.home, .nav__link.active.home {
+  background: var(--brown-bright);
+  -webkit-box-shadow: 0 0 5px var(--brown-bright), 0 0 15px var(--brown-bright), 0 0 30px var(--brown-bright), 0 0 60px var(--brown-bright);
+          box-shadow: 0 0 5px var(--brown-bright), 0 0 15px var(--brown-bright), 0 0 30px var(--brown-bright), 0 0 60px var(--brown-bright);
+}
+
+.nav__link:hover.trees, .nav__link.active.trees {
+  background: var(--green-bright);
+  -webkit-box-shadow: 0 0 5px var(--green-bright), 0 0 15px var(--green-bright), 0 0 30px var(--green-bright), 0 0 60px var(--green-bright);
+          box-shadow: 0 0 5px var(--green-bright), 0 0 15px var(--green-bright), 0 0 30px var(--green-bright), 0 0 60px var(--green-bright);
+}
+
+.nav__link:hover.decor, .nav__link.active.decor {
+  background: var(--pink-bright);
+  -webkit-box-shadow: 0 0 5px var(--pink-bright), 0 0 15px var(--pink-bright), 0 0 30px var(--pink-bright), 0 0 60px var(--pink-bright);
+          box-shadow: 0 0 5px var(--pink-bright), 0 0 15px var(--pink-bright), 0 0 30px var(--pink-bright), 0 0 60px var(--pink-bright);
+}
+
+.nav__link:hover.favorite, .nav__link.active.favorite {
+  background: var(--red-bright);
+  -webkit-box-shadow: 0 0 5px var(--red-bright), 0 0 15px var(--red-bright), 0 0 30px var(--red-bright), 0 0 60px var(--red-bright);
+          box-shadow: 0 0 5px var(--red-bright), 0 0 15px var(--red-bright), 0 0 30px var(--red-bright), 0 0 60px var(--red-bright);
 }
 
 @media (min-width: 768px) {
@@ -134,6 +194,15 @@ All styles relating to a reusable component
     top: 0;
     bottom: 0;
     left: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     width: 50px;
   }
   .nav__list {
@@ -141,26 +210,58 @@ All styles relating to a reusable component
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    height: 100%;
+    height: 200px;
   }
 }
 
 .btn {
-  width: 10rem;
+  position: relative;
+  overflow: hidden;
   padding: 1rem;
-  background: rgba(213, 213, 219, 0.4);
-  mix-blend-mode: lighten;
-  border: 1px solid #fff;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
-          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 57px;
+  background: none;
+  border-radius: 20px;
+  border: 1px solid #f9fafb;
+  color: #f9fafb;
+  cursor: pointer;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: var(--bg-color);
+}
+
+.btn:hover::before {
+  -webkit-transform: skewX(45deg) translateX(200%);
+          transform: skewX(45deg) translateX(200%);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: -webkit-gradient(linear, right top, left top, from(rgba(255, 255, 255, 0.15)), to(transparent));
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+  -webkit-transform: skewX(45deg) translateX(0);
+          transform: skewX(45deg) translateX(0);
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 /*
 Styles for the header, footer, the grid system e.t.c.
 */
+.header {
+  padding: 2rem;
+}
+
+.main {
+  padding: 2rem 0;
+}
+
 .footer {
   padding: 1rem;
   background-color: white;
@@ -178,4 +279,8 @@ Styles for the header, footer, the grid system e.t.c.
       -ms-flex-pack: justify;
           justify-content: space-between;
   height: 100%;
+}
+
+.start__action .btn {
+  width: 200px;
 }

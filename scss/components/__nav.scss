@@ -1,7 +1,8 @@
 .nav {
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #fff;
+  border: 1px solid var(--bg-color);
+  background-color: var(--content-bg-color);
 
   &__list {
     display: flex;
@@ -9,7 +10,38 @@
   }
 
   &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1rem;
+    padding: 0.5rem;
+    color: var(--white);
+    transition: 0.3s;
+
+    &:hover,
+    &.active {
+      background: var(--bg-color);
+
+      &.home {
+        background: var(--brown-bright);
+        box-shadow: 0 0 5px var(--brown-bright), 0 0 15px var(--brown-bright), 0 0 30px var(--brown-bright), 0 0 60px var(--brown-bright);
+      }
+
+      &.trees {
+        background: var(--green-bright);
+        box-shadow: 0 0 5px var(--green-bright), 0 0 15px var(--green-bright), 0 0 30px var(--green-bright), 0 0 60px var(--green-bright);
+      }
+
+      &.decor {
+        background: var(--pink-bright);
+        box-shadow: 0 0 5px var(--pink-bright), 0 0 15px var(--pink-bright), 0 0 30px var(--pink-bright), 0 0 60px var(--pink-bright);
+      }
+
+      &.favorite {
+        background: var(--red-bright);
+        box-shadow: 0 0 5px var(--red-bright), 0 0 15px var(--red-bright), 0 0 30px var(--red-bright), 0 0 60px var(--red-bright);
+      }
+    }
   }
 
   @media (min-width: 768px) {
@@ -17,11 +49,14 @@
     top: 0;
     bottom: 0;
     left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 50px;
 
     &__list {
       flex-direction: column;
-      height: 100%;
+      height: 200px;
     }
   }
 }

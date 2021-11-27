@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
@@ -17,13 +18,13 @@
   <div id="app">
     <header class="header">
       <div class="container">
-        <div class="header__logo">Decorate a Christmas tree</div>
       </div>
     </header>
 
     <main class="main">
       <div class="container">
         <div class="start">
+          <div class="star__logo">Decorate a Christmas tree</div>
           <div class="start__info">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam vero, consequatur quidem ad animi officia
             eligendi adipisci. In exercitationem doloremque hic repellat nobis veniam impedit delectus quas quidem ut?
@@ -43,16 +44,24 @@
         <nav class="nav">
           <ul class="nav__list">
             <li class="nav__item">
-              <a href="" class="nav__link">Home</a>
+              <a href="" class="nav__link home active" title="Home">
+                <span class="material-icons">home</span>
+              </a>
+            </li>
+            <li class="nav__item park">
+              <a href="" class="nav__link trees" title="Trees">
+                <span class="material-icons">park</span>
+              </a>
             </li>
             <li class="nav__item">
-              <a href="" class="nav__link">Trees</a>
+              <a href="" class="nav__link decor" title="Decor">
+                <span class="material-icons">filter_vintage</span>
+              </a>
             </li>
             <li class="nav__item">
-              <a href="" class="nav__link">Decor</a>
-            </li>
-            <li class="nav__item">
-              <a href="" class="nav__link">Favorite</a>
+              <a href="" class="nav__link favorite" title="Favorite">
+                <span class="material-icons">favorite</span>
+              </a>
             </li>
           </ul>
         </nav>
