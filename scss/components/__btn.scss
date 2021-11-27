@@ -1,11 +1,13 @@
 .btn {
   position: relative;
+  display: flex;
+  justify-content: center;
   overflow: hidden;
   padding: 1rem;
   background: none;
   border-radius: 20px;
-  border: 1px solid rgba(249, 250, 251, 55%);
-  color: rgba(249, 250, 251, 55%);
+  border: 1px solid var(--white);
+  color: var(--white);
   cursor: pointer;
   transition: 0.3s;
 

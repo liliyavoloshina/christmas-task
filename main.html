@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
@@ -16,38 +17,87 @@
 
   <div id="app">
     <header class="header">
-      <div class="header__logo">Decorate a Christmas tree</div>
+      <div class="container">
+      </div>
     </header>
-    <main class="main"></main>
+
+    <main class="main">
+      <div class="container">
+        <div class="main-page">
+          <div class="search-panel">
+
+            <div class="search-bar">
+              <input type="text" placeholder="Search..." class="search-bar__input">
+              <button class="search-bar__expand-btn">
+                <span class="material-icons">tune</span>
+              </button>
+            </div>
+
+            <div class="expanded-panel">
+              <div class="sorting">
+                <div class="sorting__name"></div>
+                <div class="sorting__year"></div>
+              </div>
+              <div class="selecting">
+
+
+                <div class="select">
+                  <label for="select-form" class="select__inner">Form</label>
+
+                  <select id="select-form" class="select__field hidden" name="form" multiple>
+                    <option value="all">All</option>
+                    <option value="star">Star</option>
+                    <option value="candle">Candle</option>
+                    <option value="bell">Bell</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <footer class="footer">
       <div class="container">
         <nav class="nav">
           <ul class="nav__list">
             <li class="nav__item">
-              <a href="" class="nav__link">Home</a>
+              <a href="" class="nav__link home active" title="Home">
+                <span class="material-icons">home</span>
+              </a>
+            </li>
+            <li class="nav__item park">
+              <a href="" class="nav__link trees" title="Trees">
+                <span class="material-icons">park</span>
+              </a>
             </li>
             <li class="nav__item">
-              <a href="" class="nav__link">Trees</a>
+              <a href="" class="nav__link decor" title="Decor">
+                <span class="material-icons">filter_vintage</span>
+              </a>
             </li>
             <li class="nav__item">
-              <a href="" class="nav__link">Decor</a>
-            </li>
-            <li class="nav__item">
-              <a href="" class="nav__link">Favorite</a>
+              <a href="" class="nav__link favorite" title="Favorite">
+                <span class="material-icons">favorite</span>
+              </a>
             </li>
           </ul>
         </nav>
 
         <div class="copyright">
-          <div class="copyright__github"></div>
+          <a href="https://rs.school/js/" class="copyright__school"></a>
+          <a href="https://github.com/liliyavoloshina" class="copyright__github">liliyavoloshina</a>
           <div class="copyright__year">2021</div>
-          <div class="copyright__school"></div>
         </div>
       </div>
 
     </footer>
   </div>
+
+  <script src="./js/formUI.js"></script>
+  <script src="./js/script.js"></script>
 </body>
 
 </html>
