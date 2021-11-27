@@ -34,6 +34,10 @@ img::selection {
   background: #fff;
 }
 
+button {
+  outline: none;
+}
+
 ul {
   list-style-type: none;
 }
@@ -68,6 +72,7 @@ body {
   margin-left: auto;
   width: 100%;
   max-width: 1440px;
+  height: 100%;
   padding: 0 2rem;
 }
 
@@ -140,10 +145,37 @@ All styles relating to a reusable component
   }
 }
 
+.btn {
+  width: 10rem;
+  padding: 1rem;
+  background: rgba(213, 213, 219, 0.4);
+  mix-blend-mode: lighten;
+  border: 1px solid #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 57px;
+}
+
 /*
 Styles for the header, footer, the grid system e.t.c.
 */
 .footer {
   padding: 1rem;
   background-color: white;
+}
+
+.start {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 100%;
 }
