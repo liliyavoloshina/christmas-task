@@ -1,8 +1,6 @@
 .nav {
   max-width: 1200px;
   margin: 0 auto;
-  border: 1px solid var(--bg-color);
-  background-color: var(--content-bg-color);
 
   &__list {
     display: flex;
@@ -53,6 +51,9 @@
     align-items: center;
     justify-content: center;
     width: 50px;
+
+    border: 1px solid var(--bg-color);
+    background-color: var(--content-bg-color);
 
     &__list {
       flex-direction: column;

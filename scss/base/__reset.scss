@@ -33,5 +33,7 @@ ul {
 }
 
 a {
+  color: var(--grey);
   text-decoration: none;
+  transition: .3s;
 }

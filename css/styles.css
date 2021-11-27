@@ -43,7 +43,10 @@ ul {
 }
 
 a {
+  color: var(--grey);
   text-decoration: none;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
 :root {
@@ -51,6 +54,7 @@ a {
   --bg-color: rgba(16 18 27 / 40%);
   --content-bg-color: rgb(146 151 179 / 13%);
   --white: #f9fafb;
+  --grey: rgba(113, 119, 144, 78%);
   --brown-bright: #ffb01e;
   --green-bright: #1eff45;
   --pink-bright: #ff1ec7;
@@ -130,8 +134,6 @@ All styles relating to a reusable component
 .nav {
   max-width: 1200px;
   margin: 0 auto;
-  border: 1px solid var(--bg-color);
-  background-color: var(--content-bg-color);
 }
 
 .nav__list {
@@ -204,6 +206,8 @@ All styles relating to a reusable component
         -ms-flex-pack: center;
             justify-content: center;
     width: 50px;
+    border: 1px solid var(--bg-color);
+    background-color: var(--content-bg-color);
   }
   .nav__list {
     -webkit-box-orient: vertical;
@@ -263,8 +267,47 @@ Styles for the header, footer, the grid system e.t.c.
 }
 
 .footer {
-  padding: 1rem;
-  background-color: white;
+  padding: .7rem 0;
+  border: 1px solid var(--bg-color);
+  background-color: var(--content-bg-color);
+  font-size: .9rem;
+}
+
+.footer .copyright {
+  display: none;
+  color: var(--grey);
+}
+
+.footer .copyright__school {
+  width: 30px;
+  height: 10px;
+  background: url("/img/rss.svg") no-repeat center;
+}
+
+.footer .copyright__github:hover {
+  color: var(--white);
+}
+
+.footer .container {
+  padding-left: 30px;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    margin-left: 50px;
+    border-left: none;
+  }
+  .footer .copyright {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
 }
 
 .start {
