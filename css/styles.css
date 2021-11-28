@@ -54,6 +54,7 @@ a {
   --nav-s: 50px;
   --bg-dark: rgba(16, 18, 27, 40%);
   --bg-light: rgb(146, 151, 179, 13%);
+  --bg-black: #14162b;
   --white: #f9fafb;
   --grey: rgba(113, 119, 144, 78%);
   --brown-bright: #ffb01e;
@@ -61,6 +62,7 @@ a {
   --pink-bright: #ff1ec7;
   --red-bright: #ff1e1e;
   --accent: #6200ee;
+  --black: #383838;
 }
 
 @media (min-width: 768px) {
@@ -287,7 +289,7 @@ All styles relating to a reusable component
   padding: 0 20px 0 40px;
   border: none;
   outline: none;
-  background-color: #14162b;
+  background-color: var(--bg-black);
   border-radius: 4px;
   font-size: 1rem;
   font-family: 'Poppins', sans-serif;
@@ -299,6 +301,12 @@ All styles relating to a reusable component
   background-repeat: no-repeat;
   background-position: 16px 48%;
   color: var(--white);
+}
+
+.search-bar__input:focus {
+  -webkit-box-shadow: 0 0 3px 2px var(--accent);
+          box-shadow: 0 0 3px 2px var(--accent);
+  outline: 5px solid transparent;
 }
 
 .search-bar__expand-btn {
@@ -315,7 +323,6 @@ All styles relating to a reusable component
   top: calc(var(--search-bar-h) + 20px);
   left: 0;
   right: 0;
-  height: 200px;
   padding: 1rem;
   background: var(--bg-dark);
   border: 1px solid var(--grey);
@@ -325,7 +332,7 @@ All styles relating to a reusable component
 .select {
   position: relative;
   display: block;
-  margin-bottom: 1.5em;
+  margin-bottom: 10px;
 }
 
 .select__box {
@@ -337,10 +344,11 @@ All styles relating to a reusable component
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border: 1px solid --grey;
-  padding: 10px;
+  padding: 5px 10px;
   border-radius: 4px;
-  background-color: var(--white);
+  background-color: var(--bg-black);
+  -webkit-box-shadow: 0 0 0 1px var(--grey);
+          box-shadow: 0 0 0 1px var(--grey);
 }
 
 .select__box .selected-options {
@@ -366,8 +374,12 @@ All styles relating to a reusable component
 }
 
 .select__input {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 100px;
+          flex: 1 1 100px;
   display: block;
-  background-color: var(--white);
+  color: var(--white);
+  background-color: var(--bg-black);
   border: none;
   font-size: 1em;
   text-align: left;
@@ -376,15 +388,14 @@ All styles relating to a reusable component
   appearance: none;
 }
 
-.open .select__input {
-  border-radius: 4px 4px 0 0;
+.select__label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 5px;
 }
 
-.select-label {
-  display: block;
-  font-size: 20px;
-  font-weight: 100;
-  margin-bottom: 0.25em;
+.open .select__input {
+  border-radius: 4px 4px 0 0;
 }
 
 .select__list {
@@ -398,7 +409,16 @@ All styles relating to a reusable component
   border: 1px solid var(--grey);
   border-radius: 0 0 4px 4px;
   overflow-y: scroll;
-  background-color: var(--white);
+  background-color: var(--bg-black);
+}
+
+.select__list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.select__list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--black);
 }
 
 .open .select__list {
@@ -407,12 +427,13 @@ All styles relating to a reusable component
 
 .select-option {
   padding: 10px 12px 12px;
-  color: #000;
+  color: var(--white);
+  cursor: pointer;
 }
 
 .select-option.option-current,
 .select-option:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-light);
 }
 
 .select-option.option-selected {
@@ -426,8 +447,8 @@ All styles relating to a reusable component
   top: 50%;
   width: 8px;
   height: 16px;
-  border-bottom: 2px solid #000;
-  border-right: 2px solid #000;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
   content: '';
   -webkit-transform: translate(0, -50%) rotate(45deg);
           transform: translate(0, -50%) rotate(45deg);
@@ -446,6 +467,7 @@ All styles relating to a reusable component
   position: relative;
   margin-bottom: 6px;
   margin-right: 6px;
+  cursor: pointer;
   padding: 0.25em 1.75em 0.25em 0.25em;
   font-size: 0.75em;
   font-weight: bold;
@@ -455,7 +477,7 @@ All styles relating to a reusable component
   border-radius: 3px;
 }
 
-.remove-option:focus {
+.remove-option:hover {
   border-color: #baa1dd;
   -webkit-box-shadow: 0 0 3px 1px var(--accent);
           box-shadow: 0 0 3px 1px var(--accent);

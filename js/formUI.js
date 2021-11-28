@@ -51,7 +51,8 @@ class MultiselectButtons {
     this.filteredOptions = filterOptions(this.options, value)
 
     // hide/show options based on filtering
-    const options = this.el.querySelectorAll('[role=option]');[...options].forEach(optionEl => {
+    const options = this.el.querySelectorAll('[role=option]')
+    ;[...options].forEach(optionEl => {
       const value = optionEl.innerText
       if (this.filteredOptions.indexOf(value) > -1) {
         optionEl.style.display = 'block'
@@ -90,7 +91,8 @@ class MultiselectButtons {
     this.inputEl.setAttribute('aria-activedescendant', `${this.idBase}-${index}`)
 
     // update active style
-    const options = this.el.querySelectorAll('[role=option]');[...options].forEach(optionEl => {
+    const options = this.el.querySelectorAll('[role=option]')
+    ;[...options].forEach(optionEl => {
       optionEl.classList.remove('option-current')
     })
     options[index].classList.add('option-current')
@@ -162,6 +164,9 @@ class MultiselectButtons {
   }
 }
 
-const inlineButtonEl = document.querySelector('.select')
-const inlineButtonComponent = new MultiselectButtons(inlineButtonEl, options)
-inlineButtonComponent.init()
+const selects = document.querySelectorAll('.select')
+
+selects.forEach(select => {
+  const selectComponent = new MultiselectButtons(select, options)
+  selectComponent.init()
+})

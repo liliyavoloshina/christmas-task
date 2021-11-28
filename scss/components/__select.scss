@@ -1,16 +1,16 @@
 .select {
   position: relative;
   display: block;
-  margin-bottom: 1.5em;
+  margin-bottom: 10px;
 
   &__box {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    border: 1px solid (--grey);
-    padding: 10px;
+    padding: 5px 10px;
     border-radius: 4px;
-    background-color: var(--white);
+    background-color: var(--bg-black);
+    box-shadow: 0 0 0 1px var(--grey);
   }
 
   &__box .selected-options {
@@ -32,8 +32,10 @@
   }
 
   &__input {
+    flex: 1 1 100px;
     display: block;
-    background-color: var(--white);
+    color: var(--white);
+    background-color: var(--bg-black);
     border: none;
     font-size: 1em;
     text-align: left;
@@ -41,17 +43,16 @@
     -moz-appearance: none;
     appearance: none;
   }
+
+  &__label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
 }
 
 .open .select__input {
   border-radius: 4px 4px 0 0;
-}
-
-.select-label {
-  display: block;
-  font-size: 20px;
-  font-weight: 100;
-  margin-bottom: 0.25em;
 }
 
 .select__list {
@@ -65,7 +66,16 @@
   border: 1px solid var(--grey);
   border-radius: 0 0 4px 4px;
   overflow-y: scroll;
-  background-color: var(--white);
+  background-color: var(--bg-black);
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--black);
+  }
 }
 
 .open .select__list {
@@ -74,12 +84,13 @@
 
 .select-option {
   padding: 10px 12px 12px;
-  color: #000;
+  color: var(--white);
+  cursor: pointer;
 }
 
 .select-option.option-current,
 .select-option:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-light);
 }
 
 .select-option.option-selected {
@@ -93,8 +104,8 @@
   top: 50%;
   width: 8px;
   height: 16px;
-  border-bottom: 2px solid #000;
-  border-right: 2px solid #000;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
   content: '';
   transform: translate(0, -50%) rotate(45deg);
 }
@@ -112,6 +123,7 @@
   position: relative;
   margin-bottom: 6px;
   margin-right: 6px;
+  cursor: pointer;
   padding: 0.25em 1.75em 0.25em 0.25em;
   font-size: 0.75em;
   font-weight: bold;
@@ -121,7 +133,7 @@
   border-radius: 3px;
 }
 
-.remove-option:focus {
+.remove-option:hover {
   border-color: #baa1dd;
   box-shadow: 0 0 3px 1px var(--accent);
   outline: 3px solid transparent;

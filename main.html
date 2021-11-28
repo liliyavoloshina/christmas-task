@@ -41,17 +41,37 @@
 
               <div class="selecting">
 
-                <label class="select-label">Form</label>
+                <div class="select">
+                  <label class="select__label">Shape</label>
+                  <div class="select__box">
+                    <ul class="selected-options" id="selectShape-selected"></ul>
+                    <input aria-autocomplete="list" id="selectShape" class="select__input"
+                      type="text">
+                  </div>
+                  <div class="select__list" id="listboxShape"></div>
+                </div>
 
                 <div class="select">
+                  <label class="select__label">Color</label>
                   <div class="select__box">
-                    <ul class="selected-options" id="selectForm-selected"></ul>
-                    <input aria-activedescendant="" aria-autocomplete="list" id="selectForm" class="select__input" type="text">
+                    <ul class="selected-options" id="selectColor-selected"></ul>
+                    <input aria-autocomplete="list" id="selectColor" class="select__input"
+                      type="text">
                   </div>
-                  <div class="select__list" id="listboxForm"></div>
+                  <div class="select__list" id="listboxColor"></div>
                 </div>
-              </div>
 
+                <div class="select">
+                  <label class="select__label">Size</label>
+                  <div class="select__box">
+                    <ul class="selected-options" id="selectSize-selected"></ul>
+                    <input aria-autocomplete="list" id="selectSize" class="select__input"
+                      type="text">
+                  </div>
+                  <div class="select__list" id="listboxSize"></div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>

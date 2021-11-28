@@ -4,7 +4,6 @@
 
 .search-panel {
   position: relative;
-  // background: var(--bg-light);
 }
 
 .search-bar {
@@ -20,7 +19,7 @@
     padding: 0 20px 0 40px;
     border: none;
     outline: none;
-    background-color: #14162b;
+    background-color: var(--bg-black);
     border-radius: 4px;
     font-size: 1rem;
     font-family: 'Poppins', sans-serif;
@@ -31,6 +30,11 @@
     background-repeat: no-repeat;
     background-position: 16px 48%;
     color: var(--white);
+    
+    &:focus {
+      box-shadow: 0 0 3px 2px var(--accent);
+    outline: 5px solid transparent;
+    }
   }
 
   &__expand-btn {
@@ -48,7 +52,6 @@
   top: calc(var(--search-bar-h) + 20px);
   left: 0;
   right: 0;
-  height: 200px;
   padding: 1rem;
   background: var(--bg-dark);
   border: 1px solid var(--grey);
