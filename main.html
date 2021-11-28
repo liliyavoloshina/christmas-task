@@ -38,18 +38,17 @@
                 <div class="sorting__name"></div>
                 <div class="sorting__year"></div>
               </div>
+
               <div class="selecting">
 
+                <label class="select-label">Form</label>
 
                 <div class="select">
-                  <label for="select-form" class="select__inner">Form</label>
-
-                  <select id="select-form" class="select__field hidden" name="form" multiple>
-                    <option value="all">All</option>
-                    <option value="star">Star</option>
-                    <option value="candle">Candle</option>
-                    <option value="bell">Bell</option>
-                  </select>
+                  <div class="select__box">
+                    <ul class="selected-options" id="selectForm-selected"></ul>
+                    <input aria-activedescendant="" aria-autocomplete="list" id="selectForm" class="select__input" type="text">
+                  </div>
+                  <div class="select__list" id="listboxForm"></div>
                 </div>
               </div>
 

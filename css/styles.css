@@ -60,6 +60,7 @@ a {
   --green-bright: #1eff45;
   --pink-bright: #ff1ec7;
   --red-bright: #ff1e1e;
+  --accent: #6200ee;
 }
 
 @media (min-width: 768px) {
@@ -323,128 +324,163 @@ All styles relating to a reusable component
 
 .select {
   position: relative;
-  width: 100%;
-}
-
-.select__inner {
-  position: relative;
-  width: 100%;
   display: block;
-  min-height: 46px;
-  border: 1px solid #cdd6f3;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border-radius: 8px;
-  padding: 12px 40px 10px 16px;
-  font-size: 14px;
-  color: #a8acc9;
-  outline-color: #cdd6f3;
+  margin-bottom: 1.5em;
 }
 
-.select__inner::-webkit-input-placeholder {
-  color: #a8acc9;
-}
-
-.select__inner:-ms-input-placeholder {
-  color: #a8acc9;
-}
-
-.select__inner::-ms-input-placeholder {
-  color: #a8acc9;
-}
-
-.select__inner::placeholder {
-  color: #a8acc9;
-}
-
-.select__inner:hover {
-  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.16);
-          box-shadow: 0 0 2px rgba(0, 0, 0, 0.16);
-}
-
-.select__inner:focus {
-  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.16);
-          box-shadow: 0 0 2px rgba(0, 0, 0, 0.16);
-}
-
-.select__inner {
-  padding-right: 60px;
-}
-
-.select__inner:after {
-  content: '';
-  position: absolute;
-  right: 14px;
-  top: 15px;
-  width: 6px;
-  height: 16px;
-}
-
-.select__field {
-  position: absolute;
-  top: calc(100% - 2px);
-  left: 0;
-  width: 100%;
-  border: 2px solid #cdd6f3;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  outline-color: #cdd6f3;
-  z-index: 6;
-  overflow-y: auto;
-}
-
-.select__field.hidden {
-  display: none;
-}
-
-.select__field option {
-  display: block;
-  padding: 8px 16px;
-  cursor: pointer;
-}
-
-.select__field option:checked {
-  background-color: #eceff3;
-}
-
-.select__field option:hover {
-  background-color: #d5e8fb;
-}
-
-.select__btn {
-  position: relative;
-  padding: 7px 34px 7px 8px;
-  background: #ebe4fb;
+.select__box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid --grey;
+  padding: 10px;
   border-radius: 4px;
-  margin-right: 9px;
-  margin-bottom: 10px;
+  background-color: var(--white);
 }
 
-.select__btn:hover, .select__btn:focus {
-  background-color: #dbd1ee;
+.select__box .selected-options {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
 }
 
-.select__btn:after {
-  content: '';
+.select__box .selected-options li {
+  margin-bottom: 0;
+}
+
+.select__box .select__input:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
+
+.select__box:focus-within {
+  -webkit-box-shadow: 0 0 3px 2px var(--accent);
+          box-shadow: 0 0 3px 2px var(--accent);
+  outline: 5px solid transparent;
+}
+
+.select__input {
+  display: block;
+  background-color: var(--white);
+  border: none;
+  font-size: 1em;
+  text-align: left;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.open .select__input {
+  border-radius: 4px 4px 0 0;
+}
+
+.select-label {
+  display: block;
+  font-size: 20px;
+  font-weight: 100;
+  margin-bottom: 0.25em;
+}
+
+.select__list {
   position: absolute;
-  top: 7px;
-  right: 10px;
-  width: 16px;
-  height: 16px;
-  background: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M19.4958 6.49499C19.7691 6.22162 19.7691 5.7784 19.4958 5.50504C19.2224 5.23167 18.7792 5.23167 18.5058 5.50504L12.5008 11.5101L6.49576 5.50504C6.22239 5.23167 5.77917 5.23167 5.50581 5.50504C5.23244 5.7784 5.23244 6.22162 5.50581 6.49499L11.5108 12.5L5.50581 18.505C5.23244 18.7784 5.23244 19.2216 5.50581 19.495C5.77917 19.7684 6.22239 19.7684 6.49576 19.495L12.5008 13.49L18.5058 19.495C18.7792 19.7684 19.2224 19.7684 19.4958 19.495C19.7691 19.2216 19.7691 18.7784 19.4958 18.505L13.4907 12.5L19.4958 6.49499Z' fill='%234F5588'/%3E%3C/svg%3E") 50% 50% no-repeat;
-  background-size: contain;
-}
-
-.select__label {
-  position: absolute;
-  top: 1px;
-  left: 2px;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  display: none;
   width: 100%;
-  height: 44px;
-  cursor: pointer;
-  z-index: 3;
+  max-height: 300px;
+  border: 1px solid var(--grey);
+  border-radius: 0 0 4px 4px;
+  overflow-y: scroll;
+  background-color: var(--white);
+}
+
+.open .select__list {
+  display: block;
+}
+
+.select-option {
+  padding: 10px 12px 12px;
+  color: #000;
+}
+
+.select-option.option-current,
+.select-option:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.select-option.option-selected {
+  position: relative;
+  padding-right: 30px;
+}
+
+.select-option.option-selected::after {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  width: 8px;
+  height: 16px;
+  border-bottom: 2px solid #000;
+  border-right: 2px solid #000;
+  content: '';
+  -webkit-transform: translate(0, -50%) rotate(45deg);
+          transform: translate(0, -50%) rotate(45deg);
+}
+
+.selected-options {
+  list-style-type: none;
+}
+
+.selected-options li {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.remove-option {
+  position: relative;
+  margin-bottom: 6px;
+  margin-right: 6px;
+  padding: 0.25em 1.75em 0.25em 0.25em;
+  font-size: 0.75em;
+  font-weight: bold;
+  color: var(--white);
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+}
+
+.remove-option:focus {
+  border-color: #baa1dd;
+  -webkit-box-shadow: 0 0 3px 1px var(--accent);
+          box-shadow: 0 0 3px 1px var(--accent);
+  outline: 3px solid transparent;
+}
+
+.remove-option::before,
+.remove-option::after {
+  border-right: 2px solid var(--white);
+  content: '';
+  height: 1em;
+  right: 0.75em;
+  position: absolute;
+  top: 50%;
+  width: 0;
+}
+
+.remove-option::before {
+  -webkit-transform: translate(0, -50%) rotate(45deg);
+          transform: translate(0, -50%) rotate(45deg);
+}
+
+.remove-option::after {
+  -webkit-transform: translate(0, -50%) rotate(-45deg);
+          transform: translate(0, -50%) rotate(-45deg);
 }
 
 /*
