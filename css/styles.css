@@ -660,23 +660,23 @@ All styles relating to a reusable component
   background: var(--accent);
 }
 
-input[type='checkbox'] {
+.checkbox {
   -webkit-appearance: none;
   width: 1.6rem;
   height: 1.6rem;
   border: 1px solid var(--grey);
 }
 
-input[type='checkbox']:focus {
+.checkbox:focus {
   border: 1px solid var(--accent);
 }
 
-input[type='checkbox']:checked {
+.checkbox:checked {
   position: relative;
   background: none;
 }
 
-input[id='only-favorite']:checked::after {
+.checkbox:checked::after {
   position: absolute;
   top: 0.36rem;
   left: 0.12rem;
@@ -953,7 +953,7 @@ Styles for the header, footer, the grid system e.t.c.
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 2rem;
   height: 100%;
   padding: 1rem;
   background: var(--bg-dark);
@@ -1100,4 +1100,24 @@ Styles for the header, footer, the grid system e.t.c.
   cursor: pointer;
   -webkit-transition: 0.3s;
   transition: 0.3s;
+}
+
+.settings {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.settings__block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-column-gap: .7rem;
+          column-gap: .7rem;
 }

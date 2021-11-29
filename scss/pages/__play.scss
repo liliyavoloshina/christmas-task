@@ -19,7 +19,7 @@
   flex: 0 1 250px;
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 2rem;
   height: 100%;
   padding: 1rem;
   background: var(--bg-dark);
@@ -153,4 +153,15 @@
   color: var(--white);
   cursor: pointer;
   transition: 0.3s;
+}
+
+.settings {
+  display: flex;
+  justify-content: space-between;
+
+  &__block {
+    display: flex;
+    align-items: center;
+    column-gap: .7rem;
+  }
 }
