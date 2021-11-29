@@ -756,10 +756,10 @@ input[id='only-favorite']:checked::after {
   top: 10px;
   right: 10px;
   padding: 0.2rem;
-  background: var(--bg-black);
   border-radius: 4px;
-  border: 1px solid var(--grey);
-  color: var(--white);
+  border: none;
+  background: transparent;
+  color: var(--grey);
   cursor: pointer;
   -webkit-transition: .3s;
   transition: .3s;
@@ -916,4 +916,77 @@ Styles for the header, footer, the grid system e.t.c.
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
+}
+
+.play-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  padding: 0;
+  background: var(--bg-light);
+}
+
+.play-main {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 500px;
+          flex: 1 1 500px;
+  background: var(--white);
+}
+
+.aside {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 300px;
+          flex: 0 1 300px;
+  height: 100%;
+  padding: 1rem;
+  background: var(--bg-dark);
+}
+
+.aside-section__title {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.options__option {
+  width: 45px;
+  height: 45px;
+  background: url("/img/iconscene.png") no-repeat;
+  cursor: pointer;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.options__option:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+
+.options .scene-1 {
+  background-position: 0 0;
+}
+
+.options .scene-2 {
+  background-position: -45px 0;
+}
+
+.options .scene-3 {
+  background-position: 0 -45px;
+}
+
+.options .scene-4 {
+  background-position: -92px -46px;
 }

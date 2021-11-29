@@ -1,0 +1,67 @@
+.play-container {
+  display: flex;
+  justify-content: space-between;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  padding: 0;
+  background: var(--bg-light);
+
+  // @media (min-width: 768px) {
+  //   // padding + sidenav width
+  //   // padding: 0 40px;
+  // }
+}
+
+.play-main {
+  flex: 1 1 500px;
+  background: var(--white);
+}
+
+.aside {
+  flex: 0 1 300px;
+  height: 100%;
+  padding: 1rem;
+  background: var(--bg-dark);
+}
+
+.aside-section {
+  &__title {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+}
+
+.options {
+  display: flex;
+
+  &__option {
+    width: 45px;
+    height: 45px;
+    background: url('/img/iconscene.png') no-repeat;
+    cursor: pointer;
+    transition: .3s;
+
+    &:hover {
+      transform:scale(1.2);
+    }
+  }
+
+  .scene-1 {
+    background-position: 0 0;
+  }
+
+  .scene-2 {
+    background-position: -45px 0;
+  }
+
+  .scene-3 {
+    background-position: 0 -45px;
+  }
+
+  .scene-4 {
+    background-position: -92px -46px;
+  }
+}

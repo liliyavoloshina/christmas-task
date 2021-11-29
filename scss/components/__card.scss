@@ -14,10 +14,10 @@
     top: 10px;
     right: 10px;
     padding: 0.2rem;
-    background: var(--bg-black);
     border-radius: 4px;
-    border: 1px solid var(--grey);
-    color: var(--white);
+    border: none;
+    background: transparent;
+    color: var(--grey);
     cursor: pointer;
     transition: .3s;
 
