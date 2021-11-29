@@ -170,3 +170,50 @@ selects.forEach(select => {
   const selectComponent = new MultiselectButtons(select, options)
   selectComponent.init()
 })
+
+const filterAmount = document.querySelector('#filter-amount')
+const filterYear = document.querySelector('#filter-year')
+const filterAmountRange = document.querySelector('#filter-amount-range')
+const filterYearRange = document.querySelector('#filter-year-range')
+
+noUiSlider.create(filterAmount, {
+  start: [1, 12],
+  connect: true,
+  tooltips: {
+    to: value => {
+      return Math.floor(value)
+    }
+  },
+  step: 1,
+  range: {
+    min: [1],
+    max: [12]
+  }
+})
+
+filterAmount.noUiSlider.on('update', (values) => {
+  const formatted = values.map(value => Math.floor(value))
+  filterAmountRange.innerHTML = formatted.join(' - ')
+})
+
+noUiSlider.create(filterYear, {
+  start: [1920, 1940],
+  connect: true,
+  tooltips: {
+    to: value => {
+      return Math.floor(value)
+    }
+  },
+  range: {
+    min: [1920],
+    '10%': [1925],
+    '30%': [1930],
+    '50%': [1935],
+    max: [1940]
+  }
+})
+
+filterYear.noUiSlider.on('update', (values) => {
+  const formatted = values.map(value => Math.floor(value))
+  filterYearRange.innerHTML = formatted.join(' - ')
+})

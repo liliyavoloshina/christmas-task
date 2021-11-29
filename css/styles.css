@@ -311,7 +311,7 @@ All styles relating to a reusable component
 
 .search-bar__expand-btn {
   height: 100%;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   background: none;
   border-radius: 4px;
   border: 1px solid var(--grey);
@@ -503,6 +503,69 @@ All styles relating to a reusable component
 .remove-option::after {
   -webkit-transform: translate(0, -50%) rotate(-45deg);
           transform: translate(0, -50%) rotate(-45deg);
+}
+
+.filter {
+  margin-bottom: 15px;
+}
+
+.filter__label {
+  margin-bottom: 10px;
+}
+
+.noUi-target {
+  height: 10px;
+}
+
+.noUi-base {
+  background: var(--bg-black);
+  border: none;
+  -webkit-box-shadow: 0 0 0 1px var(--grey);
+          box-shadow: 0 0 0 1px var(--grey);
+}
+
+.noUi-tooltip {
+  font-size: 14px;
+  border: none;
+  -webkit-box-shadow: 0 0 0 1px var(--grey);
+          box-shadow: 0 0 0 1px var(--grey);
+  background: var(--white);
+}
+
+.noUi-tooltip {
+  display: none;
+}
+
+.noUi-active .noUi-tooltip {
+  display: block;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 100%;
+  background: var(--white);
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 0 1px var(--grey);
+          box-shadow: 0 0 0 1px var(--grey);
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none;
+}
+
+.noUi-marker-horizontal.noUi-marker-large {
+  height: 10px;
+}
+
+.noUi-value {
+  font-size: 15px;
+}
+
+.noUi-connect {
+  background: var(--accent);
 }
 
 /*

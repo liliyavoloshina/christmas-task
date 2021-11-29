@@ -10,7 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.css"
+    integrity="sha512-MKxcSu/LDtbIYHBNAWUQwfB3iVoG9xeMCm32QV5hZ/9lFaQZJVaXfz9aFa0IZExWzCpm7OWvp9zq9gVip/nLMg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./css/styles.css">
+
 </head>
 
 <body>
@@ -45,8 +49,7 @@
                   <label class="select__label">Shape</label>
                   <div class="select__box">
                     <ul class="selected-options" id="selectShape-selected"></ul>
-                    <input aria-autocomplete="list" id="selectShape" class="select__input"
-                      type="text">
+                    <input aria-autocomplete="list" id="selectShape" class="select__input" type="text">
                   </div>
                   <div class="select__list" id="listboxShape"></div>
                 </div>
@@ -55,8 +58,7 @@
                   <label class="select__label">Color</label>
                   <div class="select__box">
                     <ul class="selected-options" id="selectColor-selected"></ul>
-                    <input aria-autocomplete="list" id="selectColor" class="select__input"
-                      type="text">
+                    <input aria-autocomplete="list" id="selectColor" class="select__input" type="text">
                   </div>
                   <div class="select__list" id="listboxColor"></div>
                 </div>
@@ -65,12 +67,29 @@
                   <label class="select__label">Size</label>
                   <div class="select__box">
                     <ul class="selected-options" id="selectSize-selected"></ul>
-                    <input aria-autocomplete="list" id="selectSize" class="select__input"
-                      type="text">
+                    <input aria-autocomplete="list" id="selectSize" class="select__input" type="text">
                   </div>
                   <div class="select__list" id="listboxSize"></div>
                 </div>
 
+              </div>
+
+
+              <div class="filtering">
+
+                <div class="filter">
+                  <div class="filter__label">Amount: <span id="filter-amount-range"></span></div>
+                  <div class="filter__slider">
+                    <div id="filter-amount"></div>
+                  </div>
+                </div>
+
+                <div class="filter">
+                  <div class="filter__label">Year: <span id="filter-year-range"></span></div>
+                  <div class="filter__slider">
+                    <div id="filter-year"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -115,8 +134,11 @@
     </footer>
   </div>
 
-  <script src="./js/formUI.js"></script>
+  <script src="./js/formUI.js" type="module"></script>
   <script src="./js/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.js"
+    integrity="sha512-ZKqmaRVpwWCw7S7mEjC89jDdWRD/oMS0mlfH96mO0u3wrPYoN+lXmqvyptH4P9mY6zkoPTSy5U2SwKVXRY5tYQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>
