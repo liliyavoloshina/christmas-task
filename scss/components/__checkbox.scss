@@ -1,11 +1,3 @@
-.only-favorite {
-  display: grid;
-  grid-template-columns: min-content 1fr;
-  gap: 0.6rem;
-  align-items: center;
-  margin-top: 25px;
-}
-
 input[type='checkbox'] {
   -webkit-appearance: none;
   width: 1.6rem;
