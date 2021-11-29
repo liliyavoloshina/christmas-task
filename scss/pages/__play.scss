@@ -19,6 +19,7 @@
   flex: 0 1 250px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   row-gap: 2rem;
   height: 100%;
   padding: 1rem;
@@ -26,9 +27,8 @@
 }
 
 .aside-section {
-
   &__title {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     font-size: 1rem;
   }
 }
@@ -162,6 +162,16 @@
   &__block {
     display: flex;
     align-items: center;
-    column-gap: .7rem;
+    column-gap: 0.7rem;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  
+  &__btn {
+    width: 100%;
   }
 }

@@ -31,4 +31,8 @@
     transform: skewX(45deg) translateX(0);
     transition: 0.5s;
   }
+
+  &_yellow {
+    box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
+  }
 }
