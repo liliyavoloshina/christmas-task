@@ -5,13 +5,13 @@
 .noUi-base {
   background: var(--bg-black);
   border: none;
-  box-shadow: 0 0 0 1px var(--grey);
+  box-shadow: var(--shadow-grey);
 }
 
 .noUi-tooltip {
   font-size: 14px;
   border: none;
-  box-shadow: 0 0 0 1px var(--grey);
+  box-shadow: var(--shadow-grey);
   background: var(--white);
 }
 
@@ -29,7 +29,7 @@
   border-radius: 100%;
   background: var(--white);
   cursor: pointer;
-  box-shadow: 0 0 0 1px var(--grey);
+  box-shadow: var(--shadow-grey);
 }
 
 .noUi-horizontal .noUi-handle-upper {

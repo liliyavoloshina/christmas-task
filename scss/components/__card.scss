@@ -7,7 +7,7 @@
   padding: 10px;
   background: var(--bg-light);
   border-radius: 4px;
-  box-shadow: 0 0 0 1px var(--grey);
+  box-shadow: var(--shadow-grey);
 
   &__favorite {
     position: absolute;

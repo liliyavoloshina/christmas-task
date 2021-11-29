@@ -21,8 +21,8 @@
       background: var(--bg-dark);
 
       &.home {
-        background: var(--brown-bright);
-        box-shadow: 0 0 5px var(--brown-bright), 0 0 15px var(--brown-bright), 0 0 30px var(--brown-bright), 0 0 60px var(--brown-bright);
+        background: var(--yellow-bright);
+        box-shadow: 0 0 5px var(--yellow-bright), 0 0 15px var(--yellow-bright), 0 0 30px var(--yellow-bright), 0 0 60px var(--yellow-bright);
       }
 
       &.trees {
@@ -46,16 +46,11 @@
     position: fixed;
     top: 0;
     bottom: 0;
-    // top: var(--nav-s);
-    // bottom: var(--nav-s);
     left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: var(--nav-s);
-
-    // border: 1px solid var(--bg-color);
-    // border-bottom: none;
     background: var(--bg-light);
 
     &__list {

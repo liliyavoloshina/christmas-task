@@ -8,44 +8,72 @@
   height: 100%;
   padding: 0;
   background: var(--bg-light);
-
-  // @media (min-width: 768px) {
-  //   // padding + sidenav width
-  //   // padding: 0 40px;
-  // }
 }
 
 .play-main {
   flex: 1 1 500px;
-  background: var(--white);
+  background: var(--bg-light);
 }
 
 .aside {
-  flex: 0 1 300px;
+  flex: 0 1 250px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
   height: 100%;
   padding: 1rem;
   background: var(--bg-dark);
 }
 
 .aside-section {
+
   &__title {
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     font-size: 1rem;
   }
 }
 
 .options {
   display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
   &__option {
+    position: relative;
     width: 45px;
     height: 45px;
-    background: url('/img/iconscene.png') no-repeat;
+    border-radius: 100%;
+    border: 1px solid var(--grey);
     cursor: pointer;
-    transition: .3s;
+    transition: 0.3s;
 
-    &:hover {
-      transform:scale(1.2);
+    &:hover,
+    &:hover::after {
+      transform: scale(1.1);
+      background-color: transparent;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      border-radius: 100%;
+      background-color: rgba(128, 128, 128, 0.685);
+    }
+
+    &_active::after {
+      background-color: transparent;
+    }
+
+    &_scene {
+      background: url('/img/iconscene.png') no-repeat;
+    }
+
+    &_tree {
+      background: url('/img/icontree.png') no-repeat;
     }
   }
 
@@ -64,4 +92,65 @@
   .scene-4 {
     background-position: -92px -46px;
   }
+
+  .tree-1 {
+    background-position: 0 0;
+  }
+
+  .tree-2 {
+    background-position: -45px 0;
+  }
+
+  .tree-3 {
+    background-position: -45px 0;
+  }
+
+  .tree-4 {
+    background-position: -45px 0;
+  }
+}
+
+.lights {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  & > span {
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &-1 {
+    color: var(--red-bright);
+  }
+
+  &-2 {
+    color: var(--pink-bright);
+  }
+
+  &-3 {
+    color: var(--green-bright);
+  }
+
+  &-4 {
+    color: var(--yellow-bright);
+  }
+
+  &-5 {
+    background: linear-gradient(11deg, var(--red-bright) 0%, var(--pink-bright) 30%, var(--yellow-bright) 50%, var(--green-bright) 100%);
+  }
+}
+
+.lights-switcher {
+  background: none;
+  border-radius: 20px;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  transition: 0.3s;
 }
