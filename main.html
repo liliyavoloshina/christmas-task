@@ -29,7 +29,6 @@
       <div class="container">
         <div class="main-page">
           <div class="search-panel">
-
             <div class="search-bar">
               <input type="text" placeholder="Search..." class="search-bar__input">
               <button class="search-bar__expand-btn">
@@ -37,8 +36,7 @@
               </button>
             </div>
 
-            <div class="expanded-panel">
-
+            <div class="expanded-panel hidden">
               <div class="sorting">
                 <div class="sorting__group">
                   <div class="sorting__label">Name:</div>
@@ -124,6 +122,46 @@
               </div>
             </div>
           </div>
+
+          <div class="items">
+            <div class="items__title">Christmas Toys</div>
+            <div class="items__list">
+              <div class="card">
+                <button class="card__favorite active"><span class="material-icons">favorite</span></button>
+                <div class="card__img">
+                  <img
+                    src="https://images.unsplash.com/photo-1581557991964-125469da3b8a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=833&q=80"
+                    alt="">
+                </div>
+                <div class="card__title">
+                  <span class="card__name">Buzz Lightyear</span><span class="card__amount">(2)</span>
+                </div>
+                <ul class="card__info">
+                  <li class="info">Year: <span class="info__value">2000</span></li>
+                  <li class="info">Shape: <span class="info__value">round</span></li>
+                  <li class="info">Color:<span class="info__value">white</span></li>
+                  <li class="info">Size: <span class="info__value">medium</span></li>
+                </ul>
+              </div>
+              <div class="card">
+                <button class="card__favorite"><span class="material-icons">favorite</span></button>
+                <div class="card__img">
+                  <img
+                    src="https://images.unsplash.com/photo-1581557991964-125469da3b8a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=833&q=80"
+                    alt="">
+                </div>
+                <div class="card__title">
+                  <span class="card__name">Buzz Lightyear</span><span class="card__amount">(2)</span>
+                </div>
+                <ul class="card__info">
+                  <li class="info">Year: <span class="info__value">2000</span></li>
+                  <li class="info">Shape: <span class="info__value">round</span></li>
+                  <li class="info">Color:<span class="info__value">white</span></li>
+                  <li class="info">Size: <span class="info__value">medium</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -133,18 +171,18 @@
         <nav class="nav">
           <ul class="nav__list">
             <li class="nav__item">
-              <a href="" class="nav__link home active" title="Home">
+              <a href="/start.html" class="nav__link home" title="Home">
                 <span class="material-icons">home</span>
+              </a>
+            </li>
+            <li class="nav__item">
+              <a href="/main.html" class="nav__link decor active" title="Decor">
+                <span class="material-icons">filter_vintage</span>
               </a>
             </li>
             <li class="nav__item park">
               <a href="" class="nav__link trees" title="Trees">
                 <span class="material-icons">park</span>
-              </a>
-            </li>
-            <li class="nav__item">
-              <a href="" class="nav__link decor" title="Decor">
-                <span class="material-icons">filter_vintage</span>
               </a>
             </li>
             <li class="nav__item">

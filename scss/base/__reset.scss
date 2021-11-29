@@ -21,7 +21,7 @@ img::selection {
 }
 
 ::selection {
-  background: #fff;
+  background: var(--accent);
 }
 
 button {

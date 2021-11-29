@@ -27,11 +27,11 @@ img::selection {
 }
 
 ::-moz-selection {
-  background: #fff;
+  background: var(--accent);
 }
 
 ::selection {
-  background: #fff;
+  background: var(--accent);
 }
 
 button {
@@ -731,6 +731,90 @@ input[id='only-favorite']:checked::after {
   background: var(--accent);
 }
 
+.card {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  row-gap: 10px;
+  padding: 10px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 0 1px var(--grey);
+          box-shadow: 0 0 0 1px var(--grey);
+}
+
+.card__favorite {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.2rem;
+  background: var(--bg-black);
+  border-radius: 4px;
+  border: 1px solid var(--grey);
+  color: var(--white);
+  cursor: pointer;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.card__favorite.active > span, .card__favorite:hover > span {
+  color: var(--pink-bright);
+}
+
+.card__img {
+  width: 100%;
+  height: 140px;
+}
+
+.card__img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 4px;
+}
+
+.card__title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.card__name {
+  font-size: 1.3rem;
+}
+
+.card__amount {
+  font-size: .9rem;
+}
+
+.card__info {
+  font-size: .9rem;
+}
+
+.card__info .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
 /*
 Styles for the header, footer, the grid system e.t.c.
 */
@@ -812,4 +896,24 @@ Styles for the header, footer, the grid system e.t.c.
 
 .start-page__action .btn {
   width: 200px;
+}
+
+.items {
+  margin-top: 2rem;
+}
+
+.items__title {
+  margin-bottom: 1rem;
+}
+
+.items__list {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(250px, 1fr))[auto-fill];
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: minmax(200px, auto);
+  gap: 1em;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
 }
