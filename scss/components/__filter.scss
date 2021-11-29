@@ -1,6 +1,6 @@
 .filter {
   margin-bottom: 15px;
-  
+
   &__label {
     margin-bottom: 10px;
   }
@@ -40,6 +40,10 @@
   box-shadow: 0 0 0 1px var(--grey);
 }
 
+.noUi-horizontal .noUi-handle-upper {
+  right: -7px;
+}
+
 .noUi-handle:before,
 .noUi-handle:after {
   display: none;
@@ -51,7 +55,7 @@
 
 .noUi-value {
   font-size: 15px;
-} 
+}
 
 .noUi-connect {
   background: var(--accent);

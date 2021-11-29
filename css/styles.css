@@ -551,6 +551,10 @@ All styles relating to a reusable component
           box-shadow: 0 0 0 1px var(--grey);
 }
 
+.noUi-horizontal .noUi-handle-upper {
+  right: -7px;
+}
+
 .noUi-handle:before,
 .noUi-handle:after {
   display: none;
@@ -566,6 +570,49 @@ All styles relating to a reusable component
 
 .noUi-connect {
   background: var(--accent);
+}
+
+.only-favorite {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: min-content 1fr;
+      grid-template-columns: -webkit-min-content 1fr;
+      grid-template-columns: min-content 1fr;
+  gap: 0.6rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 25px;
+}
+
+input[type='checkbox'] {
+  -webkit-appearance: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--grey);
+}
+
+input[type='checkbox']:focus {
+  border: 1px solid var(--accent);
+}
+
+input[type='checkbox']:checked {
+  position: relative;
+  background: none;
+}
+
+input[id='only-favorite']:checked::after {
+  position: absolute;
+  top: 0.36rem;
+  left: 0.12rem;
+  content: '';
+  width: 1rem;
+  height: 0.3rem;
+  border: 4px solid var(--accent);
+  border-right: none;
+  border-top: none;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
 }
 
 /*

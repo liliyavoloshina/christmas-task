@@ -179,6 +179,7 @@ const filterYearRange = document.querySelector('#filter-year-range')
 noUiSlider.create(filterAmount, {
   start: [1, 12],
   connect: true,
+  margin: 1,
   tooltips: {
     to: value => {
       return Math.floor(value)
@@ -204,6 +205,7 @@ noUiSlider.create(filterYear, {
       return Math.floor(value)
     }
   },
+  margin: 1,
   range: {
     min: [1920],
     '10%': [1925],
