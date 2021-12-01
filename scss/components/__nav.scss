@@ -22,22 +22,22 @@
 
       &.home {
         background: var(--yellow-bright);
-        box-shadow: 0 0 5px var(--yellow-bright), 0 0 15px var(--yellow-bright), 0 0 30px var(--yellow-bright), 0 0 60px var(--yellow-bright);
+        box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
       }
 
       &.trees {
         background: var(--green-bright);
-        box-shadow: 0 0 5px var(--green-bright), 0 0 15px var(--green-bright), 0 0 30px var(--green-bright), 0 0 60px var(--green-bright);
+        box-shadow: 0 0 5px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright);
       }
 
       &.decor {
         background: var(--pink-bright);
-        box-shadow: 0 0 5px var(--pink-bright), 0 0 15px var(--pink-bright), 0 0 30px var(--pink-bright), 0 0 60px var(--pink-bright);
+        box-shadow: 0 0 5px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright);
       }
 
       &.favorite {
         background: var(--red-bright);
-        box-shadow: 0 0 5px var(--red-bright), 0 0 15px var(--red-bright), 0 0 30px var(--red-bright), 0 0 60px var(--red-bright);
+        box-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright);
       }
     }
   }
