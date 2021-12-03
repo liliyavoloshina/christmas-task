@@ -1,3 +1,4 @@
+import Btn from '../components/Btn'
 import '../styles/pages/__start.scss'
 
 function Start() {
@@ -14,8 +15,8 @@ function Start() {
 				aspernatur asperiores iste repellat.
 			</div>
 			<div className="start-page__action">
-				<a href="./main.html" className="btn">
-					Start
+				<a href="/catalog">
+					<Btn text="Start" />
 				</a>
 			</div>
 		</div>

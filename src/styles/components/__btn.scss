@@ -1,38 +1,52 @@
 .btn {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  padding: .5rem;
-  font-family: inherit;
-  background: none;
-  border-radius: 20px;
-  border: 1px solid var(--white);
-  color: var(--white);
-  cursor: pointer;
-  transition: 0.3s;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+	padding: 0.5rem;
+	font-family: inherit;
+	background: none;
+	border-radius: 20px;
+	border: 1px solid var(--white);
+	color: var(--white);
+	cursor: pointer;
+	transition: 0.3s;
 
-  &:hover {
-    background: var(--bg-color);
+	&:hover {
+		background: var(--bg-color);
 
-    &::before {
-      transform: skewX(45deg) translateX(200%);
-    }
-  }
+		&::before {
+			transform: skewX(45deg) translateX(200%);
+		}
+	}
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
-    transform: skewX(45deg) translateX(0);
-    transition: 0.5s;
-  }
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 50%;
+		height: 100%;
+		background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+		transform: skewX(45deg) translateX(0);
+		transition: 0.5s;
+	}
 
-  &_yellow {
-    box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
-  }
+	&.accented {
+		box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright),
+			0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
+	}
+
+	&.md {
+		flex: 1 1 200px;
+		font-size: 1rem;
+	}
+
+	&.clear {
+		background: rgba(245, 241, 45, 0.24);
+	}
+
+	&.save {
+		background: rgba(51, 255, 0, 0.24);
+	}
 }
