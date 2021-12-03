@@ -16,8 +16,8 @@ class Btn extends Component<BtnProps> {
 
 	render() {
 		const { text, size, action, accented } = this.props
-
 		const classes = ['btn', size, action, accented].join(' ').trim()
+
 		return (
 			<button type="button" className={classes}>
 				{text}
@@ -25,9 +25,5 @@ class Btn extends Component<BtnProps> {
 		)
 	}
 }
-
-// function Btn({ size = 'md' }) {
-// 	return <button type="button" className="btn" />
-// }
 
 export default Btn

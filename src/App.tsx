@@ -1,6 +1,6 @@
 import './styles/base/_base-dir.scss'
-import Main from './components/Main'
-import Footer from './components/Footer'
+import Main from './layout/Main'
+import Footer from './layout/Footer'
 
 function App() {
 	return (
