@@ -3,13 +3,7 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": [
-		"airbnb",
-		"airbnb-typescript",
-		"plugin:react/recommended",
-		"prettier",
-		"plugin:react/jsx-runtime"
-	],
+	"extends": ["airbnb", "airbnb-typescript", "plugin:react/recommended", "prettier", "plugin:react/jsx-runtime"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"project": "./tsconfig.json",
@@ -34,6 +28,7 @@
 				"extensions": [".ts", ".tsx"]
 			}
 		],
+		// bug from eslint
 		"jsx-a11y/label-has-associated-control": [
 			"error",
 			{
@@ -42,6 +37,7 @@
 				}
 			}
 		],
+		// bug from eslint
 		"jsx-a11y/label-has-for": [
 			"error",
 			{
@@ -49,6 +45,7 @@
 					"some": ["nesting", "id"]
 				}
 			}
-		]
+		],
+		"react/jsx-props-no-spreading": "off"
 	}
 }
