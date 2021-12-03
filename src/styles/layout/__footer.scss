@@ -1,11 +1,13 @@
 .footer {
 	padding: 0.7rem 0;
-	background: var(--bg-light);
+	background: var(--bg-dark);
 	font-size: 0.9rem;
 
 	.copyright {
-		display: none;
 		color: var(--grey);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
 		&__school {
 			width: 30px;
@@ -20,12 +22,5 @@
 
 	@media (min-width: 768px) {
 		margin-left: var(--nav-s);
-		background: var(--bg-dark);
-
-		.copyright {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-		}
 	}
 }
