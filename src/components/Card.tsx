@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import BtnFavorite from './BtnFavorite'
 import Item from '../types/Item'
 import '../styles/components/__card.scss'
 
@@ -14,9 +15,7 @@ class Card extends Component<Item> {
 
 		return (
 			<div className="card">
-				<button type="button" className={`card__favorite ${isFavorite ? 'active' : ''}`}>
-					<span className="material-icons">favorite_border</span>
-				</button>
+				<BtnFavorite isFavorite={isFavorite} />
 				<div className="card__title">
 					<span className="card__title_name">{name}</span>
 				</div>
