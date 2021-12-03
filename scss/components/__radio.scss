@@ -1,0 +1,41 @@
+.radio {
+  opacity: 0;
+  position: absolute;
+}
+
+.radio,
+.radio-label {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.radio-label {
+  position: relative;
+}
+
+.radio + .radio-label:before {
+  content: '';
+  background: #fff;
+  border: 2px solid #ddd;
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  padding: 2px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.radio + .radio-label:before {
+  border-radius: 50%;
+}
+
+.radio:checked + .radio-label:before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: var(--accent);
+}

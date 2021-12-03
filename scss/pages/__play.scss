@@ -1,0 +1,177 @@
+.play-container {
+  display: flex;
+  justify-content: space-between;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  padding: 0;
+  background: var(--bg-light);
+}
+
+.play-main {
+  flex: 1 1 500px;
+  background: var(--bg-light);
+}
+
+.aside {
+  flex: 0 1 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 2rem;
+  height: 100%;
+  padding: 1rem;
+  background: var(--bg-dark);
+}
+
+.aside-section {
+  &__title {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  &__option {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    border: 1px solid var(--grey);
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover,
+    &:hover::after {
+      transform: scale(1.1);
+      background-color: transparent;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      border-radius: 100%;
+      background-color: rgba(128, 128, 128, 0.685);
+    }
+
+    &_active::after {
+      background-color: transparent;
+    }
+
+    &_scene {
+      background: url('/img/iconscene.png') no-repeat;
+    }
+
+    &_tree {
+      background: url('/img/icontree.png') no-repeat;
+    }
+  }
+
+  .scene-1 {
+    background-position: 0 0;
+  }
+
+  .scene-2 {
+    background-position: -45px 0;
+  }
+
+  .scene-3 {
+    background-position: 0 -45px;
+  }
+
+  .scene-4 {
+    background-position: -92px -46px;
+  }
+
+  .tree-1 {
+    background-position: 0 0;
+  }
+
+  .tree-2 {
+    background-position: -40px 0;
+  }
+
+  .tree-3 {
+    background-position: -80px 0;
+  }
+
+  .tree-4 {
+    background-position: -120px 0;
+  }
+}
+
+.lights {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  & > span {
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &-1 {
+    color: var(--red-bright);
+  }
+
+  &-2 {
+    color: var(--pink-bright);
+  }
+
+  &-3 {
+    color: var(--green-bright);
+  }
+
+  &-4 {
+    color: var(--yellow-bright);
+  }
+
+  &-5 {
+    background: linear-gradient(11deg, var(--red-bright) 0%, var(--pink-bright) 30%, var(--yellow-bright) 50%, var(--green-bright) 100%);
+  }
+}
+
+.lights-switcher {
+  background: none;
+  border-radius: 20px;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.settings {
+  display: flex;
+  justify-content: space-between;
+
+  &__block {
+    display: flex;
+    align-items: center;
+    column-gap: 0.7rem;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+
+  &__btn {
+    width: 100%;
+  }
+}

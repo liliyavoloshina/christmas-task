@@ -1,0 +1,10 @@
+.start-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  &__action .btn {
+    width: 200px;
+  }
+}

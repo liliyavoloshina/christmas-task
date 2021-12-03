@@ -1,0 +1,54 @@
+.noUi-target {
+  height: 10px;
+}
+
+.noUi-base {
+  background: var(--bg-black);
+  border: none;
+  box-shadow: var(--shadow-grey);
+}
+
+.noUi-tooltip {
+  font-size: 14px;
+  border: none;
+  box-shadow: var(--shadow-grey);
+  background: var(--white);
+}
+
+.noUi-tooltip {
+  display: none;
+}
+.noUi-active .noUi-tooltip {
+  display: block;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 100%;
+  background: var(--white);
+  cursor: pointer;
+  box-shadow: var(--shadow-grey);
+}
+
+.noUi-horizontal .noUi-handle-upper {
+  right: -7px;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none;
+}
+
+.noUi-marker-horizontal.noUi-marker-large {
+  height: 10px;
+}
+
+.noUi-value {
+  font-size: 15px;
+}
+
+.noUi-connect {
+  background: var(--accent);
+}
