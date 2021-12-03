@@ -1,0 +1,33 @@
+.footer {
+  padding: 0.7rem 0;
+  background: var(--bg-light);
+  font-size: 0.9rem;
+}
+
+.footer .copyright {
+  display: none;
+  color: var(--grey);
+}
+
+.footer .copyright__school {
+  width: 30px;
+  height: 10px;
+  background: url("/img/rss.svg") no-repeat center;
+}
+
+.footer .copyright__github:hover {
+  color: var(--white);
+}
+
+@media (min-width: 768px) {
+  .footer {
+    margin-left: var(--nav-s);
+    background: var(--bg-dark);
+  }
+
+  .footer .copyright {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
