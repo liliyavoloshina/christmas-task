@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import Multiselect from '../components/MultiSelect'
 import '../styles/layout/__searchPanel.scss'
 
 class SearchPanel extends Component {
@@ -41,14 +42,15 @@ class SearchPanel extends Component {
               </div> */}
 
 				<div className="selecting">
-					<div className="select">
+					<Multiselect type="shape" />
+					{/* <div className="select">
 						<h3 className="select__label">Shape</h3>
 						<div className="select__box">
 							<ul className="selected-options" id="selectShape-selected" />
 							<input aria-autocomplete="list" id="selectShape" className="select__input" type="text" />
 						</div>
 						<div className="select__list" id="listboxShape" />
-					</div>
+					</div> */}
 
 					<div className="select">
 						<h3 className="select__label">Color</h3>
