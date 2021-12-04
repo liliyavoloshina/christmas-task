@@ -233,7 +233,7 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 
 		return (
 			<div className={`multiselect ${isOpen ? 'open' : ''}`}>
-				<h3 className="multiselect__label">{name}</h3>
+				<h3 className="search-panel-label">{name}</h3>
 				<div className="multiselect__box">
 					<ul className="selected-options" id={optionsId} ref={this.selectedEl as React.RefObject<HTMLUListElement>} />
 					<input

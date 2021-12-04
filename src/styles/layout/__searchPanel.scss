@@ -14,6 +14,12 @@
 		justify-content: space-between;
 		column-gap: 20px;
 	}
+
+	&-label {
+		display: block;
+		font-size: 1rem;
+		margin-bottom: 5px;
+	}
 }
 
 .sorting {

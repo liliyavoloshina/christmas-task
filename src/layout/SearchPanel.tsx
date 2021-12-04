@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import Multiselect from '../components/MultiSelect'
+import Select from '../components/Select'
 import '../styles/layout/__searchPanel.scss'
 
 class SearchPanel extends Component {
@@ -11,6 +12,7 @@ class SearchPanel extends Component {
 	render() {
 		return (
 			<div className="search-panel">
+				<Select />
 				{/* <div className="sorting">
                 <div className="sorting__group">
                   <div className="sorting__label">Name:</div>
