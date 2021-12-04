@@ -1,0 +1,56 @@
+:root {
+	--heart: #f43965;
+}
+
+.btn-favorite {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	padding: 0.2rem;
+	border-radius: 4px;
+	border: none;
+	background: transparent;
+	color: var(--grey);
+	cursor: pointer;
+	transition: 0.3s;
+
+	&.active > span,
+	&:hover > span {
+		color: var(--pink-bright);
+	}
+}
+
+svg use {
+	fill: transparent;
+	stroke: rgba(255, 255, 255, 0.7);
+	stroke-width: 1.2;
+	transition: all 0.33s ease;
+}
+
+svg use:last-child {
+	fill: var(--heart);
+	stroke: var(--heart);
+	opacity: 0;
+	transform: scale(0.33);
+	transform-origin: center;
+}
+
+.on svg use {
+	stroke: transparent;
+}
+
+.on svg use:last-child {
+	opacity: 1;
+	transform: none;
+	transition: all 0.5s cubic-bezier(0.19, 2.41, 0.45, 0.94);
+}
+
+svg {
+	width: 30px;
+	height: 30px;
+	overflow: visible !important;
+}
+
+.hide {
+	display: none;
+}

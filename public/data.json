@@ -7,7 +7,7 @@
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true
 	},
 	{
 		"id": "2",

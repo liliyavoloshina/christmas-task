@@ -1,6 +1,7 @@
 import { Component } from 'react'
+import BtnFavorite from './BtnFavorite'
 import Item from '../types/Item'
-import '../styles/components/__btn.scss'
+import '../styles/components/__card.scss'
 
 class Card extends Component<Item> {
 	constructor(props: Item) {
@@ -14,17 +15,17 @@ class Card extends Component<Item> {
 
 		return (
 			<div className="card">
-				<button type="button" className={`card__favorite ${isFavorite ? 'active' : ''}`}>
-					<span className="material-icons">favorite</span>
-				</button>
+				<div className="card__header">
+					<h3 className="card__title">{name}</h3>
+					<BtnFavorite isFavorite={isFavorite} />
+				</div>
 				<div className="card__img">
 					<img src={imageSrc} alt={name} />
 				</div>
-				<div className="card__title">
-					<span className="card__name">{name}</span>
-					<span className="card__amount">({amount})</span>
-				</div>
 				<ul className="card__info">
+					<li className="info">
+						Amount: <span className="info__value">{amount}</span>
+					</li>
 					<li className="info">
 						Year: <span className="info__value">{year}</span>
 					</li>

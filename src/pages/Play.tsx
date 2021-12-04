@@ -2,7 +2,7 @@ import '../styles/pages/__play.scss'
 
 function Play() {
 	return (
-		<div className="play-container">
+		<div className="play-container fullpage">
 			<aside className="aside">
 				<section className="aside-section">
 					<h3 className="aside-section__title">Background</h3>
@@ -37,23 +37,11 @@ function Play() {
 				</section>
 				<div className="settings">
 					<div className="settings__block">
-						<input
-							className="checkbox"
-							type="checkbox"
-							id="music-toggle"
-							name="music-toggle"
-							value="Music Toggle"
-						/>
+						<input className="checkbox" type="checkbox" id="music-toggle" name="music-toggle" value="Music Toggle" />
 						<label htmlFor="music-toggle">Music</label>
 					</div>
 					<div className="settings__block">
-						<input
-							className="checkbox"
-							type="checkbox"
-							id="snow-toggle"
-							name="snow-toggle"
-							value="Snow Toggle"
-						/>
+						<input className="checkbox" type="checkbox" id="snow-toggle" name="snow-toggle" value="Snow Toggle" />
 						<label htmlFor="snow-toggle">Snow</label>
 					</div>
 				</div>

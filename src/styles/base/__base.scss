@@ -1,15 +1,22 @@
 html,
 body {
-	height: 100%;
 	font-size: var(--root-px);
 }
 
+html {
+	height: 100%;
+}
+
 body {
-	min-height: 100vh;
+	min-height: 100%;
 	font-family: 'Poppins', sans-serif;
-	background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg);
+	background-image: url(https://images.wallpaperscraft.com/image/single/garland_tree_christmas_130506_1920x1080.jpg);
+	// background-image: url(https://cdn-0.preppywallpapers.com/wp-content/uploads/2018/12/Christmas-iPhone-Wallpaper-39.jpg);
+	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
+	background-attachment: fixed;
+	box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.527);
 }
 
 .container {
@@ -26,15 +33,19 @@ body {
 	}
 }
 
-#root {
-	height: 100%;
+.fullpage {
+	height: calc(100vh - 140px);
+
+	@media screen and (min-width: 768px) {
+		height: calc(100vh - 122px);
+	}
 }
 
-.app {
+#root {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	backdrop-filter: blur(20px);
+	min-height: 100vh;
 	background-color: var(--bg-color);
 
 	.main {
@@ -42,6 +53,6 @@ body {
 	}
 
 	.footer {
-		flex: 0 0 auto;
+		flex-shrink: 0;
 	}
 }

@@ -1,39 +1,36 @@
 * {
-  -webkit-tap-highlight-color: transparent;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-  &::-webkit-scrollbar {
-    width: 0.8em;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: pink;
-  }
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 
 img::selection {
-  background: transparent;
+	background: transparent;
 }
 
 ::selection {
-  background: var(--accent);
+	background: var(--accent);
 }
 
 button {
-  outline: none;
+	outline: none;
 }
 
 ul {
-  list-style-type: none;
+	list-style-type: none;
 }
 
 a {
-  color: var(--grey);
-  text-decoration: none;
-  transition: .3s;
+	color: var(--grey);
+	text-decoration: none;
+	transition: 0.3s;
 }
