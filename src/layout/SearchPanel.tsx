@@ -43,32 +43,8 @@ class SearchPanel extends Component {
 
 				<div className="selecting">
 					<Multiselect type="shape" />
-					{/* <div className="select">
-						<h3 className="select__label">Shape</h3>
-						<div className="select__box">
-							<ul className="selected-options" id="selectShape-selected" />
-							<input aria-autocomplete="list" id="selectShape" className="select__input" type="text" />
-						</div>
-						<div className="select__list" id="listboxShape" />
-					</div> */}
-
-					<div className="select">
-						<h3 className="select__label">Color</h3>
-						<div className="select__box">
-							<ul className="selected-options" id="selectColor-selected" />
-							<input aria-autocomplete="list" id="selectColor" className="select__input" type="text" />
-						</div>
-						<div className="select__list" id="listboxColor" />
-					</div>
-
-					<div className="select">
-						<h3 className="select__label">Size</h3>
-						<div className="select__box">
-							<ul className="selected-options" id="selectSize-selected" />
-							<input aria-autocomplete="list" id="selectSize" className="select__input" type="text" />
-						</div>
-						<div className="select__list" id="listboxSize" />
-					</div>
+					<Multiselect type="color" />
+					<Multiselect type="size" />
 				</div>
 
 				<div className="filtering">

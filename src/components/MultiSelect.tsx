@@ -111,6 +111,10 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 
 		if (type === 'shape') {
 			arr = ['ball', 'figure', 'bell', 'cone', 'snowflake']
+		} else if (type === 'color') {
+			arr = ['green', 'white', 'red', 'blue']
+		} else {
+			arr = ['large', 'medium', 'small']
 		}
 
 		this.setState({ options: arr }, () => this.setOptions())
