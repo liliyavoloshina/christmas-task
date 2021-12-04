@@ -36,8 +36,8 @@
 			}
 
 			&.catalog {
-				background: var(--pink-bright);
-				box-shadow: 0 0 5px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright);
+				background: var(--red-bright);
+				box-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright);
 			}
 
 			&.play {
@@ -58,7 +58,7 @@
 
 		&__list {
 			flex-direction: column;
-			height: 200px;
+			height: 150px;
 		}
 	}
 }

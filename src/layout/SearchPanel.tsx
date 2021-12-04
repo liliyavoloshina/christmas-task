@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import '../styles/layout/__searchPanel.scss'
 
 class SearchPanel extends Component {
 	constructor(props: Readonly<{}>) {

@@ -1,9 +1,9 @@
 .main {
-  padding: 2rem 0;
-  color: var(--white);
-  background: var(--bg-dark);
+	padding: 2rem 0;
+	color: var(--white);
+	background: var(--bg-dark);
 
-  @media (min-width: 768px) {
-    margin-left: var(--nav-s);
-  }
+	@media (min-width: 768px) {
+		margin-left: var(--nav-s);
+	}
 }

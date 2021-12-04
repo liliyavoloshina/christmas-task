@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import '../styles/pages/__catalog.scss'
@@ -27,6 +28,8 @@ class Catalog extends Component<{}, { items: Item[] }> {
 						<span className="material-icons">search</span>
 					</button>
 				</div>
+
+				<SearchPanel />
 
 				<div className="items">
 					<div className="items__title">Christmas Toys</div>
