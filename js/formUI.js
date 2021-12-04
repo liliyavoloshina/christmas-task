@@ -88,6 +88,7 @@ class MultiselectButtons {
 			this.updateMenuState(false, false)
 		}
 	}
+
 	onOptionChange(index) {
 		this.activeIndex = index
 		this.inputEl.setAttribute('aria-activedescendant', `${this.idBase}-${index}`)

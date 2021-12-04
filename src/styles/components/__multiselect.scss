@@ -86,6 +86,10 @@
 	padding: 10px 12px 12px;
 	color: var(--white);
 	cursor: pointer;
+
+	&.hidden {
+		display: none;
+	}
 }
 
 .multiselect-option.option-current,

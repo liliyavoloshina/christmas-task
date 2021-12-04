@@ -10,6 +10,8 @@ interface MultiselectState {
 	options: string[]
 	isOpen: boolean
 	activeIndex: number
+	ignoreBlur: boolean
+	filteredOptions: string[]
 }
 
 class Multiselect extends Component<MultiselectProps, MultiselectState> {
@@ -25,33 +27,38 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 			options: [],
 			isOpen: false,
 			activeIndex: 0,
-			// filteredOptions: [],
+			ignoreBlur: true,
+			filteredOptions: [],
 		}
 		this.list = React.createRef()
 		this.inputEl = React.createRef()
 		this.selectedEl = React.createRef()
-		// this.selectedEl = document.getElementById(`${this.idBase}-selected`)
 	}
 
 	componentDidMount() {
 		this.getOptions()
 	}
 
+	onBlur() {
+		const { isOpen, ignoreBlur } = this.state
+
+		if (ignoreBlur) {
+			this.setState({ ignoreBlur: false })
+			return
+		}
+
+		if (isOpen) {
+			this.updateMenuState(false, false)
+		}
+	}
+
+	onOptionMouseDown() {
+		this.setState({ ignoreBlur: true })
+	}
+
 	onInput(e: React.SyntheticEvent) {
 		const curValue = (e.target as HTMLInputElement).value
 		this.filterOptions(curValue)
-		this.updateMenuState(true)
-
-		// // if active option is not in filtered options, set it to first filtered option
-		// if (this.filteredOptions.indexOf(this.options[this.activeIndex]) < 0) {
-		//   const firstFilteredIndex = this.options.indexOf(this.filteredOptions[0])
-		//   this.onOptionChange(firstFilteredIndex)
-		// }
-
-		// const menuState = this.filteredOptions.length > 0
-		// if (this.open !== menuState) {
-		//   this.updateMenuState(menuState, false)
-		// }
 	}
 
 	onOptionChange(index: number) {
@@ -61,9 +68,10 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		// update active style
 		const options = multiselectList.querySelectorAll('.multiselect-option')
 
-		;[...options].forEach(optionEl => {
+		options.forEach(optionEl => {
 			optionEl.classList.remove('option-current')
 		})
+
 		options[index].classList.add('option-current')
 	}
 
@@ -75,11 +83,10 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 	}
 
 	setOptions() {
-		const { options, activeIndex } = this.state
+		const { options } = this.state
 		const { type } = this.props
 
 		const multiselectList = this.list.current as HTMLInputElement
-		console.log(activeIndex)
 
 		options.forEach((option, index) => {
 			const optionEl = document.createElement('div')
@@ -92,7 +99,7 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 				this.onOptionClick(index)
 			})
 
-			// optionEl.addEventListener('mousedown', this.onOptionMouseDown.bind(this))
+			optionEl.addEventListener('mousedown', () => this.onOptionMouseDown())
 
 			multiselectList.appendChild(optionEl)
 		})
@@ -107,6 +114,22 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		}
 
 		this.setState({ options: arr }, () => this.setOptions())
+	}
+
+	updateActiveOption() {
+		const { options, filteredOptions, activeIndex, isOpen } = this.state
+
+		// if active option is not in filtered options, set it to first filtered option
+		if (filteredOptions.indexOf(options[activeIndex]) < 0) {
+			const firstFilteredIndex = options.indexOf(filteredOptions[0])
+
+			this.onOptionChange(firstFilteredIndex)
+		}
+
+		const menuState = filteredOptions.length > 0
+		if (isOpen !== menuState) {
+			this.updateMenuState(menuState, false)
+		}
 	}
 
 	updateOption(index: number) {
@@ -170,10 +193,21 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 	}
 
 	filterOptions(value: string) {
+		const multiselectList = this.list.current as HTMLInputElement
+		const optionsEls = multiselectList.querySelectorAll('.multiselect-option')
 		const { options } = this.state
 		const filtered = filterOptions(value, options)
-
-		console.log(filtered)
+		this.setState({ filteredOptions: filtered }, () => {
+			optionsEls.forEach(optionEl => {
+				const optionValue = optionEl.innerHTML
+				if (filtered.indexOf(optionValue) > -1) {
+					optionEl.classList.remove('hidden')
+				} else {
+					optionEl.classList.add('hidden')
+				}
+			})
+			this.updateActiveOption()
+		})
 	}
 
 	updateMenuState(open: boolean, callFocus: boolean = true) {
@@ -200,7 +234,9 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 					<ul className="selected-options" id={optionsId} ref={this.selectedEl as React.RefObject<HTMLUListElement>} />
 					<input
 						onInput={e => this.onInput(e)}
-						aria-autocomplete="list"
+						onBlur={() => this.onBlur()}
+						onClick={() => this.updateMenuState(true)}
+						autoComplete="off"
 						ref={this.inputEl as React.RefObject<HTMLInputElement>}
 						id={inputId}
 						className="multiselect__input"
