@@ -10,21 +10,24 @@ class BtnFavorite extends Component<BtnFavoriteProps, BtnFavoriteProps> {
 		super(props)
 		this.toggleClass = this.toggleClass.bind(this)
 		this.state = {
-			isFavorite: false,
+			isFavorite: props.isFavorite,
 		}
 	}
 
 	toggleClass() {
-		const currentState = false
-		// const currentState = this.state.isFavorite
+		const { isFavorite: currentState } = this.state
 		this.setState({ isFavorite: !currentState })
 	}
 
 	render() {
 		const { isFavorite } = this.state
+		let className = 'btn-favorite'
+		if (isFavorite) {
+			className += ' on'
+		}
 
 		return (
-			<button className={isFavorite ? 'on btn-favorite' : 'btn-favorite'} onClick={this.toggleClass} type="button">
+			<button className={className} onClick={this.toggleClass} type="button">
 				<svg viewBox="0 0 24 24">
 					<use xlinkHref="#heart" />
 					<use xlinkHref="#heart" />
