@@ -15,9 +15,9 @@ class Card extends Component<Item> {
 
 		return (
 			<div className="card">
-				<BtnFavorite isFavorite={isFavorite} />
-				<div className="card__title">
-					<span className="card__title_name">{name}</span>
+				<div className="card__header">
+					<h3 className="card__title">{name}</h3>
+					<BtnFavorite isFavorite={isFavorite} />
 				</div>
 				<div className="card__img">
 					<img src={imageSrc} alt={name} />
