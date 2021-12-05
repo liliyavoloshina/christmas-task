@@ -44,16 +44,6 @@
 	}
 }
 
-.filtering {
-	.filter {
-		margin-bottom: 15px;
-
-		&__label {
-			margin-bottom: 10px;
-		}
-	}
-}
-
 .only-favorite {
 	display: grid;
 	grid-template-columns: min-content 1fr;

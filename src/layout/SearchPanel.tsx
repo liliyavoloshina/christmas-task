@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import Multiselect from '../components/MultiSelect'
 import Select from '../components/Select'
+import Range from '../components/Range'
 import '../styles/layout/__searchPanel.scss'
 
 class SearchPanel extends Component {
@@ -20,7 +21,8 @@ class SearchPanel extends Component {
 				</div>
 
 				<div className="filtering">
-					<div className="filter">
+					<Range type="amount" />
+					{/* <div className="filter">
 						<div className="filter__label">
 							Amount: <span id="filter-amount-range" />
 						</div>
@@ -35,7 +37,7 @@ class SearchPanel extends Component {
 						<div className="filter__slider">
 							<div id="filter-year" />
 						</div>
-					</div>
+					</div> */}
 				</div>
 
 				<div className="only-favorite">
