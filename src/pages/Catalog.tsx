@@ -3,19 +3,32 @@ import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import '../styles/pages/__catalog.scss'
+import RangeOptions from '../types/Filter'
 
-class Catalog extends Component<{}, { items: Item[] }> {
+interface CatalogState {
+	items: Item[]
+	original: Item[]
+}
+
+class Catalog extends Component<{}, CatalogState> {
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
 			items: [] as Item[],
+			original: [] as Item[],
 		}
 	}
 
 	async componentDidMount() {
 		const req = await fetch('data.json')
 		const res = await req.json()
-		this.setState({ items: res })
+		this.setState({ items: res, original: res })
+	}
+
+	handleFilter(options: RangeOptions, type: string) {
+		const { original } = this.state
+		const filtered = original.filter(item => item[type] >= options.min && item[type] <= options.max)
+		this.setState({ items: filtered })
 	}
 
 	render() {
@@ -29,7 +42,7 @@ class Catalog extends Component<{}, { items: Item[] }> {
 					</button>
 				</div>
 
-				<SearchPanel />
+				<SearchPanel onFilter={(options: RangeOptions, type: string) => this.handleFilter(options, type)} />
 
 				<div className="items">
 					<div className="items__title">Christmas Toys</div>

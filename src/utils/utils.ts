@@ -3,11 +3,15 @@ const firstToUpperCase = (string: string) => {
 	return first + string.slice(1)
 }
 
-function filterOptions(filter: string, options: string[] = [], exclude: string[] = []) {
+function searchOptions(value: string, options: string[] = [], exclude: string[] = []) {
 	return options.filter((option: string) => {
-		const matches = option.toLowerCase().indexOf(filter.toLowerCase()) === 0
+		const matches = option.toLowerCase().indexOf(value.toLowerCase()) === 0
 		return matches && exclude.indexOf(option) < 0
 	})
 }
 
-export { firstToUpperCase, filterOptions }
+// function filter(yearRange,) {
+
+// }
+
+export { firstToUpperCase, searchOptions }

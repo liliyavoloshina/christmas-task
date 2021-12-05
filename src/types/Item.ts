@@ -1,4 +1,8 @@
-interface Item {
+interface IObjectKeys {
+	[key: string]: string | number | boolean
+}
+
+interface Item extends IObjectKeys {
 	id: string
 	name: string
 	amount: number

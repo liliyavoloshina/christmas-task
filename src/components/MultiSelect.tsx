@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { firstToUpperCase, filterOptions } from '../utils/utils'
+import { firstToUpperCase, searchOptions } from '../utils/utils'
 import '../styles/components/__multiselect.scss'
 
 interface MultiselectProps {
@@ -200,7 +200,7 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		const multiselectList = this.list.current as HTMLInputElement
 		const optionsEls = multiselectList.querySelectorAll('.multiselect-option')
 		const { options } = this.state
-		const filtered = filterOptions(value, options)
+		const filtered = searchOptions(value, options)
 		this.setState({ filteredOptions: filtered }, () => {
 			optionsEls.forEach(optionEl => {
 				const optionValue = optionEl.innerHTML

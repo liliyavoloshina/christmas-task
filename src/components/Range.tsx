@@ -1,58 +1,66 @@
 import React from 'react'
-import Nouislider from 'nouislider-react'
-import { firstToUpperCase } from '../utils/utils'
-import 'nouislider/dist/nouislider.css'
+import ReactSlider from 'react-slider'
 import '../styles/components/__range.scss'
+import { firstToUpperCase } from '../utils/utils'
+import RangeOptions from '../types/Filter'
 
 interface RangeProps {
 	type: 'amount' | 'year'
-}
-
-interface IProps {
-	value: number[]
+	onFilter(options: RangeOptions): void
 }
 
 interface RangeState {
-	value: string
+	min: number
+	max: number
 }
 
 class Range extends React.Component<RangeProps, RangeState> {
 	constructor(props: RangeProps) {
 		super(props)
 		this.state = {
-			value: '',
+			min: 0,
+			max: 0,
 		}
 	}
 
-	onSlide = ({ value }: IProps) => {
-		this.setState({
-			value: value[0].toFixed(2),
+	// componentDidMount() {
+	// 	const { type } = this.props
+	// 	const max = type === 'year' ? 2020 : 12
+	// 	const min = type === 'year' ? 1940 : 1
+	// 	// this.setState({ min, max })
+	// }
+
+	valueChange(value: number[]) {
+		this.setState({ min: value[0], max: value[1] }, () => {
+			const { min, max } = this.state
+			console.log(min, max)
+
+			const { onFilter } = this.props
+			onFilter({ min, max })
 		})
 	}
 
 	render() {
-		const { value } = this.state
 		const { type } = this.props
+
+		const max = type === 'year' ? 2020 : 12
+		const min = type === 'year' ? 1940 : 1
+
 		const name = firstToUpperCase(type)
 		return (
 			<div className="range">
-				<div className="range__label">
-					{name}: {value}
-				</div>
+				<div className="search-panel-label">{name} :</div>
 				<div className="range__slider">
-					<Nouislider
-						connect
-						start={[500, 4000]}
-						behaviour="tap"
-						range={{
-							min: [0],
-							'10%': [500, 500],
-							'50%': [4000, 1000],
-							max: [10000],
-						}}
-						onSlide={() => this.onSlide}
+					<ReactSlider
+						min={min}
+						max={max}
+						thumbClassName="range-thumb"
+						trackClassName="range-track"
+						defaultValue={[min, max]}
+						renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+						pearling
+						onChange={value => this.valueChange(value)}
 					/>
-					{/* <Nouislider range={{ min: 0, max: 100 }} start={[20, 80]} connect /> */}
 				</div>
 			</div>
 		)

@@ -3,11 +3,21 @@ import Multiselect from '../components/MultiSelect'
 import Select from '../components/Select'
 import Range from '../components/Range'
 import '../styles/layout/__searchPanel.scss'
+import RangeOptions from '../types/Filter'
 
-class SearchPanel extends Component {
-	constructor(props: Readonly<{}>) {
+interface SearchPanelProps {
+	onFilter(options: RangeOptions, type: string): void
+}
+
+class SearchPanel extends Component<SearchPanelProps> {
+	constructor(props: SearchPanelProps) {
 		super(props)
 		this.state = {}
+	}
+
+	handleFilter(prop: RangeOptions, type: string) {
+		const { onFilter } = this.props
+		onFilter(prop, type)
 	}
 
 	render() {
@@ -21,7 +31,7 @@ class SearchPanel extends Component {
 				</div>
 
 				<div className="filtering">
-					<Range type="amount" />
+					<Range type="year" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'year')} />
 					{/* <div className="filter">
 						<div className="filter__label">
 							Amount: <span id="filter-amount-range" />

@@ -1,62 +1,34 @@
 .range {
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 
-	&__label {
-		margin-bottom: 10px;
+	&__slider {
+		height: 20px;
+		margin-top: 20px;
 	}
 }
 
-.noUi-target {
+.range-track {
 	height: 10px;
-}
-
-.noUi-base {
 	background: var(--bg-black);
 	border: none;
 	box-shadow: var(--shadow-grey);
 }
 
-.noUi-tooltip {
-	font-size: 14px;
-	border: none;
-	box-shadow: var(--shadow-grey);
-	background: var(--white);
+.range-track-1 {
+	background: var(--accent);
 }
 
-.noUi-tooltip {
-	display: none;
-}
-.noUi-active .noUi-tooltip {
-	display: block;
-}
-
-.noUi-horizontal .noUi-handle {
-	width: 20px;
-	height: 20px;
+.range-thumb {
+	top: -7px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 60px;
+	height: 30px;
 	border: none;
-	border-radius: 100%;
+	border-radius: 4px;
+	color: var(--bg-black);
 	background: var(--white);
 	cursor: pointer;
 	box-shadow: var(--shadow-grey);
-}
-
-.noUi-horizontal .noUi-handle-upper {
-	right: -7px;
-}
-
-.noUi-handle:before,
-.noUi-handle:after {
-	display: none;
-}
-
-.noUi-marker-horizontal.noUi-marker-large {
-	height: 10px;
-}
-
-.noUi-value {
-	font-size: 15px;
-}
-
-.noUi-connect {
-	background: var(--accent);
 }
