@@ -1,8 +1,6 @@
-interface IObjectKeys {
-	[key: string]: string | number | boolean
-}
+import ObjectKeys from './utils'
 
-interface Item extends IObjectKeys {
+interface Item extends ObjectKeys {
 	id: string
 	name: string
 	amount: number

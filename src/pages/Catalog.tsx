@@ -3,17 +3,29 @@ import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import '../styles/pages/__catalog.scss'
-import RangeOptions from '../types/Filter'
+import { Filters, RangeOptions } from '../types/Filter'
+import { filterArray } from '../utils/utils'
 
 interface CatalogState {
 	items: Item[]
 	original: Item[]
+	filters: Filters
 }
 
 class Catalog extends Component<{}, CatalogState> {
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
+			filters: {
+				year: {
+					min: 1940,
+					max: 2020,
+				},
+				amount: {
+					min: 1,
+					max: 12,
+				},
+			},
 			items: [] as Item[],
 			original: [] as Item[],
 		}
@@ -26,8 +38,17 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	handleFilter(options: RangeOptions, type: string) {
+		const { filters } = this.state
+		filters[type] = options
+		this.setState({ filters }, () => {
+			this.filter()
+		})
+	}
+
+	filter() {
+		const { filters } = this.state
 		const { original } = this.state
-		const filtered = original.filter(item => item[type] >= options.min && item[type] <= options.max)
+		const filtered = filterArray(original, filters)
 		this.setState({ items: filtered })
 	}
 

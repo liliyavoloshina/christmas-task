@@ -3,7 +3,7 @@ import Multiselect from '../components/MultiSelect'
 import Select from '../components/Select'
 import Range from '../components/Range'
 import '../styles/layout/__searchPanel.scss'
-import RangeOptions from '../types/Filter'
+import { RangeOptions } from '../types/Filter'
 
 interface SearchPanelProps {
 	onFilter(options: RangeOptions, type: string): void
@@ -32,6 +32,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 
 				<div className="filtering">
 					<Range type="year" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'year')} />
+					<Range type="amount" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'amount')} />
 					{/* <div className="filter">
 						<div className="filter__label">
 							Amount: <span id="filter-amount-range" />

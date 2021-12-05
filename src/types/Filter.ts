@@ -1,6 +1,13 @@
-interface RangeOptions {
+export interface RangeOptions {
 	min: number
 	max: number
 }
 
-export default RangeOptions
+interface ObjectKeys {
+	[key: string]: RangeOptions
+}
+
+export interface Filters extends ObjectKeys {
+	year: RangeOptions
+	amount: RangeOptions
+}

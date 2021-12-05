@@ -2,7 +2,7 @@ import React from 'react'
 import ReactSlider from 'react-slider'
 import '../styles/components/__range.scss'
 import { firstToUpperCase } from '../utils/utils'
-import RangeOptions from '../types/Filter'
+import { RangeOptions } from '../types/Filter'
 
 interface RangeProps {
 	type: 'amount' | 'year'
@@ -22,13 +22,6 @@ class Range extends React.Component<RangeProps, RangeState> {
 			max: 0,
 		}
 	}
-
-	// componentDidMount() {
-	// 	const { type } = this.props
-	// 	const max = type === 'year' ? 2020 : 12
-	// 	const min = type === 'year' ? 1940 : 1
-	// 	// this.setState({ min, max })
-	// }
 
 	valueChange(value: number[]) {
 		this.setState({ min: value[0], max: value[1] }, () => {
