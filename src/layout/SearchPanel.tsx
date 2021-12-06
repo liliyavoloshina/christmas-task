@@ -3,11 +3,11 @@ import Multiselect from '../components/MultiSelect'
 import Select from '../components/Select'
 import Range from '../components/Range'
 import '../styles/layout/__searchPanel.scss'
-import { RangeOptions, Filters } from '../types/Filter'
+import { RangeOptions, Filters, AllOptions, Colors, Sizes, Shapes } from '../types/Filter'
 
 interface SearchPanelProps {
 	filters: Filters
-	onFilter(options: RangeOptions, type: string): void
+	onFilter(options: AllOptions, type: string): void
 }
 
 class SearchPanel extends Component<SearchPanelProps> {
@@ -16,22 +16,24 @@ class SearchPanel extends Component<SearchPanelProps> {
 		this.state = {}
 	}
 
-	handleFilter(prop: RangeOptions, type: string) {
+	handleFilter(prop: AllOptions, type: string) {
 		const { onFilter } = this.props
+
 		onFilter(prop, type)
 	}
 
 	render() {
 		const { filters } = this.props
-		const { year, amount } = filters
+		const { year, amount, shape, color, size } = filters
 
 		return (
 			<div className="search-panel">
 				<Select />
 				<div className="selecting">
-					<Multiselect type="shape" />
-					<Multiselect type="color" />
-					<Multiselect type="size" />
+					{/* how to type props more explicitly? */}
+					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter(prop, 'shape')} initialFilter={shape} />
+					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter(prop, 'color')} initialFilter={color} />
+					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter(prop, 'size')} initialFilter={size} />
 				</div>
 
 				<div className="filtering">

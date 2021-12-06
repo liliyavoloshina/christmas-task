@@ -4,50 +4,43 @@ import '../styles/components/__range.scss'
 import { firstToUpperCase } from '../utils/utils'
 import { RangeOptions } from '../types/Filter'
 
-interface RangeProps {
-	type: 'amount' | 'year'
-	initialFilter: RangeState
-	onFilter(options: RangeOptions): void
-}
-
-interface RangeState {
+interface RangeValues {
 	min: number
 	max: number
 }
 
-class Range extends React.Component<RangeProps, RangeState> {
+interface RangeProps {
+	type: 'amount' | 'year'
+	initialFilter: RangeValues
+	onFilter(options: RangeOptions): void
+}
+
+class Range extends React.Component<RangeProps, Readonly<{}>> {
 	constructor(props: RangeProps) {
 		super(props)
-		this.state = {
-			min: 0,
-			max: 0,
-		}
+		this.state = {}
 	}
 
 	valueChange(value: number[]) {
-		this.setState({ min: value[0], max: value[1] }, () => {
-			const { min, max } = this.state
-
-			const { onFilter } = this.props
-			onFilter({ min, max })
-		})
+		const { onFilter } = this.props
+		onFilter({ min: value[0], max: value[1] })
 	}
 
 	render() {
 		const { initialFilter, type } = this.props
-
-		const max = type === 'year' ? 2020 : 12
-		const min = type === 'year' ? 1940 : 1
-
+		const rangeMax = type === 'year' ? 2020 : 12
+		const rangeMin = type === 'year' ? 1940 : 1
 		const name = firstToUpperCase(type)
+
 		return (
 			<div className="range">
-				<div className="search-panel-label">{name} :</div>
+				<div className="search-panel-label">
+					{name} : {initialFilter.min} - {initialFilter.max}
+				</div>
 				<div className="range__slider">
 					<ReactSlider
-						key="aaa"
-						min={min}
-						max={max}
+						min={rangeMin}
+						max={rangeMax}
 						thumbClassName="range-thumb"
 						trackClassName="range-track"
 						defaultValue={[initialFilter.min, initialFilter.max]}
