@@ -1,6 +1,8 @@
 import Item from '../types/Item'
 import { Filters } from '../types/Filter'
 
+type StorageKeys = 'filters' | 'sort'
+
 const firstToUpperCase = (string: string) => {
 	const first = string.charAt(0).toUpperCase()
 	return first + string.slice(1)
@@ -17,4 +19,19 @@ function filterArray(array: Item[], filters: Filters) {
 	return array.filter(item => item.year >= filters.year.min && item.year <= filters.year.max && item.amount >= filters.amount.min && item.amount <= filters.amount.max)
 }
 
-export { firstToUpperCase, searchOptions, filterArray }
+function setToStorage<T>(key: StorageKeys, value: T) {
+	const stringified = JSON.stringify(value)
+	window.localStorage.setItem(key, stringified)
+}
+
+function getFromStorage(key: StorageKeys) {
+	const stored = window.localStorage.getItem(key)
+
+	if (stored) {
+		return JSON.parse(stored)
+	}
+
+	return ''
+}
+
+export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage }

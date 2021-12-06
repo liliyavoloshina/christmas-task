@@ -4,9 +4,11 @@ import Card from '../components/Card'
 import Item from '../types/Item'
 import '../styles/pages/__catalog.scss'
 import { Filters, RangeOptions } from '../types/Filter'
-import { filterArray } from '../utils/utils'
+// import { filterArray, setToStorage } from '../utils/utils'
+import { filterArray, getFromStorage, setToStorage } from '../utils/utils'
 
 interface CatalogState {
+	isLoaded: boolean
 	items: Item[]
 	original: Item[]
 	filters: Filters
@@ -16,6 +18,7 @@ class Catalog extends Component<{}, CatalogState> {
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
+			isLoaded: false,
 			filters: {
 				year: {
 					min: 1940,
@@ -26,6 +29,7 @@ class Catalog extends Component<{}, CatalogState> {
 					max: 12,
 				},
 			},
+			// eslint-disable-next-line react/no-unused-state
 			items: [] as Item[],
 			original: [] as Item[],
 		}
@@ -34,7 +38,14 @@ class Catalog extends Component<{}, CatalogState> {
 	async componentDidMount() {
 		const req = await fetch('data.json')
 		const res = await req.json()
-		this.setState({ items: res, original: res })
+		const storedFilters = await getFromStorage('filters')
+		this.setState({ isLoaded: true, items: res, original: res, filters: storedFilters })
+
+		window.addEventListener('beforeunload', () => {
+			const { filters } = this.state
+
+			setToStorage<Filters>('filters', filters)
+		})
 	}
 
 	handleFilter(options: RangeOptions, type: string) {
@@ -53,7 +64,11 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	render() {
-		const { items } = this.state
+		const { isLoaded, items, filters } = this.state
+
+		if (!isLoaded) {
+			return <div>Loading....</div>
+		}
 		return (
 			<div className="catalog">
 				<div className="search-bar">
@@ -63,7 +78,7 @@ class Catalog extends Component<{}, CatalogState> {
 					</button>
 				</div>
 
-				<SearchPanel onFilter={(options: RangeOptions, type: string) => this.handleFilter(options, type)} />
+				<SearchPanel onFilter={(options: RangeOptions, type: string) => this.handleFilter(options, type)} filters={filters} />
 
 				<div className="items">
 					<div className="items__title">Christmas Toys</div>

@@ -6,7 +6,7 @@ interface Item extends ObjectKeys {
 	amount: number
 	year: number
 	shape: 'ball' | 'figure' | 'bell' | 'cone' | 'snowflake'
-	color: 'green' | 'white' | 'red' | 'blue'
+	color: 'green' | 'white' | 'red' | 'blue' | 'yellow'
 	size: 'large' | 'medium' | 'small'
 	isFavorite: boolean
 }

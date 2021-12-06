@@ -3,9 +3,10 @@ import Multiselect from '../components/MultiSelect'
 import Select from '../components/Select'
 import Range from '../components/Range'
 import '../styles/layout/__searchPanel.scss'
-import { RangeOptions } from '../types/Filter'
+import { RangeOptions, Filters } from '../types/Filter'
 
 interface SearchPanelProps {
+	filters: Filters
 	onFilter(options: RangeOptions, type: string): void
 }
 
@@ -21,6 +22,9 @@ class SearchPanel extends Component<SearchPanelProps> {
 	}
 
 	render() {
+		const { filters } = this.props
+		const { year, amount } = filters
+
 		return (
 			<div className="search-panel">
 				<Select />
@@ -31,24 +35,8 @@ class SearchPanel extends Component<SearchPanelProps> {
 				</div>
 
 				<div className="filtering">
-					<Range type="year" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'year')} />
-					<Range type="amount" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'amount')} />
-					{/* <div className="filter">
-						<div className="filter__label">
-							Amount: <span id="filter-amount-range" />
-						</div>
-						<div className="filter__slider">
-							<div id="filter-amount" />
-						</div>
-					</div>
-					<div className="filter">
-						<div className="filter__label">
-							Year: <span id="filter-year-range" />
-						</div>
-						<div className="filter__slider">
-							<div id="filter-year" />
-						</div>
-					</div> */}
+					<Range type="year" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'year')} initialFilter={year} />
+					<Range type="amount" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'amount')} initialFilter={amount} />
 				</div>
 
 				<div className="only-favorite">

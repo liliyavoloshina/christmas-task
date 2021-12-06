@@ -6,6 +6,7 @@ import { RangeOptions } from '../types/Filter'
 
 interface RangeProps {
 	type: 'amount' | 'year'
+	initialFilter: RangeState
 	onFilter(options: RangeOptions): void
 }
 
@@ -26,7 +27,6 @@ class Range extends React.Component<RangeProps, RangeState> {
 	valueChange(value: number[]) {
 		this.setState({ min: value[0], max: value[1] }, () => {
 			const { min, max } = this.state
-			console.log(min, max)
 
 			const { onFilter } = this.props
 			onFilter({ min, max })
@@ -34,7 +34,7 @@ class Range extends React.Component<RangeProps, RangeState> {
 	}
 
 	render() {
-		const { type } = this.props
+		const { initialFilter, type } = this.props
 
 		const max = type === 'year' ? 2020 : 12
 		const min = type === 'year' ? 1940 : 1
@@ -45,11 +45,12 @@ class Range extends React.Component<RangeProps, RangeState> {
 				<div className="search-panel-label">{name} :</div>
 				<div className="range__slider">
 					<ReactSlider
+						key="aaa"
 						min={min}
 						max={max}
 						thumbClassName="range-thumb"
 						trackClassName="range-track"
-						defaultValue={[min, max]}
+						defaultValue={[initialFilter.min, initialFilter.max]}
 						renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
 						pearling
 						onChange={value => this.valueChange(value)}
