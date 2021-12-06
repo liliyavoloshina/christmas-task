@@ -41,6 +41,8 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 
 	componentDidMount() {
 		const { initialFilter } = this.props
+		console.log(initialFilter)
+
 		this.setState({ selected: initialFilter })
 		this.getOptions()
 	}

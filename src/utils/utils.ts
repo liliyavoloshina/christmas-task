@@ -32,6 +32,20 @@ function setToStorage<T>(key: StorageKeys, value: T) {
 	window.localStorage.setItem(key, stringified)
 }
 
+const defaultFilters = {
+	year: {
+		min: 1940,
+		max: 2020,
+	},
+	amount: {
+		min: 1,
+		max: 12,
+	},
+	shape: ['ball', 'figure', 'bell', 'cone', 'snowflake'],
+	color: ['green', 'white', 'red', 'blue', 'yellow'],
+	size: ['large', 'medium', 'small'],
+}
+
 function getFromStorage(key: StorageKeys) {
 	const stored = window.localStorage.getItem(key)
 
@@ -39,7 +53,7 @@ function getFromStorage(key: StorageKeys) {
 		return JSON.parse(stored)
 	}
 
-	return ''
+	return defaultFilters
 }
 
 export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage }

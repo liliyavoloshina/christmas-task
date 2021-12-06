@@ -27,9 +27,9 @@ class Catalog extends Component<{}, CatalogState> {
 					min: 1,
 					max: 12,
 				},
-				shape: [],
-				color: [],
-				size: [],
+				shape: ['ball', 'figure', 'bell', 'cone', 'snowflake'],
+				color: ['green', 'white', 'red', 'blue', 'yellow'],
+				size: ['large', 'medium', 'small'],
 			},
 			items: [],
 			original: [],
@@ -71,6 +71,7 @@ class Catalog extends Component<{}, CatalogState> {
 
 	render() {
 		const { isLoaded, items, filters } = this.state
+		// console.log(filters, 'filters catalog')
 
 		if (!isLoaded) {
 			return <div>Loading....</div>

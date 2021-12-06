@@ -24,13 +24,16 @@ class SearchPanel extends Component<SearchPanelProps> {
 
 	render() {
 		const { filters } = this.props
+
 		const { year, amount, shape, color, size } = filters
+
+		// console.log(year, 'year searchpanel')
+		// console.log(amount, 'amount searchpanel')
 
 		return (
 			<div className="search-panel">
 				<Select />
 				<div className="selecting">
-					{/* how to type props more explicitly? */}
 					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter(prop, 'shape')} initialFilter={shape} />
 					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter(prop, 'color')} initialFilter={color} />
 					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter(prop, 'size')} initialFilter={size} />
