@@ -16,7 +16,15 @@ function searchOptions(value: string, options: string[] = [], exclude: string[] 
 }
 
 function filterArray(array: Item[], filters: Filters) {
-	return array.filter(item => item.year >= filters.year.min && item.year <= filters.year.max && item.amount >= filters.amount.min && item.amount <= filters.amount.max)
+	const filteredByRange = array.filter(
+		item => item.year >= filters.year.min && item.year <= filters.year.max && item.amount >= filters.amount.min && item.amount <= filters.amount.max
+	)
+
+	const filteredByColor = filteredByRange.filter(item => filters.color.includes(item.color))
+	const filteredBySize = filteredByColor.filter(item => filters.size.includes(item.size))
+	const filteredByShape = filteredBySize.filter(item => filters.shape.includes(item.shape))
+
+	return filteredByShape
 }
 
 function setToStorage<T>(key: StorageKeys, value: T) {
