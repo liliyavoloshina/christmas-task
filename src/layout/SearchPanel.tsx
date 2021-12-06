@@ -2,12 +2,13 @@ import { Component } from 'react'
 import Multiselect from '../components/MultiSelect'
 import Select from '../components/Select'
 import Range from '../components/Range'
-import '../styles/layout/__searchPanel.scss'
 import { RangeOptions, Filters, AllOptions, Colors, Sizes, Shapes } from '../types/Filter'
+import '../styles/layout/__searchPanel.scss'
+import '../styles/components/__checkbox.scss'
 
 interface SearchPanelProps {
 	filters: Filters
-	onFilter(options: AllOptions, type: string): void
+	onFilter(type: string, options: AllOptions): void
 }
 
 class SearchPanel extends Component<SearchPanelProps> {
@@ -16,36 +17,40 @@ class SearchPanel extends Component<SearchPanelProps> {
 		this.state = {}
 	}
 
-	handleFilter(prop: AllOptions, type: string) {
+	handleFilter(type: string, prop: AllOptions) {
 		const { onFilter } = this.props
 
-		onFilter(prop, type)
+		onFilter(type, prop)
 	}
 
 	render() {
 		const { filters } = this.props
-
-		const { year, amount, shape, color, size } = filters
-
-		// console.log(year, 'year searchpanel')
-		// console.log(amount, 'amount searchpanel')
+		const { year, amount, shape, color, size, areOnlyFavorite } = filters
 
 		return (
 			<div className="search-panel">
 				<Select />
 				<div className="selecting">
-					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter(prop, 'shape')} initialFilter={shape} />
-					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter(prop, 'color')} initialFilter={color} />
-					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter(prop, 'size')} initialFilter={size} />
+					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter('shape', prop)} initialFilter={shape} />
+					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter('color', prop)} initialFilter={color} />
+					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter('size', prop)} initialFilter={size} />
 				</div>
 
 				<div className="filtering">
-					<Range type="year" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'year')} initialFilter={year} />
-					<Range type="amount" onFilter={(prop: RangeOptions) => this.handleFilter(prop, 'amount')} initialFilter={amount} />
+					<Range type="year" onFilter={(prop: RangeOptions) => this.handleFilter('year', prop)} initialFilter={year} />
+					<Range type="amount" onFilter={(prop: RangeOptions) => this.handleFilter('amount', prop)} initialFilter={amount} />
 				</div>
 
 				<div className="only-favorite">
-					<input className="checkbox" type="checkbox" id="only-favorite" name="only-favorite" value="Only favorite" />
+					<input
+						onChange={() => this.handleFilter('areOnlyFavorite', !areOnlyFavorite)}
+						className="checkbox"
+						type="checkbox"
+						id="only-favorite"
+						name="only-favorite"
+						value="Only favorite"
+						checked={areOnlyFavorite}
+					/>
 					<label htmlFor="only-favorite">Only favorite</label>
 				</div>
 

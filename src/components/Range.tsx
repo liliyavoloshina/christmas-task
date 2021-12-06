@@ -32,8 +32,6 @@ class Range extends React.Component<RangeProps, Readonly<{}>> {
 		const rangeMin = type === 'year' ? 1940 : 1
 		const name = firstToUpperCase(type)
 
-		console.log(initialFilter, 'initialFilter range')
-
 		return (
 			<div className="range">
 				<div className="search-panel-label">

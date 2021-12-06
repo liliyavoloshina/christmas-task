@@ -3,7 +3,6 @@ export interface RangeOptions {
 	max: number
 }
 
-// how to type MultiselectProps more explicitly ???
 export type Shapes = 'ball' | 'figure' | 'bell' | 'cone' | 'snowflake'
 export type Colors = 'green' | 'white' | 'red' | 'blue' | 'yellow'
 export type Sizes = 'large' | 'medium' | 'small'
@@ -26,7 +25,7 @@ export interface SizeOptions {
 
 export type MultiselectOptions = Shapes[] | Colors[] | Sizes[]
 
-export type AllOptions = RangeOptions | MultiselectOptions
+export type AllOptions = RangeOptions | MultiselectOptions | boolean
 
 export interface Filters extends ObjectKeys {
 	year: RangeOptions
@@ -34,4 +33,5 @@ export interface Filters extends ObjectKeys {
 	shape: Shapes[]
 	color: Colors[]
 	size: Sizes[]
+	areOnlyFavorite: boolean
 }

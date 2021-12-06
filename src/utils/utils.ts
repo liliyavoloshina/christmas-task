@@ -23,8 +23,9 @@ function filterArray(array: Item[], filters: Filters) {
 	const filteredByColor = filteredByRange.filter(item => filters.color.includes(item.color))
 	const filteredBySize = filteredByColor.filter(item => filters.size.includes(item.size))
 	const filteredByShape = filteredBySize.filter(item => filters.shape.includes(item.shape))
+	const filteredByFavorite = filteredByShape.filter(item => item.isFavorite === filters.areOnlyFavorite)
 
-	return filteredByShape
+	return filteredByFavorite
 }
 
 function setToStorage<T>(key: StorageKeys, value: T) {
@@ -44,6 +45,7 @@ const defaultFilters = {
 	shape: ['ball', 'figure', 'bell', 'cone', 'snowflake'],
 	color: ['green', 'white', 'red', 'blue', 'yellow'],
 	size: ['large', 'medium', 'small'],
+	areOnlyFavorite: false,
 }
 
 function getFromStorage(key: StorageKeys) {

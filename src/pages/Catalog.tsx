@@ -30,6 +30,7 @@ class Catalog extends Component<{}, CatalogState> {
 				shape: ['ball', 'figure', 'bell', 'cone', 'snowflake'],
 				color: ['green', 'white', 'red', 'blue', 'yellow'],
 				size: ['large', 'medium', 'small'],
+				areOnlyFavorite: false,
 			},
 			items: [],
 			original: [],
@@ -52,7 +53,7 @@ class Catalog extends Component<{}, CatalogState> {
 		})
 	}
 
-	handleFilter(options: AllOptions, type: string) {
+	handleFilter(type: string, options: AllOptions) {
 		const { filters } = this.state
 
 		filters[type] = options
@@ -71,7 +72,6 @@ class Catalog extends Component<{}, CatalogState> {
 
 	render() {
 		const { isLoaded, items, filters } = this.state
-		// console.log(filters, 'filters catalog')
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -86,7 +86,7 @@ class Catalog extends Component<{}, CatalogState> {
 					</button>
 				</div>
 
-				<SearchPanel onFilter={(options, type: string) => this.handleFilter(options, type)} filters={filters} />
+				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} />
 
 				<div className="items">
 					<div className="items__list">
