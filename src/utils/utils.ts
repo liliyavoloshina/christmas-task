@@ -8,14 +8,13 @@ const firstToUpperCase = (string: string) => {
 	return first + string.slice(1)
 }
 
-function searchOptions(value: string, options: string[] = [], exclude: string[] = []) {
-	return options.filter((option: string) => {
+const searchOptions = (value: string, options: string[] = [], exclude: string[] = []) =>
+	options.filter((option: string) => {
 		const matches = option.toLowerCase().indexOf(value.toLowerCase()) === 0
 		return matches && exclude.indexOf(option) < 0
 	})
-}
 
-function filterArray(array: Item[], filters: Filters) {
+const filterArray = (array: Item[], filters: Filters) => {
 	const filteredByRange = array.filter(
 		item => item.year >= filters.year.min && item.year <= filters.year.max && item.amount >= filters.amount.min && item.amount <= filters.amount.max
 	)
@@ -27,7 +26,7 @@ function filterArray(array: Item[], filters: Filters) {
 	return filteredByFavorite
 }
 
-function sortArray(array: Item[], key: SortOptionsKeys) {
+const sortArray = (array: Item[], key: SortOptionsKeys) => {
 	if (key === 'az') {
 		return array.sort((a, b) => a.name.localeCompare(b.name))
 	}
@@ -44,7 +43,7 @@ function sortArray(array: Item[], key: SortOptionsKeys) {
 	return array
 }
 
-function setToStorage<T>(key: StorageKeys, value: T) {
+const setToStorage = <T>(key: StorageKeys, value: T) => {
 	const stringified = JSON.stringify(value)
 	window.localStorage.setItem(key, stringified)
 }
@@ -64,7 +63,7 @@ const defaultFilters = {
 	areOnlyFavorite: false,
 }
 
-function getFromStorage(key: StorageKeys) {
+const getFromStorage = (key: StorageKeys) => {
 	const stored = window.localStorage.getItem(key)
 
 	if (stored) {

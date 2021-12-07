@@ -12,6 +12,7 @@ interface CatalogState {
 	original: Item[]
 	filters: Filters
 	sort: SortOptionsKeys
+	search: string
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -34,6 +35,7 @@ class Catalog extends Component<{}, CatalogState> {
 				areOnlyFavorite: false,
 			},
 			sort: 'az',
+			search: '',
 			items: [],
 			original: [],
 		}
@@ -46,7 +48,6 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedSort = getFromStorage('sort')
 
 		this.setState({ isLoaded: true, original: res, filters: storedFilters, sort: storedSort })
-
 		this.filter()
 
 		window.addEventListener('beforeunload', () => {
@@ -86,8 +87,13 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ items: sorted! })
 	}
 
+	search(e: React.SyntheticEvent) {
+		const { value } = e.target as HTMLInputElement
+		this.setState({ search: value })
+	}
+
 	render() {
-		const { isLoaded, items, filters, sort } = this.state
+		const { isLoaded, items, filters, sort, search } = this.state
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -96,19 +102,26 @@ class Catalog extends Component<{}, CatalogState> {
 		return (
 			<div className="catalog">
 				<div className="search-bar">
-					<input type="text" placeholder="Search..." className="search-bar__input" />
-					<button type="button" className="search-bar__expand-btn">
-						<span className="material-icons">search</span>
-					</button>
+					<input onInput={e => this.search(e)} type="search" placeholder="Search..." className="search-bar__input" ref={input => input && input.focus()} autoComplete="off" />
 				</div>
 
 				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} sort={sort} onSort={(key: SortOptionsKeys) => this.handleSort(key)} />
 
 				<div className="items">
 					<div className="items__list">
-						{items.map(item => (
-							<Card key={item.id} {...item} />
-						))}
+						{items
+							.filter(item => {
+								if (search === '') {
+									return item
+								}
+								if (item.name.toLocaleLowerCase().includes(search.toLowerCase())) {
+									return item
+								}
+								return false
+							})
+							.map(item => (
+								<Card key={item.id} {...item} />
+							))}
 					</div>
 				</div>
 			</div>
