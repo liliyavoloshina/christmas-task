@@ -43,6 +43,14 @@ const sortArray = (array: Item[], key: SortOptionsKeys) => {
 	return array
 }
 
+const searchArray = (array: Item[], key: string) =>
+	array.filter(item => {
+		if (key === '') {
+			return item
+		}
+		return item.name.toLocaleLowerCase().includes(key.toLowerCase())
+	})
+
 const setToStorage = <T>(key: StorageKeys, value: T) => {
 	const stringified = JSON.stringify(value)
 	window.localStorage.setItem(key, stringified)
@@ -73,4 +81,4 @@ const getFromStorage = (key: StorageKeys) => {
 	return defaultFilters
 }
 
-export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray }
+export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray, searchArray }

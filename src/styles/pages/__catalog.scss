@@ -64,3 +64,10 @@
 		}
 	}
 }
+
+.no-matches-message {
+	background-color: red;
+	&.hidden {
+		display: none;
+	}
+}

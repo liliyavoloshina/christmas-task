@@ -4,7 +4,7 @@ import Card from '../components/Card'
 import Item from '../types/Item'
 import '../styles/pages/__catalog.scss'
 import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
-import { filterArray, getFromStorage, setToStorage, sortArray } from '../utils/utils'
+import { filterArray, getFromStorage, setToStorage, sortArray, searchArray } from '../utils/utils'
 
 interface CatalogState {
 	isLoaded: boolean
@@ -94,6 +94,7 @@ class Catalog extends Component<{}, CatalogState> {
 
 	render() {
 		const { isLoaded, items, filters, sort, search } = this.state
+		const hasMatches = searchArray(items, search).length > 0
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -108,20 +109,12 @@ class Catalog extends Component<{}, CatalogState> {
 				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} sort={sort} onSort={(key: SortOptionsKeys) => this.handleSort(key)} />
 
 				<div className="items">
+					<div className={`no-matches-message ${hasMatches ? 'hidden' : null}`}>No mathes!!!</div>
+
 					<div className="items__list">
-						{items
-							.filter(item => {
-								if (search === '') {
-									return item
-								}
-								if (item.name.toLocaleLowerCase().includes(search.toLowerCase())) {
-									return item
-								}
-								return false
-							})
-							.map(item => (
-								<Card key={item.id} {...item} />
-							))}
+						{searchArray(items, search).map(item => (
+							<Card key={item.id} {...item} />
+						))}
 					</div>
 				</div>
 			</div>
