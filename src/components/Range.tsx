@@ -32,6 +32,8 @@ class Range extends React.Component<RangeProps, Readonly<{}>> {
 		const rangeMin = type === 'year' ? 1940 : 1
 		const name = firstToUpperCase(type)
 
+		console.log(initialFilter, 'initialFilter')
+
 		return (
 			<div className="range">
 				<h3 className="search-panel-label">{name}</h3>
@@ -41,10 +43,10 @@ class Range extends React.Component<RangeProps, Readonly<{}>> {
 						max={rangeMax}
 						thumbClassName="range-thumb"
 						trackClassName="range-track"
-						defaultValue={[initialFilter.min, initialFilter.max]}
+						value={[initialFilter.min, initialFilter.max]}
 						renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
 						pearling
-						onChange={value => this.valueChange(value)}
+						onAfterChange={value => this.valueChange(value)}
 					/>
 				</div>
 			</div>
