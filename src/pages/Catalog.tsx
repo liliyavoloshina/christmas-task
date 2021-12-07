@@ -96,12 +96,11 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	clear() {
-		this.setState({ filters: defaultFilters })
+		const { original } = this.state
+		this.setState({ filters: defaultFilters, items: original })
 	}
 
 	render() {
-		// console.log('render catalog')
-
 		const { isLoaded, items, filters, sort, search } = this.state
 		const hasMatches = searchArray(items, search).length > 0
 
@@ -120,7 +119,6 @@ class Catalog extends Component<{}, CatalogState> {
 						ref={this.searchInput as React.RefObject<HTMLInputElement>}
 						autoComplete="off"
 					/>
-					{/* <input onInput={e => this.search(e)} type="search" placeholder="Search..." className="search-bar__input" ref={input => input && input.focus()} autoComplete="off" /> */}
 				</div>
 
 				<SearchPanel

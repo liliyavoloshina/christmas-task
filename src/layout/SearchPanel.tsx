@@ -2,7 +2,7 @@ import { Component } from 'react'
 import Multiselect from '../components/Multiselect'
 import Select from '../components/Select'
 import Range from '../components/Range'
-import { RangeOptions, Filters, AllOptions, Colors, Sizes, Shapes, SortOptionsKeys } from '../types/Filter'
+import { RangeOptions, Filters, AllOptions, Colors, Sizes, Shapes, SortOptionsKeys, MultiselectOptions } from '../types/Filter'
 import '../styles/layout/__searchPanel.scss'
 import '../styles/components/__checkbox.scss'
 
@@ -31,7 +31,9 @@ class SearchPanel extends Component<SearchPanelProps> {
 	}
 
 	render() {
-		// console.log('render searchpanel')
+		const shapeOptions = ['ball', 'figure', 'bell', 'cone', 'snowflake'] as MultiselectOptions
+		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
+		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
 
 		const { filters, sort, onClear } = this.props
 		const { year, amount, shape, color, size, areOnlyFavorite } = filters
@@ -40,9 +42,9 @@ class SearchPanel extends Component<SearchPanelProps> {
 			<div className="search-panel">
 				<div className="selecting">
 					<Select onSelect={(key: string) => this.handleSort(key)} initialSort={sort} />
-					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter('shape', prop)} initialFilter={shape} />
-					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter('color', prop)} initialFilter={color} />
-					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter('size', prop)} initialFilter={size} />
+					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter('shape', prop)} initialFilter={shape} options={shapeOptions} />
+					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter('color', prop)} initialFilter={color} options={colorOptions} />
+					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter('size', prop)} initialFilter={size} options={sizeOptions} />
 				</div>
 
 				<div className="filtering">
