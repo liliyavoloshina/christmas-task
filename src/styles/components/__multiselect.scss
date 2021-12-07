@@ -34,14 +34,12 @@
 	&__input {
 		flex: 1 1 100px;
 		display: block;
-		color: var(--white);
 		background-color: var(--bg-black);
 		border: none;
-		font-size: 1em;
-		text-align: left;
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
+		cursor: pointer;
 	}
 }
 

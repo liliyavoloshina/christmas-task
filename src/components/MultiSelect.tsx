@@ -12,7 +12,6 @@ interface MultiselectProps {
 
 interface MultiselectState {
 	isOpen: boolean
-	ignoreBlur: boolean
 }
 
 class Multiselect extends Component<MultiselectProps, MultiselectState> {
@@ -24,34 +23,24 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		super(props)
 		this.state = {
 			isOpen: false,
-			ignoreBlur: true,
 		}
 		this.inputEl = React.createRef()
 		this.selectedEl = React.createRef()
 	}
 
-	// eslint-disable-next-line react/no-unused-class-component-methods
-	onBlur() {
-		const { isOpen, ignoreBlur } = this.state
+	watchClick(e: MouseEvent) {
+		const { isOpen } = this.state
+		const { classList } = e.target as Element
 
-		if (ignoreBlur) {
-			this.setState({ ignoreBlur: false })
-			return
+		if (!classList.contains('multiselect-option') && isOpen && !classList.contains('multiselect__input')) {
+			this.setState({ isOpen: false })
 		}
-
-		if (isOpen) {
-			this.updateMenuState(false, false)
-		}
-	}
-
-	// eslint-disable-next-line react/no-unused-class-component-methods
-	onOptionMouseDown() {
-		this.setState({ ignoreBlur: true })
 	}
 
 	toggleOption(optionName: string, isSelected: boolean) {
 		const inputEl = this.inputEl.current as HTMLInputElement
 		inputEl.focus()
+
 		if (isSelected) {
 			this.removeOption(optionName)
 		} else {
@@ -71,13 +60,14 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		onFilter(updatedOptions)
 	}
 
-	updateMenuState(open: boolean, callFocus: boolean = true) {
-		this.setState({ isOpen: open })
+	openMenu() {
+		this.setState({ isOpen: true })
 
-		if (callFocus) {
-			const inputEl = this.inputEl.current as HTMLInputElement
-			inputEl.focus()
-		}
+		// why does it called so many times???
+		window.addEventListener('click', e => this.watchClick(e))
+
+		const inputEl = this.inputEl.current as HTMLInputElement
+		inputEl.focus()
 	}
 
 	render() {
@@ -102,19 +92,18 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 						))}
 					</ul>
 					<input
-						// onBlur={() => this.onBlur()}
-						onClick={() => this.updateMenuState(true)}
+						onClick={() => this.openMenu()}
 						autoComplete="off"
 						ref={this.inputEl as React.RefObject<HTMLInputElement>}
 						id={inputId}
 						className="multiselect__input"
 						type="text"
+						readOnly
 					/>
 				</div>
 				<ul className="multiselect__list" id={listId}>
 					{options.map((option, index) => {
 						const isSelected = initialFilter.includes(option)
-
 						return (
 							<li
 								key={option}
