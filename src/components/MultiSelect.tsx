@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { firstToUpperCase, filterOptions } from '../utils/utils'
+import { firstToUpperCase, searchOptions } from '../utils/utils'
 import '../styles/components/__multiselect.scss'
 
 interface MultiselectProps {
 	type: 'shape' | 'color' | 'size'
+	initialFilter: string[]
+	onFilter(options: string[]): void
 }
 
 interface MultiselectState {
@@ -12,6 +14,7 @@ interface MultiselectState {
 	activeIndex: number
 	ignoreBlur: boolean
 	filteredOptions: string[]
+	selected: string[]
 }
 
 class Multiselect extends Component<MultiselectProps, MultiselectState> {
@@ -29,6 +32,7 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 			activeIndex: 0,
 			ignoreBlur: true,
 			filteredOptions: [],
+			selected: [],
 		}
 		this.list = React.createRef()
 		this.inputEl = React.createRef()
@@ -36,6 +40,9 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 	}
 
 	componentDidMount() {
+		const { initialFilter } = this.props
+
+		this.setState({ selected: initialFilter })
 		this.getOptions()
 	}
 
@@ -84,8 +91,7 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 
 	setOptions() {
 		const { options } = this.state
-		const { type } = this.props
-
+		const { type, initialFilter } = this.props
 		const multiselectList = this.list.current as HTMLInputElement
 
 		options.forEach((option, index) => {
@@ -103,6 +109,13 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 
 			multiselectList.appendChild(optionEl)
 		})
+
+		if (initialFilter.length > 0) {
+			initialFilter.forEach(optionName => {
+				const idx = options.indexOf(optionName)
+				this.selectOption(idx)
+			})
+		}
 	}
 
 	getOptions() {
@@ -112,7 +125,7 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		if (type === 'shape') {
 			arr = ['ball', 'figure', 'bell', 'cone', 'snowflake']
 		} else if (type === 'color') {
-			arr = ['green', 'white', 'red', 'blue']
+			arr = ['green', 'white', 'red', 'blue', 'yellow']
 		} else {
 			arr = ['large', 'medium', 'small']
 		}
@@ -137,13 +150,15 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 	}
 
 	updateOption(index: number) {
+		const { options } = this.state
+		const selectedOptionName = options[index]
 		const multiselectList = this.list.current as HTMLInputElement
 		const optionEls = multiselectList.querySelectorAll('.multiselect-option')
 		const optionEl = optionEls[index]
 		const isSelected = optionEl.classList.contains('option-selected')
 
 		if (isSelected) {
-			this.removeOption(index)
+			this.removeOption(index, selectedOptionName)
 		} else {
 			this.selectOption(index)
 		}
@@ -154,53 +169,60 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 	}
 
 	selectOption(index: number) {
-		const { options } = this.state
+		const { options, selected } = this.state
 		const { type } = this.props
 		const multiselectList = this.list.current as HTMLInputElement
 		const selectedEl = this.selectedEl.current as HTMLUListElement
-		const selected = options[index]
-		this.setState({ activeIndex: index })
+		const selectedOptionName = options[index]
 
-		// update aria-selected
+		this.setState({ activeIndex: index, selected: [...selected, selectedOptionName] })
+
 		const updatedOptions = multiselectList.querySelectorAll('.multiselect-option')
+
 		updatedOptions[index].classList.add('option-selected')
 
-		// add remove option button
 		const buttonEl = document.createElement('button')
 		const listItem = document.createElement('li')
 		buttonEl.className = 'remove-option'
 		buttonEl.type = 'button'
 		buttonEl.id = `${type}-remove-${index}`
 		buttonEl.addEventListener('click', () => {
-			this.removeOption(index)
+			this.removeOption(index, selectedOptionName)
 		})
 
-		buttonEl.innerHTML = `${selected} `
+		buttonEl.innerHTML = `${selectedOptionName} `
 
 		listItem.appendChild(buttonEl)
 		selectedEl.appendChild(listItem)
+
+		this.valueChange()
 	}
 
-	removeOption(index: number) {
+	removeOption(index: number, selectedOptionName: string) {
+		const { type } = this.props
+		const { selected } = this.state
 		const multiselectList = this.list.current as HTMLInputElement
 		const selectedEl = this.selectedEl.current as HTMLUListElement
-		const { type } = this.props
 
-		// update active style
 		const options = multiselectList.querySelectorAll('.multiselect-option')
 		options[index].classList.remove('option-selected')
 
-		// remove button
+		const updatedSelected = selected.filter((option: string) => option !== selectedOptionName)
+
+		this.setState({ selected: updatedSelected })
+
 		const buttonEl = selectedEl.querySelector<HTMLElement>(`#${type}-remove-${index}`)
 		const toDelete = buttonEl!.parentElement as HTMLLIElement
 		selectedEl.removeChild(toDelete)
+
+		this.valueChange()
 	}
 
 	filterOptions(value: string) {
 		const multiselectList = this.list.current as HTMLInputElement
 		const optionsEls = multiselectList.querySelectorAll('.multiselect-option')
 		const { options } = this.state
-		const filtered = filterOptions(value, options)
+		const filtered = searchOptions(value, options)
 		this.setState({ filteredOptions: filtered }, () => {
 			optionsEls.forEach(optionEl => {
 				const optionValue = optionEl.innerHTML
@@ -223,17 +245,23 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		}
 	}
 
+	valueChange() {
+		const { selected } = this.state
+		const { onFilter } = this.props
+		onFilter(selected)
+	}
+
 	render() {
 		const { type } = this.props
+		const { isOpen } = this.state
 		const optionsId = `multiselect-${type}-selected`
 		const inputId = `multiselect-${type}`
 		const listId = `listbox-${type}`
 		const name = firstToUpperCase(type)
-		const { isOpen } = this.state
 
 		return (
 			<div className={`multiselect ${isOpen ? 'open' : ''}`}>
-				<h3 className="multiselect__label">{name}</h3>
+				<h3 className="search-panel-label">{name}</h3>
 				<div className="multiselect__box">
 					<ul className="selected-options" id={optionsId} ref={this.selectedEl as React.RefObject<HTMLUListElement>} />
 					<input

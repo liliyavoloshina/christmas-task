@@ -31,7 +31,7 @@
 	},
 	{
 		"id": "4",
-		"name": "Icicle red",
+		"name": "Red Icicle",
 		"amount": "2",
 		"year": "1980",
 		"shape": "figure",
@@ -271,7 +271,7 @@
 	},
 	{
 		"id": "28",
-		"name": "Бордовый шар with pattern",
+		"name": "Brown ball with pattern",
 		"amount": "10",
 		"year": "2010",
 		"shape": "ball",

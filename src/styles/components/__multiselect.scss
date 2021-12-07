@@ -1,7 +1,6 @@
 .multiselect {
 	position: relative;
 	display: block;
-	margin-bottom: 10px;
 
 	&__box {
 		display: flex;
@@ -44,12 +43,6 @@
 		-moz-appearance: none;
 		appearance: none;
 	}
-
-	&__label {
-		display: block;
-		font-size: 1rem;
-		margin-bottom: 5px;
-	}
 }
 
 .open .multiselect__input {
@@ -66,7 +59,7 @@
 	max-height: 300px;
 	border: 1px solid var(--grey);
 	border-radius: 0 0 4px 4px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	background-color: var(--bg-black);
 
 	&::-webkit-scrollbar {
