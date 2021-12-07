@@ -34,9 +34,7 @@ class Range extends React.Component<RangeProps, Readonly<{}>> {
 
 		return (
 			<div className="range">
-				<div className="search-panel-label">
-					{name} : {initialFilter.min} - {initialFilter.max}
-				</div>
+				<h3 className="search-panel-label">{name}</h3>
 				<div className="range__slider">
 					<ReactSlider
 						min={rangeMin}

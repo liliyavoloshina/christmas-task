@@ -3,14 +3,15 @@ import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import '../styles/pages/__catalog.scss'
-import { Filters, AllOptions } from '../types/Filter'
-import { filterArray, getFromStorage, setToStorage } from '../utils/utils'
+import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
+import { filterArray, getFromStorage, setToStorage, sortArray } from '../utils/utils'
 
 interface CatalogState {
 	isLoaded: boolean
 	items: Item[]
 	original: Item[]
 	filters: Filters
+	sort: SortOptionsKeys
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -32,6 +33,7 @@ class Catalog extends Component<{}, CatalogState> {
 				size: ['large', 'medium', 'small'],
 				areOnlyFavorite: false,
 			},
+			sort: 'az',
 			items: [],
 			original: [],
 		}
@@ -41,15 +43,17 @@ class Catalog extends Component<{}, CatalogState> {
 		const req = await fetch('data.json')
 		const res = await req.json()
 		const storedFilters = getFromStorage('filters')
+		const storedSort = getFromStorage('sort')
 
-		this.setState({ isLoaded: true, original: res, filters: storedFilters })
+		this.setState({ isLoaded: true, original: res, filters: storedFilters, sort: storedSort })
 
 		this.filter()
 
 		window.addEventListener('beforeunload', () => {
-			const { filters } = this.state
+			const { filters, sort } = this.state
 
 			setToStorage<Filters>('filters', filters)
+			setToStorage<SortOptionsKeys>('sort', sort)
 		})
 	}
 
@@ -63,6 +67,12 @@ class Catalog extends Component<{}, CatalogState> {
 		})
 	}
 
+	handleSort(key: SortOptionsKeys) {
+		this.setState({ sort: key }, () => {
+			this.sort()
+		})
+	}
+
 	filter() {
 		const { filters } = this.state
 		const { original } = this.state
@@ -70,8 +80,14 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ items: filtered })
 	}
 
+	sort() {
+		const { items, sort } = this.state
+		const sorted = sortArray(items, sort)
+		this.setState({ items: sorted! })
+	}
+
 	render() {
-		const { isLoaded, items, filters } = this.state
+		const { isLoaded, items, filters, sort } = this.state
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -86,7 +102,7 @@ class Catalog extends Component<{}, CatalogState> {
 					</button>
 				</div>
 
-				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} />
+				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} sort={sort} onSort={(key: SortOptionsKeys) => this.handleSort(key)} />
 
 				<div className="items">
 					<div className="items__list">

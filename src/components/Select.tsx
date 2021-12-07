@@ -1,10 +1,15 @@
 import { Component } from 'react'
+import { SortOptionsKeys, SortOptionsObject } from '../types/Filter'
 import '../styles/components/__select.scss'
 
-interface SelectProps {}
+interface SelectProps {
+	initialSort: SortOptionsKeys
+	onSelect(key: string): void
+}
 
 interface SelectState {
 	isActive: boolean
+	options: SortOptionsObject[]
 	innerText: string
 }
 
@@ -13,8 +18,21 @@ class Select extends Component<SelectProps, SelectState> {
 		super(props)
 		this.state = {
 			isActive: false,
-			innerText: 'by name from A to Z',
+			options: [
+				{ key: 'az', text: 'by name from A to Z' },
+				{ key: 'za', text: 'by name from Z to A' },
+				{ key: 'asc', text: 'by quantity ascending' },
+				{ key: 'desc', text: 'by quantity descending' },
+			],
+			innerText: '',
 		}
+	}
+
+	componentDidMount() {
+		const { initialSort } = this.props
+		const { options } = this.state
+		const initialText = options.find(option => option.key === initialSort)
+		this.setState({ innerText: initialText!.text })
 	}
 
 	toggleSelect() {
@@ -23,21 +41,16 @@ class Select extends Component<SelectProps, SelectState> {
 	}
 
 	chooseOption(e: React.SyntheticEvent) {
+		const { onSelect } = this.props
 		const { key } = (e.target as HTMLInputElement).dataset
 		const text = (e.target as HTMLInputElement).innerHTML
 		this.setState({ isActive: false, innerText: text })
-		console.log(key)
+		onSelect(key!)
 	}
 
 	render() {
-		const options = [
-			{ key: 'az', text: 'by name from A to Z' },
-			{ key: 'za', text: 'by name from Z to A' },
-			{ key: 'asc', text: 'by quantity ascending' },
-			{ key: 'desc', text: 'by quantity descending' },
-		]
+		const { isActive, innerText, options } = this.state
 
-		const { isActive, innerText } = this.state
 		return (
 			<div className="select-wrapper">
 				<h3 className="search-panel-label">Sort</h3>

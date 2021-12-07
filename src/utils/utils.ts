@@ -1,5 +1,5 @@
 import Item from '../types/Item'
-import { Filters } from '../types/Filter'
+import { Filters, SortOptionsKeys } from '../types/Filter'
 
 type StorageKeys = 'filters' | 'sort'
 
@@ -19,13 +19,29 @@ function filterArray(array: Item[], filters: Filters) {
 	const filteredByRange = array.filter(
 		item => item.year >= filters.year.min && item.year <= filters.year.max && item.amount >= filters.amount.min && item.amount <= filters.amount.max
 	)
-
 	const filteredByColor = filteredByRange.filter(item => filters.color.includes(item.color))
 	const filteredBySize = filteredByColor.filter(item => filters.size.includes(item.size))
 	const filteredByShape = filteredBySize.filter(item => filters.shape.includes(item.shape))
 	const filteredByFavorite = filteredByShape.filter(item => item.isFavorite === filters.areOnlyFavorite)
 
 	return filteredByFavorite
+}
+
+function sortArray(array: Item[], key: SortOptionsKeys) {
+	if (key === 'az') {
+		return array.sort((a, b) => a.name.localeCompare(b.name))
+	}
+	if (key === 'za') {
+		return array.sort((a, b) => b.name.localeCompare(a.name))
+	}
+	if (key === 'asc') {
+		return array.sort((a, b) => a.amount - b.amount)
+	}
+	if (key === 'desc') {
+		return array.sort((a, b) => b.amount - a.amount)
+	}
+
+	return array
 }
 
 function setToStorage<T>(key: StorageKeys, value: T) {
@@ -58,4 +74,4 @@ function getFromStorage(key: StorageKeys) {
 	return defaultFilters
 }
 
-export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage }
+export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray }
