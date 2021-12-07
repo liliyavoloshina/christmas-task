@@ -1,6 +1,6 @@
+import '../styles/components/__multiselect.scss'
 import React, { Component } from 'react'
 import { firstToUpperCase, searchOptions } from '../utils/utils'
-import '../styles/components/__multiselect.scss'
 
 interface MultiselectProps {
 	type: 'shape' | 'color' | 'size'
@@ -72,7 +72,6 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		const multiselectList = this.list.current as HTMLInputElement
 		this.setState({ activeIndex: index })
 
-		// update active style
 		const options = multiselectList.querySelectorAll('.multiselect-option')
 
 		options.forEach(optionEl => {
@@ -113,6 +112,7 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		if (initialFilter.length > 0) {
 			initialFilter.forEach(optionName => {
 				const idx = options.indexOf(optionName)
+
 				this.selectOption(idx)
 			})
 		}
@@ -136,7 +136,6 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 	updateActiveOption() {
 		const { options, filteredOptions, activeIndex, isOpen } = this.state
 
-		// if active option is not in filtered options, set it to first filtered option
 		if (filteredOptions.indexOf(options[activeIndex]) < 0) {
 			const firstFilteredIndex = options.indexOf(filteredOptions[0])
 
@@ -175,7 +174,12 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 		const selectedEl = this.selectedEl.current as HTMLUListElement
 		const selectedOptionName = options[index]
 
-		this.setState({ activeIndex: index, selected: [...selected, selectedOptionName] })
+		const updatedSelected = [...selected]
+		if (!updatedSelected.includes(selectedOptionName)) {
+			updatedSelected.push(selectedOptionName)
+		}
+
+		this.setState({ activeIndex: index, selected: updatedSelected })
 
 		const updatedOptions = multiselectList.querySelectorAll('.multiselect-option')
 
@@ -209,13 +213,13 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 
 		const updatedSelected = selected.filter((option: string) => option !== selectedOptionName)
 
-		this.setState({ selected: updatedSelected })
+		this.setState({ selected: updatedSelected }, () => {
+			this.valueChange()
+		})
 
 		const buttonEl = selectedEl.querySelector<HTMLElement>(`#${type}-remove-${index}`)
 		const toDelete = buttonEl!.parentElement as HTMLLIElement
 		selectedEl.removeChild(toDelete)
-
-		this.valueChange()
 	}
 
 	filterOptions(value: string) {
@@ -247,11 +251,14 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 
 	valueChange() {
 		const { selected } = this.state
+
 		const { onFilter } = this.props
 		onFilter(selected)
 	}
 
 	render() {
+		// console.log('multiselect render')
+
 		const { type } = this.props
 		const { isOpen } = this.state
 		const optionsId = `multiselect-${type}-selected`

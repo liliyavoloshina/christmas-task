@@ -56,7 +56,7 @@ const setToStorage = <T>(key: StorageKeys, value: T) => {
 	window.localStorage.setItem(key, stringified)
 }
 
-const defaultFilters = {
+const defaultFilters: Filters = {
 	year: {
 		min: 1940,
 		max: 2020,
@@ -81,4 +81,4 @@ const getFromStorage = (key: StorageKeys) => {
 	return defaultFilters
 }
 
-export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray, searchArray }
+export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray, searchArray, defaultFilters }

@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import Multiselect from '../components/MultiSelect'
+import Multiselect from '../components/Multiselect'
 import Select from '../components/Select'
 import Range from '../components/Range'
 import { RangeOptions, Filters, AllOptions, Colors, Sizes, Shapes, SortOptionsKeys } from '../types/Filter'
@@ -11,6 +11,7 @@ interface SearchPanelProps {
 	sort: SortOptionsKeys
 	onFilter(type: string, options: AllOptions): void
 	onSort(key: string): void
+	onClear(): void
 }
 
 class SearchPanel extends Component<SearchPanelProps> {
@@ -30,7 +31,9 @@ class SearchPanel extends Component<SearchPanelProps> {
 	}
 
 	render() {
-		const { filters, sort } = this.props
+		// console.log('render searchpanel')
+
+		const { filters, sort, onClear } = this.props
 		const { year, amount, shape, color, size, areOnlyFavorite } = filters
 
 		return (
@@ -63,11 +66,8 @@ class SearchPanel extends Component<SearchPanelProps> {
 				</div>
 
 				<div className="search-panel__actions">
-					<button type="button" className="btn clear-filter">
+					<button onClick={() => onClear()} type="button" className="btn clear-filter">
 						Clear
-					</button>
-					<button type="button" className="btn save-filter">
-						Save
 					</button>
 				</div>
 			</div>

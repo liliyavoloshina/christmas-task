@@ -1,10 +1,10 @@
 import '../styles/pages/__catalog.scss'
-import { Component } from 'react'
+import React, { Component } from 'react'
 import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
-import { filterArray, getFromStorage, setToStorage, sortArray, searchArray } from '../utils/utils'
+import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defaultFilters } from '../utils/utils'
 
 interface CatalogState {
 	isLoaded: boolean
@@ -16,6 +16,8 @@ interface CatalogState {
 }
 
 class Catalog extends Component<{}, CatalogState> {
+	private searchInput: React.RefObject<HTMLInputElement> = React.createRef()
+
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
@@ -48,6 +50,7 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedSort = getFromStorage('sort')
 
 		this.setState({ isLoaded: true, original: res, filters: storedFilters, sort: storedSort })
+		this.searchInput.current?.focus()
 		this.filter()
 
 		window.addEventListener('beforeunload', () => {
@@ -92,7 +95,13 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ search: value })
 	}
 
+	clear() {
+		this.setState({ filters: defaultFilters })
+	}
+
 	render() {
+		// console.log('render catalog')
+
 		const { isLoaded, items, filters, sort, search } = this.state
 		const hasMatches = searchArray(items, search).length > 0
 
@@ -103,10 +112,24 @@ class Catalog extends Component<{}, CatalogState> {
 		return (
 			<div className="catalog">
 				<div className="search-bar">
-					<input onInput={e => this.search(e)} type="search" placeholder="Search..." className="search-bar__input" ref={input => input && input.focus()} autoComplete="off" />
+					<input
+						onInput={e => this.search(e)}
+						type="search"
+						placeholder="Search..."
+						className="search-bar__input"
+						ref={this.searchInput as React.RefObject<HTMLInputElement>}
+						autoComplete="off"
+					/>
+					{/* <input onInput={e => this.search(e)} type="search" placeholder="Search..." className="search-bar__input" ref={input => input && input.focus()} autoComplete="off" /> */}
 				</div>
 
-				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} sort={sort} onSort={(key: SortOptionsKeys) => this.handleSort(key)} />
+				<SearchPanel
+					onFilter={(type: string, options) => this.handleFilter(type, options)}
+					filters={filters}
+					sort={sort}
+					onSort={(key: SortOptionsKeys) => this.handleSort(key)}
+					onClear={() => this.clear()}
+				/>
 
 				<div className="items">
 					<div className={`no-matches-message ${hasMatches ? 'hidden' : null}`}>
