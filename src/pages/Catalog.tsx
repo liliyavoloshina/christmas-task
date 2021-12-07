@@ -1,8 +1,8 @@
+import '../styles/pages/__catalog.scss'
 import { Component } from 'react'
 import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
-import '../styles/pages/__catalog.scss'
 import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
 import { filterArray, getFromStorage, setToStorage, sortArray, searchArray } from '../utils/utils'
 
@@ -109,7 +109,10 @@ class Catalog extends Component<{}, CatalogState> {
 				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} sort={sort} onSort={(key: SortOptionsKeys) => this.handleSort(key)} />
 
 				<div className="items">
-					<div className={`no-matches-message ${hasMatches ? 'hidden' : null}`}>No mathes!!!</div>
+					<div className={`no-matches-message ${hasMatches ? 'hidden' : null}`}>
+						<div className="no-matches-message__first">No matches found!</div>
+						<div className="no-matches-message__second">Try something else</div>
+					</div>
 
 					<div className="items__list">
 						{searchArray(items, search).map(item => (

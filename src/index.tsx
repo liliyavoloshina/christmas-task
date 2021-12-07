@@ -1,6 +1,6 @@
+import './styles/base/base-dir.scss'
 import { BrowserRouter } from 'react-router-dom'
 import ReactDOM from 'react-dom'
-import './styles/base/_base-dir.scss'
 import Main from './layout/Main'
 import Footer from './layout/Footer'
 import Nav from './layout/Nav'

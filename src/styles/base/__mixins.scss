@@ -1,0 +1,28 @@
+@mixin flicker($delay: 0s) {
+	animation: flicker-animation 5s linear infinite;
+	animation-delay: $delay;
+	@keyframes flicker-animation {
+		0%,
+		14%,
+		26%,
+		39%,
+		50%,
+		84% {
+			opacity: 1;
+			// color: var(--red-bright);
+			color: var(--red-bright);
+			text-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--red-bright), 0 0 20px var(--red-bright), 0 0 40px rgb(255, 72, 0), 0 0 80px rgb(255, 72, 0), 0 0 90px rgb(255, 72, 0),
+				0 0 100px rgb(255, 72, 0), 0 0 150px rgb(255, 72, 0);
+		}
+
+		15%,
+		25%,
+		40%,
+		49%,
+		85%,
+		100% {
+			opacity: 0.4;
+			color: var(--black);
+		}
+	}
+}

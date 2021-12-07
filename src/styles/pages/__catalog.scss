@@ -1,3 +1,5 @@
+@import '../base/_mixins';
+
 :root {
 	--search-bar-h: 40px;
 }
@@ -66,7 +68,16 @@
 }
 
 .no-matches-message {
-	background-color: red;
+	font-size: 2em;
+
+	&__first {
+		@include flicker(-0.3s);
+	}
+
+	&__second {
+		@include flicker();
+	}
+
 	&.hidden {
 		display: none;
 	}
