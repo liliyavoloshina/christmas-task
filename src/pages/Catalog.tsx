@@ -19,7 +19,7 @@ interface CatalogState {
 }
 
 class Catalog extends Component<{}, CatalogState> {
-	private searchInput: React.RefObject<HTMLInputElement> = React.createRef()
+	private searchInput: React.RefObject<HTMLInputElement>
 
 	constructor(props: Readonly<{}>) {
 		super(props)
@@ -46,6 +46,7 @@ class Catalog extends Component<{}, CatalogState> {
 			favoriteItemsQuantity: 0,
 			isPopupHidden: true,
 		}
+		this.searchInput = React.createRef()
 	}
 
 	async componentDidMount() {
@@ -56,9 +57,8 @@ class Catalog extends Component<{}, CatalogState> {
 
 		this.setState({ isLoaded: true, originalItems: storedItems, filters: storedFilters, sort: storedSort, favoriteItemsQuantity }, () => {
 			this.filter()
+			this.focusInput()
 		})
-
-		this.searchInput.current?.focus()
 
 		window.addEventListener('beforeunload', () => {
 			const { filters, sort, originalItems } = this.state
@@ -102,6 +102,10 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, favoriteItemsQuantity: updatedFavoriteItemsQuantity })
 	}
 
+	focusInput() {
+		this.searchInput.current?.focus()
+	}
+
 	filter() {
 		const { filters } = this.state
 		const { originalItems } = this.state
@@ -137,14 +141,7 @@ class Catalog extends Component<{}, CatalogState> {
 			<div className="catalog">
 				<Popup text="Sorry, all slots are full!" isHidden={isPopupHidden} />
 				<div className="search-bar">
-					<input
-						onInput={e => this.search(e)}
-						type="search"
-						placeholder="Search..."
-						className="search-bar__input"
-						ref={this.searchInput as React.RefObject<HTMLInputElement>}
-						autoComplete="off"
-					/>
+					<input onInput={e => this.search(e)} type="search" placeholder="Search..." className="search-bar__input" ref={this.searchInput} autoComplete="off" />
 				</div>
 
 				<SearchPanel
