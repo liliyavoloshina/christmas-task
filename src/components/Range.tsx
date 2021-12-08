@@ -30,6 +30,7 @@ class Range extends React.Component<RangeProps, Readonly<{}>> {
 		const { initialFilter, type } = this.props
 		const rangeMax = type === 'year' ? 2020 : 12
 		const rangeMin = type === 'year' ? 1940 : 1
+		const step = type === 'year' ? 10 : 1
 		const name = firstToUpperCase(type)
 
 		return (
@@ -44,7 +45,8 @@ class Range extends React.Component<RangeProps, Readonly<{}>> {
 						value={[initialFilter.min, initialFilter.max]}
 						renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
 						pearling
-						onAfterChange={value => this.valueChange(value)}
+						step={step}
+						onChange={value => this.valueChange(value)}
 					/>
 				</div>
 			</div>
