@@ -1,4 +1,4 @@
-import ObjectKeys from './utils'
+import { ObjectKeys } from './utils'
 
 interface Item extends ObjectKeys {
 	id: string

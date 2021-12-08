@@ -1,6 +1,7 @@
+import '../styles/components/__card.scss'
 import { Component } from 'react'
 import BtnFavorite from './BtnFavorite'
-import '../styles/components/__card.scss'
+import { FlippedProps } from '../types/utils'
 
 interface ItemProps {
 	id: string
@@ -11,8 +12,16 @@ interface ItemProps {
 	color: 'green' | 'white' | 'red' | 'blue' | 'yellow'
 	size: 'large' | 'medium' | 'small'
 	isFavorite: boolean
+	flippedProps: FlippedProps
 	onFavorite(id: string, isFavorite: boolean): void
 }
+
+// {
+//   "flippedProps": {
+//     "data-flip-config": "{\"translate\":true,\"scale\":true,\"opacity\":true}",
+//     "data-flip-id": "1",
+//     "data-portal-key": "portal"
+//   },
 
 class Card extends Component<ItemProps> {
 	constructor(props: ItemProps) {
@@ -20,18 +29,17 @@ class Card extends Component<ItemProps> {
 		this.state = {}
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	handleFavorite(isFavorite: boolean) {
 		const { id, onFavorite } = this.props
 		onFavorite(id, isFavorite)
 	}
 
 	render() {
-		const { id, name, amount, year, shape, color, size, isFavorite } = this.props
+		const { id, name, amount, year, shape, color, size, isFavorite, flippedProps } = this.props
 		const imageSrc = `images/${id}.png`
 
 		return (
-			<div className="card">
+			<div className="card" {...flippedProps}>
 				<div className="card__header">
 					<h3 className="card__title">{name}</h3>
 					<BtnFavorite onFavorite={props => this.handleFavorite(props)} isFavorite={isFavorite} />

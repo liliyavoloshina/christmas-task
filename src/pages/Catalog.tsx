@@ -1,10 +1,12 @@
 import '../styles/pages/__catalog.scss'
 import React, { Component } from 'react'
+import { Flipper, Flipped } from 'react-flip-toolkit'
 import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import Popup from '../components/Popup'
 import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
+import { FlippedProps } from '../types/utils'
 import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defaultFilters, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
 interface CatalogState {
@@ -132,6 +134,7 @@ class Catalog extends Component<{}, CatalogState> {
 	render() {
 		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity, isPopupHidden } = this.state
 		const hasMatches = searchArray(filteredItems, search).length > 0
+		const springConfig = { stiffness: 1900, damping: 500, mass: 3 }
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -159,11 +162,13 @@ class Catalog extends Component<{}, CatalogState> {
 						<div className="no-matches-message__second">Try something else</div>
 					</div>
 
-					<div className="items__list">
+					<Flipper className="items__list" flipKey={filteredItems.join('')} spring={springConfig}>
 						{searchArray(filteredItems, search).map(item => (
-							<Card onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />
+							<Flipped key={item.id} flipId={item.id}>
+								{(flippedProps: FlippedProps) => <Card flippedProps={flippedProps} onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />}
+							</Flipped>
 						))}
-					</div>
+					</Flipper>
 				</div>
 			</div>
 		)

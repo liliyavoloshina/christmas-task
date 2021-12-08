@@ -2,4 +2,8 @@ interface ObjectKeys {
 	[key: string]: string | number | boolean
 }
 
-export default ObjectKeys
+interface FlippedProps {
+	[key: string]: string
+}
+
+export type { ObjectKeys, FlippedProps }
