@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
+import Popup from '../components/Popup'
 import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
 import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defaultFilters, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
@@ -14,6 +15,7 @@ interface CatalogState {
 	filteredItems: Item[]
 	originalItems: Item[]
 	favoriteItemsQuantity: number
+	isPopupHidden: boolean
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -42,6 +44,7 @@ class Catalog extends Component<{}, CatalogState> {
 			filteredItems: [],
 			originalItems: [],
 			favoriteItemsQuantity: 0,
+			isPopupHidden: true,
 		}
 	}
 
@@ -86,7 +89,10 @@ class Catalog extends Component<{}, CatalogState> {
 		const { filteredItems, originalItems, favoriteItemsQuantity } = this.state
 
 		if (favoriteItemsQuantity === FAVORITE_MAX_QUANTITY && isFavorite === true) {
-			console.log('max fav quantity')
+			this.setState({ isPopupHidden: false })
+			setTimeout(() => {
+				this.setState({ isPopupHidden: true })
+			}, 4000)
 			return
 		}
 
@@ -120,7 +126,7 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	render() {
-		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity } = this.state
+		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity, isPopupHidden } = this.state
 		const hasMatches = searchArray(filteredItems, search).length > 0
 
 		if (!isLoaded) {
@@ -129,6 +135,7 @@ class Catalog extends Component<{}, CatalogState> {
 
 		return (
 			<div className="catalog">
+				<Popup text="Sorry, all slots are full!" isHidden={isPopupHidden} />
 				<div className="search-bar">
 					<input
 						onInput={e => this.search(e)}
