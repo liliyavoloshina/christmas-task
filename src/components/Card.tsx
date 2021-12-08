@@ -16,13 +16,6 @@ interface ItemProps {
 	onFavorite(id: string, isFavorite: boolean): void
 }
 
-// {
-//   "flippedProps": {
-//     "data-flip-config": "{\"translate\":true,\"scale\":true,\"opacity\":true}",
-//     "data-flip-id": "1",
-//     "data-portal-key": "portal"
-//   },
-
 class Card extends Component<ItemProps> {
 	constructor(props: ItemProps) {
 		super(props)
@@ -31,6 +24,8 @@ class Card extends Component<ItemProps> {
 
 	handleFavorite(isFavorite: boolean) {
 		const { id, onFavorite } = this.props
+		console.log('handleFavorite card')
+
 		onFavorite(id, isFavorite)
 	}
 

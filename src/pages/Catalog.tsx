@@ -90,9 +90,7 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	handleFavorite(id: string, isFavorite: boolean) {
-		const { filteredItems, originalItems, favoriteItemsQuantity, isAnimated } = this.state
-
-		this.filter()
+		const { filteredItems, originalItems, favoriteItemsQuantity, isAnimated, filters } = this.state
 
 		if (favoriteItemsQuantity === FAVORITE_MAX_QUANTITY && isFavorite === true) {
 			this.setState({ isPopupHidden: false, isAnimated: !isAnimated })
@@ -105,7 +103,13 @@ class Catalog extends Component<{}, CatalogState> {
 		const updatedOriginalItems = originalItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
 		const updatedFilteredItems = filteredItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
 		const updatedFavoriteItemsQuantity = isFavorite ? favoriteItemsQuantity + 1 : favoriteItemsQuantity - 1
-		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, favoriteItemsQuantity: updatedFavoriteItemsQuantity })
+
+		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, favoriteItemsQuantity: updatedFavoriteItemsQuantity, isAnimated: !isAnimated })
+
+		if (filters.areOnlyFavorite) {
+			const filterd = updatedFilteredItems.filter(item => item.isFavorite === true)
+			this.setState({ filteredItems: filterd, isAnimated: !isAnimated })
+		}
 	}
 
 	focusInput() {
@@ -113,12 +117,10 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	filter() {
-		const { filters, isAnimated, filteredItems } = this.state
+		const { filters, isAnimated } = this.state
 		const { originalItems } = this.state
 		const filtered = filterArray(originalItems, filters)
-		this.setState({ filteredItems: filtered, isAnimated: !isAnimated }, () => {
-			console.log(filteredItems)
-		})
+		this.setState({ filteredItems: filtered, isAnimated: !isAnimated })
 	}
 
 	sort() {
