@@ -18,6 +18,7 @@ interface CatalogState {
 	originalItems: Item[]
 	favoriteItemsQuantity: number
 	isPopupHidden: boolean
+	isAnimated: boolean
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -47,6 +48,7 @@ class Catalog extends Component<{}, CatalogState> {
 			originalItems: [],
 			favoriteItemsQuantity: 0,
 			isPopupHidden: true,
+			isAnimated: false,
 		}
 		this.searchInput = React.createRef()
 	}
@@ -88,10 +90,12 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	handleFavorite(id: string, isFavorite: boolean) {
-		const { filteredItems, originalItems, favoriteItemsQuantity } = this.state
+		const { filteredItems, originalItems, favoriteItemsQuantity, isAnimated } = this.state
+
+		this.filter()
 
 		if (favoriteItemsQuantity === FAVORITE_MAX_QUANTITY && isFavorite === true) {
-			this.setState({ isPopupHidden: false })
+			this.setState({ isPopupHidden: false, isAnimated: !isAnimated })
 			setTimeout(() => {
 				this.setState({ isPopupHidden: true })
 			}, 4000)
@@ -109,30 +113,33 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	filter() {
-		const { filters } = this.state
+		const { filters, isAnimated, filteredItems } = this.state
 		const { originalItems } = this.state
 		const filtered = filterArray(originalItems, filters)
-		this.setState({ filteredItems: filtered })
+		this.setState({ filteredItems: filtered, isAnimated: !isAnimated }, () => {
+			console.log(filteredItems)
+		})
 	}
 
 	sort() {
-		const { filteredItems, sort } = this.state
+		const { filteredItems, sort, isAnimated } = this.state
 		const sorted = sortArray(filteredItems, sort)
-		this.setState({ filteredItems: sorted! })
+		this.setState({ filteredItems: sorted!, isAnimated: !isAnimated })
 	}
 
 	search(e: React.SyntheticEvent) {
+		const { isAnimated } = this.state
 		const { value } = e.target as HTMLInputElement
-		this.setState({ search: value })
+		this.setState({ search: value, isAnimated: !isAnimated })
 	}
 
 	clear() {
-		const { originalItems } = this.state
-		this.setState({ filters: { ...defaultFilters }, filteredItems: originalItems })
+		const { originalItems, isAnimated } = this.state
+		this.setState({ filters: { ...defaultFilters }, filteredItems: originalItems, isAnimated: !isAnimated })
 	}
 
 	render() {
-		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity, isPopupHidden } = this.state
+		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity, isPopupHidden, isAnimated } = this.state
 		const hasMatches = searchArray(filteredItems, search).length > 0
 		const springConfig = { stiffness: 1900, damping: 500, mass: 3 }
 
@@ -162,7 +169,8 @@ class Catalog extends Component<{}, CatalogState> {
 						<div className="no-matches-message__second">Try something else</div>
 					</div>
 
-					<Flipper className="items__list" flipKey={filteredItems.join('')} spring={springConfig}>
+					<Flipper className="items__list" onStart={() => console.log('start')} flipKey={isAnimated} spring={springConfig}>
+						{/* <Flipper className="items__list" onStart={() => console.log('start')} flipKey={filteredItems.join('')} spring={springConfig}> */}
 						{searchArray(filteredItems, search).map(item => (
 							<Flipped key={item.id} flipId={item.id}>
 								{(flippedProps: FlippedProps) => <Card flippedProps={flippedProps} onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />}

@@ -73,16 +73,13 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 	render() {
 		const { type, initialFilter, options } = this.props
 		const { isOpen } = this.state
-		const optionsId = `multiselect-${type}-selected`
-		const inputId = `multiselect-${type}`
-		const listId = `listbox-${type}`
 		const name = firstToUpperCase(type)
 
 		return (
 			<div className={`multiselect ${isOpen ? 'open' : ''}`}>
 				<h3 className="search-panel-label">{name}</h3>
 				<div className="multiselect__box" role="presentation" onClick={() => this.openMenu()}>
-					<ul className="selected-options" id={optionsId} ref={this.selectedEl as React.RefObject<HTMLUListElement>}>
+					<ul className="selected-options" ref={this.selectedEl as React.RefObject<HTMLUListElement>}>
 						{initialFilter.map((option, index) => (
 							<li key={option}>
 								<button onClick={() => this.removeOption(option)} type="button" className="remove-option" id={`${type}-remove-${index}`}>
@@ -91,9 +88,9 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 							</li>
 						))}
 					</ul>
-					<input autoComplete="off" ref={this.inputEl as React.RefObject<HTMLInputElement>} id={inputId} className="multiselect__input" type="text" readOnly />
+					<input autoComplete="off" ref={this.inputEl as React.RefObject<HTMLInputElement>} className="multiselect__input" type="text" readOnly />
 				</div>
-				<ul className="multiselect__list" id={listId}>
+				<ul className="multiselect__list">
 					{options.map((option, index) => {
 						const isSelected = initialFilter.includes(option)
 						return (

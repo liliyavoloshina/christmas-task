@@ -64,7 +64,7 @@ $main-color: #3759af;
 	background-color: var(--bg-black);
 
 	&::-webkit-scrollbar {
-		width: 10px;
+		display: none;
 	}
 
 	&::-webkit-scrollbar-thumb {
