@@ -8,8 +8,8 @@ import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defa
 
 interface CatalogState {
 	isLoaded: boolean
-	items: Item[]
-	original: Item[]
+	filteredItems: Item[]
+	originalItems: Item[]
 	filters: Filters
 	sort: SortOptionsKeys
 	search: string
@@ -38,24 +38,25 @@ class Catalog extends Component<{}, CatalogState> {
 			},
 			sort: 'az',
 			search: '',
-			items: [],
-			original: [],
+			filteredItems: [],
+			originalItems: [],
 		}
 	}
 
 	async componentDidMount() {
-		const req = await fetch('data.json')
-		const res = await req.json()
+		const storedItems = getFromStorage('originalItems')
 		const storedFilters = getFromStorage('filters')
 		const storedSort = getFromStorage('sort')
 
-		this.setState({ isLoaded: true, original: res, filters: storedFilters, sort: storedSort })
+		this.setState({ isLoaded: true, originalItems: storedItems, filters: storedFilters, sort: storedSort }, () => {
+			this.filter()
+		})
 		this.searchInput.current?.focus()
-		this.filter()
 
 		window.addEventListener('beforeunload', () => {
-			const { filters, sort } = this.state
+			const { filters, sort, originalItems } = this.state
 
+			setToStorage<Item[]>('originalItems', originalItems)
 			setToStorage<Filters>('filters', filters)
 			setToStorage<SortOptionsKeys>('sort', sort)
 		})
@@ -77,17 +78,24 @@ class Catalog extends Component<{}, CatalogState> {
 		})
 	}
 
+	handleFavorite(id: string, isFavorite: boolean) {
+		const { filteredItems, originalItems } = this.state
+		const updatedOriginalItems = originalItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
+		const updatedFilteredItems = filteredItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
+		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems })
+	}
+
 	filter() {
 		const { filters } = this.state
-		const { original } = this.state
-		const filtered = filterArray(original, filters)
-		this.setState({ items: filtered })
+		const { originalItems } = this.state
+		const filtered = filterArray(originalItems, filters)
+		this.setState({ filteredItems: filtered })
 	}
 
 	sort() {
-		const { items, sort } = this.state
-		const sorted = sortArray(items, sort)
-		this.setState({ items: sorted! })
+		const { filteredItems, sort } = this.state
+		const sorted = sortArray(filteredItems, sort)
+		this.setState({ filteredItems: sorted! })
 	}
 
 	search(e: React.SyntheticEvent) {
@@ -96,13 +104,13 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	clear() {
-		const { original } = this.state
-		this.setState({ filters: defaultFilters, items: original })
+		const { originalItems } = this.state
+		this.setState({ filters: defaultFilters, filteredItems: originalItems })
 	}
 
 	render() {
-		const { isLoaded, items, filters, sort, search } = this.state
-		const hasMatches = searchArray(items, search).length > 0
+		const { isLoaded, filteredItems, filters, sort, search } = this.state
+		const hasMatches = searchArray(filteredItems, search).length > 0
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -136,8 +144,8 @@ class Catalog extends Component<{}, CatalogState> {
 					</div>
 
 					<div className="items__list">
-						{searchArray(items, search).map(item => (
-							<Card key={item.id} {...item} />
+						{searchArray(filteredItems, search).map(item => (
+							<Card onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />
 						))}
 					</div>
 				</div>

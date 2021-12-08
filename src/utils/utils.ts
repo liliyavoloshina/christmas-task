@@ -1,7 +1,8 @@
+import defaultItems from '../data.json'
 import Item from '../types/Item'
 import { Filters, SortOptionsKeys } from '../types/Filter'
 
-type StorageKeys = 'filters' | 'sort'
+type StorageKeys = 'filters' | 'sort' | 'originalItems'
 
 const firstToUpperCase = (string: string) => {
 	const first = string.charAt(0).toUpperCase()
@@ -21,7 +22,12 @@ const filterArray = (array: Item[], filters: Filters) => {
 	const filteredByColor = filteredByRange.filter(item => filters.color.includes(item.color))
 	const filteredBySize = filteredByColor.filter(item => filters.size.includes(item.size))
 	const filteredByShape = filteredBySize.filter(item => filters.shape.includes(item.shape))
-	const filteredByFavorite = filteredByShape.filter(item => item.isFavorite === filters.areOnlyFavorite)
+	const filteredByFavorite = filteredByShape.filter(item => {
+		if (filters.areOnlyFavorite === true) {
+			return item.isFavorite === filters.areOnlyFavorite
+		}
+		return true
+	})
 
 	return filteredByFavorite
 }
@@ -78,7 +84,15 @@ const getFromStorage = (key: StorageKeys) => {
 		return JSON.parse(stored)
 	}
 
-	return defaultFilters
+	if (key === 'filters') {
+		return defaultFilters
+	}
+
+	if (key === 'sort') {
+		return 'az'
+	}
+
+	return defaultItems
 }
 
 export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray, searchArray, defaultFilters }

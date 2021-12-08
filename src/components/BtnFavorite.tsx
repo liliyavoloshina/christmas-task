@@ -3,31 +3,30 @@ import '../styles/components/__btnFavorite.scss'
 
 interface BtnFavoriteProps {
 	isFavorite: boolean
+	onFavorite(isFavorite: boolean): void
 }
 
-class BtnFavorite extends Component<BtnFavoriteProps, BtnFavoriteProps> {
+class BtnFavorite extends Component<BtnFavoriteProps, {}> {
 	constructor(props: BtnFavoriteProps) {
 		super(props)
-		this.toggleClass = this.toggleClass.bind(this)
-		this.state = {
-			isFavorite: props.isFavorite,
-		}
+		this.state = {}
 	}
 
-	toggleClass() {
-		const { isFavorite: currentState } = this.state
-		this.setState({ isFavorite: !currentState })
+	toggleFavorite() {
+		const { onFavorite, isFavorite } = this.props
+		onFavorite(!isFavorite)
 	}
 
 	render() {
-		const { isFavorite } = this.state
+		const { isFavorite } = this.props
+
 		let className = 'btn-favorite'
 		if (isFavorite) {
 			className += ' on'
 		}
 
 		return (
-			<button className={className} onClick={this.toggleClass} type="button">
+			<button className={className} onClick={() => this.toggleFavorite()} type="button">
 				<svg viewBox="0 0 24 24">
 					<use xlinkHref="#heart" />
 					<use xlinkHref="#heart" />
