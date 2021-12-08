@@ -35,7 +35,6 @@ class SearchPanel extends Component<SearchPanelProps> {
 		const shapeOptions = ['ball', 'figure', 'bell', 'cone', 'snowflake'] as MultiselectOptions
 		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
 		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
-
 		const { filters, sort, onClear, favoriteItemsQuantity } = this.props
 		const { year, amount, shape, color, size, areOnlyFavorite } = filters
 

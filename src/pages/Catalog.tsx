@@ -128,7 +128,7 @@ class Catalog extends Component<{}, CatalogState> {
 
 	clear() {
 		const { originalItems } = this.state
-		this.setState({ filters: defaultFilters, filteredItems: originalItems })
+		this.setState({ filters: { ...defaultFilters }, filteredItems: originalItems })
 	}
 
 	render() {
