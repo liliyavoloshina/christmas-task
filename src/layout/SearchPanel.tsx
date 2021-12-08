@@ -9,6 +9,7 @@ import '../styles/components/__checkbox.scss'
 interface SearchPanelProps {
 	filters: Filters
 	sort: SortOptionsKeys
+	favoriteItemsQuantity: number
 	onFilter(type: string, options: AllOptions): void
 	onSort(key: string): void
 	onClear(): void
@@ -35,7 +36,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
 		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
 
-		const { filters, sort, onClear } = this.props
+		const { filters, sort, onClear, favoriteItemsQuantity } = this.props
 		const { year, amount, shape, color, size, areOnlyFavorite } = filters
 
 		return (
@@ -63,7 +64,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 						checked={areOnlyFavorite}
 					/>
 					<label className="only-favorite__label search-panel-label" htmlFor="only-favorite">
-						Only favorite
+						Only favorite ({favoriteItemsQuantity})
 					</label>
 				</div>
 

@@ -4,6 +4,8 @@ import { Filters, SortOptionsKeys } from '../types/Filter'
 
 type StorageKeys = 'filters' | 'sort' | 'originalItems'
 
+const FAVORITE_MAX_QUANTITY = 5
+
 const firstToUpperCase = (string: string) => {
 	const first = string.charAt(0).toUpperCase()
 	return first + string.slice(1)
@@ -15,21 +17,21 @@ const searchOptions = (value: string, options: string[] = [], exclude: string[] 
 		return matches && exclude.indexOf(option) < 0
 	})
 
-const filterArray = (array: Item[], filters: Filters) => {
-	const filteredByRange = array.filter(
-		item => item.year >= filters.year.min && item.year <= filters.year.max && item.amount >= filters.amount.min && item.amount <= filters.amount.max
-	)
-	const filteredByColor = filteredByRange.filter(item => filters.color.includes(item.color))
-	const filteredBySize = filteredByColor.filter(item => filters.size.includes(item.size))
-	const filteredByShape = filteredBySize.filter(item => filters.shape.includes(item.shape))
-	const filteredByFavorite = filteredByShape.filter(item => {
+const filterArray = (items: Item[], filters: Filters) => {
+	const isCorrectYear = (item: Item) => item.year >= filters.year.min && item.year <= filters.year.max
+	const isCorrectAmount = (item: Item) => item.amount >= filters.amount.min && item.amount <= filters.amount.max
+	const isCorrectShape = (item: Item) => filters.shape.includes(item.shape)
+	const isCorrectColor = (item: Item) => filters.color.includes(item.color)
+	const isCorrectSize = (item: Item) => filters.size.includes(item.size)
+	const isCorrectFavorite = (item: Item) => {
 		if (filters.areOnlyFavorite === true) {
 			return item.isFavorite === filters.areOnlyFavorite
 		}
-		return true
-	})
 
-	return filteredByFavorite
+		return true
+	}
+
+	return items.filter(item => isCorrectYear(item) && isCorrectAmount(item) && isCorrectShape(item) && isCorrectColor(item) && isCorrectSize(item) && isCorrectFavorite(item))
 }
 
 const sortArray = (array: Item[], key: SortOptionsKeys) => {
@@ -95,4 +97,4 @@ const getFromStorage = (key: StorageKeys) => {
 	return defaultItems
 }
 
-export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray, searchArray, defaultFilters }
+export { firstToUpperCase, searchOptions, filterArray, setToStorage, getFromStorage, sortArray, searchArray, defaultFilters, FAVORITE_MAX_QUANTITY }

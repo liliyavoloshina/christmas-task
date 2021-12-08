@@ -4,15 +4,16 @@ import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
-import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defaultFilters } from '../utils/utils'
+import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defaultFilters, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
 interface CatalogState {
 	isLoaded: boolean
-	filteredItems: Item[]
-	originalItems: Item[]
 	filters: Filters
 	sort: SortOptionsKeys
 	search: string
+	filteredItems: Item[]
+	originalItems: Item[]
+	favoriteItemsQuantity: number
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -40,6 +41,7 @@ class Catalog extends Component<{}, CatalogState> {
 			search: '',
 			filteredItems: [],
 			originalItems: [],
+			favoriteItemsQuantity: 0,
 		}
 	}
 
@@ -47,10 +49,12 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedItems = getFromStorage('originalItems')
 		const storedFilters = getFromStorage('filters')
 		const storedSort = getFromStorage('sort')
+		const favoriteItemsQuantity = storedItems.filter((item: Item) => item.isFavorite === true).length
 
-		this.setState({ isLoaded: true, originalItems: storedItems, filters: storedFilters, sort: storedSort }, () => {
+		this.setState({ isLoaded: true, originalItems: storedItems, filters: storedFilters, sort: storedSort, favoriteItemsQuantity }, () => {
 			this.filter()
 		})
+
 		this.searchInput.current?.focus()
 
 		window.addEventListener('beforeunload', () => {
@@ -79,10 +83,17 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	handleFavorite(id: string, isFavorite: boolean) {
-		const { filteredItems, originalItems } = this.state
+		const { filteredItems, originalItems, favoriteItemsQuantity } = this.state
+
+		if (favoriteItemsQuantity === FAVORITE_MAX_QUANTITY && isFavorite === true) {
+			console.log('max fav quantity')
+			return
+		}
+
 		const updatedOriginalItems = originalItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
 		const updatedFilteredItems = filteredItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
-		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems })
+		const updatedFavoriteItemsQuantity = isFavorite ? favoriteItemsQuantity + 1 : favoriteItemsQuantity - 1
+		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, favoriteItemsQuantity: updatedFavoriteItemsQuantity })
 	}
 
 	filter() {
@@ -109,7 +120,7 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	render() {
-		const { isLoaded, filteredItems, filters, sort, search } = this.state
+		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity } = this.state
 		const hasMatches = searchArray(filteredItems, search).length > 0
 
 		if (!isLoaded) {
@@ -133,6 +144,7 @@ class Catalog extends Component<{}, CatalogState> {
 					onFilter={(type: string, options) => this.handleFilter(type, options)}
 					filters={filters}
 					sort={sort}
+					favoriteItemsQuantity={favoriteItemsQuantity}
 					onSort={(key: SortOptionsKeys) => this.handleSort(key)}
 					onClear={() => this.clear()}
 				/>
