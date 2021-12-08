@@ -6,6 +6,7 @@ interface BtnProps {
 	size?: 'md'
 	action?: 'save' | 'clear'
 	accented?: boolean
+	onClick?(): void
 }
 
 class Btn extends Component<BtnProps> {
@@ -14,12 +15,20 @@ class Btn extends Component<BtnProps> {
 		this.state = {}
 	}
 
+	handleClick() {
+		const { onClick } = this.props
+
+		if (onClick) {
+			onClick()
+		}
+	}
+
 	render() {
 		const { text, size, action, accented } = this.props
 		const classes = ['btn', size, action, accented].join(' ').trim()
 
 		return (
-			<button type="button" className={classes}>
+			<button onClick={() => this.handleClick()} type="button" className={classes}>
 				{text}
 			</button>
 		)

@@ -5,6 +5,7 @@ import Range from '../components/Range'
 import { RangeOptions, Filters, AllOptions, Colors, Sizes, Shapes, SortOptionsKeys, MultiselectOptions } from '../types/Filter'
 import '../styles/layout/__searchPanel.scss'
 import '../styles/components/__checkbox.scss'
+import Btn from '../components/Btn'
 
 interface SearchPanelProps {
 	filters: Filters
@@ -68,9 +69,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 				</div>
 
 				<div className="search-panel__actions">
-					<button onClick={() => onClear()} type="button" className="btn clear-filter">
-						Clear
-					</button>
+					<Btn onClick={() => onClear()} text="Clear" size="md" />
 				</div>
 			</div>
 		)
