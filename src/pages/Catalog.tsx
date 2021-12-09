@@ -60,19 +60,21 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedItems = getFromStorage('originalItems')
 		const storedFilters = getFromStorage('filters')
 		const storedSort = getFromStorage('sort')
+		const storedIsCardExpanded = getFromStorage('isCardExpanded')
 		const favoriteItemsQuantity = storedItems.filter((item: Item) => item.isFavorite === true).length
 
-		this.setState({ isLoaded: true, originalItems: storedItems, filters: storedFilters, sort: storedSort, favoriteItemsQuantity }, () => {
+		this.setState({ isLoaded: true, originalItems: storedItems, filters: storedFilters, sort: storedSort, favoriteItemsQuantity, isCardExpanded: storedIsCardExpanded }, () => {
 			this.filter()
 			this.focusInput()
 		})
 
 		window.addEventListener('beforeunload', () => {
-			const { filters, sort, originalItems } = this.state
+			const { filters, sort, originalItems, isCardExpanded } = this.state
 
 			setToStorage<Item[]>('originalItems', originalItems)
 			setToStorage<Filters>('filters', filters)
 			setToStorage<SortOptionsKeys>('sort', sort)
+			setToStorage<boolean>('isCardExpanded', isCardExpanded)
 		})
 	}
 
@@ -143,7 +145,6 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ filters: { ...defaultFilters }, filteredItems: originalItems, isAnimated: !isAnimated })
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	changeView(viewType: string) {
 		const isExpanded = viewType === 'list'
 		this.setState({ isCardExpanded: isExpanded })
@@ -177,8 +178,8 @@ class Catalog extends Component<{}, CatalogState> {
 				<div className="items">
 					<div className="additional-panel">
 						<div className="additional-panel__change-view">
-							<Btn onClick={() => this.changeView('grid')} icon="grid_view" form="square" title="change view" />
-							<Btn onClick={() => this.changeView('list')} icon="view_list" form="square" title="change view" />
+							<Btn onClick={() => this.changeView('grid')} accented={!isCardExpanded} icon="grid_view" form="square" title="change view" />
+							<Btn onClick={() => this.changeView('list')} accented={isCardExpanded} icon="view_list" form="square" title="change view" />
 						</div>
 						<div className="additional-panel__text">Toys found: {filteredItems.length}</div>
 					</div>

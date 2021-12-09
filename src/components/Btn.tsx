@@ -27,8 +27,14 @@ class Btn extends Component<BtnProps> {
 	}
 
 	render() {
-		const { text, size, action, accented, icon, form, title } = this.props
-		const classes = ['btn', size, action, accented, form].join(' ').trim()
+		const { text, size, action, icon, form, title, accented } = this.props
+		const options = ['btn', size, action, form]
+
+		if (accented) {
+			options.push('accented')
+		}
+
+		const classes = options.join(' ').trim()
 
 		return (
 			<button onClick={() => this.handleClick()} type="button" className={classes} title={title}>

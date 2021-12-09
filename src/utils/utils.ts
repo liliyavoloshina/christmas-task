@@ -2,7 +2,7 @@ import defaultItems from '../data.json'
 import Item from '../types/Item'
 import { Filters, SortOptionsKeys } from '../types/Filter'
 
-type StorageKeys = 'filters' | 'sort' | 'originalItems'
+type StorageKeys = 'filters' | 'sort' | 'originalItems' | 'isCardExpanded'
 
 const FAVORITE_MAX_QUANTITY = 5
 
