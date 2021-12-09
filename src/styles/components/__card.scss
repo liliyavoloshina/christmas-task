@@ -19,7 +19,7 @@
 	}
 
 	&__title {
-		font-size: 1rem;
+		font-size: 1em;
 	}
 
 	&__img {
@@ -59,15 +59,15 @@
 		}
 
 		@media (min-width: 768px) {
+			grid-template-columns: 200px 1fr 1fr;
+
 			.card__title {
-				font-size: 1.4em;
+				font-size: 1.2em;
 			}
 
 			.card__info {
-				font-size: 1.3em;
+				font-size: 1.2em;
 			}
-
-			grid-template-columns: 200px 1fr 1fr;
 		}
 	}
 }

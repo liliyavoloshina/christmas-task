@@ -3,7 +3,7 @@ $main-color: #3759af;
 
 .select-wrapper {
 	position: relative;
-	width: 350px;
+	width: 100%;
 }
 
 .select {
@@ -65,11 +65,6 @@ $main-color: #3759af;
 
 	&::-webkit-scrollbar {
 		display: none;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		border-radius: 10px;
-		background-color: var(--black);
 	}
 
 	&__option {

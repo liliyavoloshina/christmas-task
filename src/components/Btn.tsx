@@ -7,6 +7,8 @@ interface BtnProps {
 	action?: 'save' | 'clear'
 	accented?: boolean
 	icon?: string
+	form?: 'square'
+	title?: string
 	onClick?(): void
 }
 
@@ -25,11 +27,11 @@ class Btn extends Component<BtnProps> {
 	}
 
 	render() {
-		const { text, size, action, accented, icon } = this.props
-		const classes = ['btn', size, action, accented].join(' ').trim()
+		const { text, size, action, accented, icon, form, title } = this.props
+		const classes = ['btn', size, action, accented, form].join(' ').trim()
 
 		return (
-			<button onClick={() => this.handleClick()} type="button" className={classes}>
+			<button onClick={() => this.handleClick()} type="button" className={classes} title={title}>
 				{text}
 				<span className="material-icons">{icon}</span>
 			</button>

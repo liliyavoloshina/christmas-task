@@ -177,8 +177,8 @@ class Catalog extends Component<{}, CatalogState> {
 				<div className="items">
 					<div className="additional-panel">
 						<div className="additional-panel__change-view">
-							<Btn onClick={() => this.changeView('grid')} icon="grid_view" />
-							<Btn onClick={() => this.changeView('list')} icon="view_list" />
+							<Btn onClick={() => this.changeView('grid')} icon="grid_view" form="square" title="change view" />
+							<Btn onClick={() => this.changeView('list')} icon="view_list" form="square" title="change view" />
 						</div>
 						<div className="additional-panel__text">Toys found: {filteredItems.length}</div>
 					</div>
