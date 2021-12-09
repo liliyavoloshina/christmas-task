@@ -1,6 +1,6 @@
 import '../styles/components/__multiselect.scss'
 import React, { Component } from 'react'
-import { MultiselectOptions } from '../types/Filter'
+import { MultiselectOptions } from '../types/Catalog'
 import { firstToUpperCase } from '../utils/utils'
 
 interface MultiselectProps {

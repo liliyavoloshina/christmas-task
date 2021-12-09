@@ -2,7 +2,7 @@ import React from 'react'
 import ReactSlider from 'react-slider'
 import '../styles/components/__range.scss'
 import { firstToUpperCase } from '../utils/utils'
-import { RangeOptions } from '../types/Filter'
+import { RangeOptions } from '../types/Catalog'
 
 interface RangeValues {
 	min: number

@@ -1,0 +1,20 @@
+{
+	"filters": {
+		"year": {
+			"min": 1940,
+			"max": 2020
+		},
+		"amount": {
+			"min": 1,
+			"max": 12
+		},
+		"shape": ["ball", "figure", "bell", "cone", "snowflake"],
+		"color": ["green", "white", "red", "blue", "yellow"],
+		"size": ["large", "medium", "small"],
+		"areOnlyFavorite": false
+	},
+	"sort": "az",
+	"search": "",
+	"favoriteItemsQuantity": 0,
+	"isCardExpanded": false
+}

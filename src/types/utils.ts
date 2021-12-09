@@ -1,9 +1,6 @@
-interface ObjectKeys {
-	[key: string]: string | number | boolean
-}
-
 interface FlippedProps {
-	[key: string]: string
+  [key: string]: string
 }
 
-export type { ObjectKeys, FlippedProps }
+// eslint-disable-next-line import/prefer-default-export
+export type { FlippedProps }

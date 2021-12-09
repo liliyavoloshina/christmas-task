@@ -6,21 +6,19 @@ import Card from '../components/Card'
 import Item from '../types/Item'
 import Popup from '../components/Popup'
 import Btn from '../components/Btn'
-import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
+import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
 import { FlippedProps } from '../types/utils'
-import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defaultFilters, FAVORITE_MAX_QUANTITY } from '../utils/utils'
+import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
 interface CatalogState {
 	isLoaded: boolean
-	filters: Filters
-	sort: SortOptionsKeys
+	settings: CatalogSettings
 	search: string
 	filteredItems: Item[]
 	originalItems: Item[]
-	favoriteItemsQuantity: number
+	defaultFilters: CatalogFilters
 	isPopupHidden: boolean
 	isAnimated: boolean
-	isCardExpanded: boolean
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -30,72 +28,56 @@ class Catalog extends Component<{}, CatalogState> {
 		super(props)
 		this.state = {
 			isLoaded: false,
-			filters: {
-				year: {
-					min: 1940,
-					max: 2020,
-				},
-				amount: {
-					min: 1,
-					max: 12,
-				},
-				shape: ['ball', 'figure', 'bell', 'cone', 'snowflake'],
-				color: ['green', 'white', 'red', 'blue', 'yellow'],
-				size: ['large', 'medium', 'small'],
-				areOnlyFavorite: false,
-			},
-			sort: 'az',
-			search: '',
+			settings: {} as CatalogSettings,
 			filteredItems: [],
 			originalItems: [],
-			favoriteItemsQuantity: 0,
+			defaultFilters: {} as CatalogFilters,
 			isPopupHidden: true,
 			isAnimated: false,
-			isCardExpanded: false,
+			search: '',
 		}
 		this.searchInput = React.createRef()
 	}
 
 	async componentDidMount() {
-		const storedItems = getFromStorage('originalItems')
-		const storedFilters = getFromStorage('filters')
-		const storedSort = getFromStorage('sort')
-		const storedIsCardExpanded = getFromStorage('isCardExpanded')
-		const favoriteItemsQuantity = storedItems.filter((item: Item) => item.isFavorite === true).length
+		const storedItems = await getData('originalItems')
+		const storedSettings = await getData('catalogSettings')
+		const defaultFilters = await getData('defaultFilters')
 
-		this.setState({ isLoaded: true, originalItems: storedItems, filters: storedFilters, sort: storedSort, favoriteItemsQuantity, isCardExpanded: storedIsCardExpanded }, () => {
+		this.setState({ isLoaded: true, originalItems: storedItems, settings: storedSettings, defaultFilters }, () => {
 			this.filter()
 			this.focusInput()
 		})
 
 		window.addEventListener('beforeunload', () => {
-			const { filters, sort, originalItems, isCardExpanded } = this.state
+			const { settings, originalItems } = this.state
 
-			setToStorage<Item[]>('originalItems', originalItems)
-			setToStorage<Filters>('filters', filters)
-			setToStorage<SortOptionsKeys>('sort', sort)
-			setToStorage<boolean>('isCardExpanded', isCardExpanded)
+			// save original items, so favorites are tracking
+			setData<Item[]>('originalItems', originalItems)
+			setData<CatalogSettings>('catalogSettings', settings)
 		})
 	}
 
-	handleFilter(type: string, options: AllOptions) {
-		const { filters } = this.state
-
-		filters[type] = options
-
-		this.setState({ filters }, () => {
+	handleFilter(type: string, options: CatalogFiltersValues) {
+		const { settings } = this.state
+		settings.filters[type] = options
+		this.setState({ settings }, () => {
 			this.filter()
 		})
 	}
 
-	handleSort(key: SortOptionsKeys) {
-		this.setState({ sort: key }, () => {
+	handleSort(key: SortKeys) {
+		const { settings } = this.state
+		settings.sort = key
+
+		this.setState({ settings }, () => {
 			this.sort()
 		})
 	}
 
 	handleFavorite(id: string, isFavorite: boolean) {
-		const { filteredItems, originalItems, favoriteItemsQuantity, isAnimated, filters } = this.state
+		const { settings, filteredItems, originalItems, isAnimated } = this.state
+		const { filters, favoriteItemsQuantity } = settings
 
 		if (favoriteItemsQuantity === FAVORITE_MAX_QUANTITY && isFavorite === true) {
 			this.setState({ isPopupHidden: false, isAnimated: !isAnimated })
@@ -109,7 +91,9 @@ class Catalog extends Component<{}, CatalogState> {
 		const updatedFilteredItems = filteredItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
 		const updatedFavoriteItemsQuantity = isFavorite ? favoriteItemsQuantity + 1 : favoriteItemsQuantity - 1
 
-		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, favoriteItemsQuantity: updatedFavoriteItemsQuantity, isAnimated: !isAnimated })
+		settings.favoriteItemsQuantity = updatedFavoriteItemsQuantity
+
+		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated })
 
 		if (filters.areOnlyFavorite) {
 			const filterd = updatedFilteredItems.filter(item => item.isFavorite === true)
@@ -122,14 +106,15 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	filter() {
-		const { filters, isAnimated } = this.state
-		const { originalItems } = this.state
+		const { originalItems, settings, isAnimated } = this.state
+		const { filters } = settings
 		const filtered = filterArray(originalItems, filters)
 		this.setState({ filteredItems: filtered, isAnimated: !isAnimated })
 	}
 
 	sort() {
-		const { filteredItems, sort, isAnimated } = this.state
+		const { filteredItems, settings, isAnimated } = this.state
+		const { sort } = settings
 		const sorted = sortArray(filteredItems, sort)
 		this.setState({ filteredItems: sorted!, isAnimated: !isAnimated })
 	}
@@ -141,17 +126,20 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	clear() {
-		const { originalItems, isAnimated } = this.state
-		this.setState({ filters: { ...defaultFilters }, filteredItems: originalItems, isAnimated: !isAnimated })
+		const { originalItems, defaultFilters, isAnimated, settings } = this.state
+		settings.filters = defaultFilters
+		this.setState({ settings, filteredItems: originalItems, isAnimated: !isAnimated })
 	}
 
 	changeView(viewType: string) {
-		const isExpanded = viewType === 'list'
-		this.setState({ isCardExpanded: isExpanded })
+		const { settings } = this.state
+		settings.isCardExpanded = viewType === 'list'
+		this.setState({ settings })
 	}
 
 	render() {
-		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity, isPopupHidden, isAnimated, isCardExpanded } = this.state
+		const { isLoaded, filteredItems, settings, search, isPopupHidden, isAnimated } = this.state
+		const { filters, sort, favoriteItemsQuantity, isCardExpanded } = settings
 		const hasMatches = searchArray(filteredItems, search).length > 0
 		const springConfig = { stiffness: 1900, damping: 500, mass: 3 }
 
@@ -171,7 +159,7 @@ class Catalog extends Component<{}, CatalogState> {
 					filters={filters}
 					sort={sort}
 					favoriteItemsQuantity={favoriteItemsQuantity}
-					onSort={(key: SortOptionsKeys) => this.handleSort(key)}
+					onSort={(key: SortKeys) => this.handleSort(key)}
 					onClear={() => this.clear()}
 				/>
 

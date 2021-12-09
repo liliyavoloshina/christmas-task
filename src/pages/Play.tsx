@@ -1,10 +1,8 @@
-import { Component } from 'react'
 import '../styles/pages/__play.scss'
-
-interface PlayProps {}
+import { Component } from 'react'
 
 class Play extends Component<{}> {
-	constructor(props: PlayProps) {
+	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {}
 	}

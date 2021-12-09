@@ -1,15 +1,15 @@
 import { Component } from 'react'
-import { SortOptionsKeys, SortOptionsObject } from '../types/Filter'
+import { SortKeys, SortOptions } from '../types/Catalog'
 import '../styles/components/__select.scss'
 
 interface SelectProps {
-	initialSort: SortOptionsKeys
+	initialSort: SortKeys
 	onSelect(key: string): void
 }
 
 interface SelectState {
 	isActive: boolean
-	options: SortOptionsObject[]
+	options: SortOptions[]
 	innerText: string
 }
 
