@@ -5,6 +5,7 @@ import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
 import Popup from '../components/Popup'
+import Btn from '../components/Btn'
 import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
 import { FlippedProps } from '../types/utils'
 import { filterArray, getFromStorage, setToStorage, sortArray, searchArray, defaultFilters, FAVORITE_MAX_QUANTITY } from '../utils/utils'
@@ -19,6 +20,7 @@ interface CatalogState {
 	favoriteItemsQuantity: number
 	isPopupHidden: boolean
 	isAnimated: boolean
+	isCardExpanded: boolean
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -49,6 +51,7 @@ class Catalog extends Component<{}, CatalogState> {
 			favoriteItemsQuantity: 0,
 			isPopupHidden: true,
 			isAnimated: false,
+			isCardExpanded: false,
 		}
 		this.searchInput = React.createRef()
 	}
@@ -140,8 +143,14 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ filters: { ...defaultFilters }, filteredItems: originalItems, isAnimated: !isAnimated })
 	}
 
+	// eslint-disable-next-line class-methods-use-this
+	changeView(viewType: string) {
+		const isExpanded = viewType === 'list'
+		this.setState({ isCardExpanded: isExpanded })
+	}
+
 	render() {
-		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity, isPopupHidden, isAnimated } = this.state
+		const { isLoaded, filteredItems, filters, sort, search, favoriteItemsQuantity, isPopupHidden, isAnimated, isCardExpanded } = this.state
 		const hasMatches = searchArray(filteredItems, search).length > 0
 		const springConfig = { stiffness: 1900, damping: 500, mass: 3 }
 
@@ -166,16 +175,24 @@ class Catalog extends Component<{}, CatalogState> {
 				/>
 
 				<div className="items">
+					<div className="additional-panel">
+						<div className="additional-panel__change-view">
+							<Btn onClick={() => this.changeView('grid')} icon="grid_view" />
+							<Btn onClick={() => this.changeView('list')} icon="view_list" />
+						</div>
+						<div className="additional-panel__text">Toys found: {filteredItems.length}</div>
+					</div>
 					<div className={`no-matches-message ${hasMatches ? 'hidden' : null}`}>
 						<div className="no-matches-message__first">No matches found!</div>
 						<div className="no-matches-message__second">Try something else</div>
 					</div>
 
-					<Flipper className="items__list" onStart={() => console.log('start')} flipKey={isAnimated} spring={springConfig}>
-						{/* <Flipper className="items__list" onStart={() => console.log('start')} flipKey={filteredItems.join('')} spring={springConfig}> */}
+					<Flipper className={`items__list${isCardExpanded ? ' expanded' : ''}`} flipKey={isAnimated} spring={springConfig}>
 						{searchArray(filteredItems, search).map(item => (
 							<Flipped key={item.id} flipId={item.id}>
-								{(flippedProps: FlippedProps) => <Card flippedProps={flippedProps} onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />}
+								{(flippedProps: FlippedProps) => (
+									<Card flippedProps={flippedProps} isCardExpanded={isCardExpanded} onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />
+								)}
 							</Flipped>
 						))}
 					</Flipper>

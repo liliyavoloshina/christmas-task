@@ -4,9 +4,9 @@
 	justify-content: center;
 	overflow: hidden;
 	padding: 0.5rem;
+	border-radius: 4px;
 	font-family: inherit;
 	background: none;
-	border-radius: 20px;
 	border: 1px solid var(--white);
 	color: var(--white);
 	cursor: pointer;
@@ -33,8 +33,7 @@
 	}
 
 	&.accented {
-		box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright),
-			0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
+		box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
 	}
 
 	&.md {

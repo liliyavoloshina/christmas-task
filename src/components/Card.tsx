@@ -13,6 +13,7 @@ interface ItemProps {
 	size: 'large' | 'medium' | 'small'
 	isFavorite: boolean
 	flippedProps: FlippedProps
+	isCardExpanded: boolean
 	onFavorite(id: string, isFavorite: boolean): void
 }
 
@@ -24,17 +25,15 @@ class Card extends Component<ItemProps> {
 
 	handleFavorite(isFavorite: boolean) {
 		const { id, onFavorite } = this.props
-		console.log('handleFavorite card')
-
 		onFavorite(id, isFavorite)
 	}
 
 	render() {
-		const { id, name, amount, year, shape, color, size, isFavorite, flippedProps } = this.props
+		const { id, name, amount, year, shape, color, size, isFavorite, flippedProps, isCardExpanded } = this.props
 		const imageSrc = `images/${id}.png`
 
 		return (
-			<div className="card" {...flippedProps}>
+			<div className={`card${isCardExpanded ? ' expanded' : ''}`} {...flippedProps}>
 				<div className="card__header">
 					<h3 className="card__title">{name}</h3>
 					<BtnFavorite onFavorite={props => this.handleFavorite(props)} isFavorite={isFavorite} />

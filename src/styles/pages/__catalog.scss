@@ -28,6 +28,23 @@
 		grid-auto-rows: minmax(200px, auto);
 		gap: 1em;
 		align-items: stretch;
+
+		&.expanded {
+			grid-template-columns: unset;
+		}
+	}
+}
+
+.additional-panel {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1.5rem;
+	font-size: 1.2rem;
+
+	&__change-view {
+		display: flex;
+		column-gap: 2em;
 	}
 }
 
