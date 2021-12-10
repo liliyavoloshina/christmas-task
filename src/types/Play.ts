@@ -1,5 +1,6 @@
 interface PlayOptionItem {
   className: string
+  active: number
   quantity: number
 }
 
@@ -7,8 +8,4 @@ interface PlayOptionsObject {
   [key: string]: PlayOptionItem
 }
 
-interface PlayState {
-  options: PlayOptionsObject
-}
-
-export type { PlayOptionItem, PlayState, PlayOptionsObject } 
+export type { PlayOptionItem, PlayOptionsObject } 

@@ -13,15 +13,17 @@
 		display: block;
 		width: 40px;
 		height: 40px;
-		background: var(--white);
+		background: var(--grey);
+		border: 1px solid var(--bg-black);
 		border-radius: 50%;
 		position: relative;
-		box-shadow: 0 0 0 2px var(--bg-black), inset 0 0 0 3px rgba(0, 0, 0, 0.2), inset 0 0 20px 0 rgba(255, 255, 255, 1);
 		transition: 0.2s;
+
 		&:before,
 		&:after {
 			transition: 0.2s;
 		}
+
 		&:before {
 			content: '';
 			display: block;
@@ -38,14 +40,13 @@
 		&:after {
 			content: '';
 			display: block;
-			width: 3px;
+			width: 5px;
 			background: var(--bg-black);
 			position: absolute;
-			height: 17px;
+			height: 18px;
 			left: 50%;
-			top: 15%;
+			top: 2px;
 			transform: translateX(-50%);
-			box-shadow: 0 0 0 3px var(--white);
 		}
 	}
 

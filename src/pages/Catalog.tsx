@@ -9,7 +9,6 @@ import Popup from '../components/Popup'
 import Btn from '../components/Btn'
 import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
 import { FlippedProps } from '../types/utils'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
 interface CatalogState {
@@ -50,10 +49,7 @@ class Catalog extends Component<{}, CatalogState> {
 		})
 
 		window.addEventListener('beforeunload', () => {
-			const { settings, originalItems } = this.state
-
-			// save original items, so favorites are tracking
-			setData<Item[]>('originalItems', originalItems)
+			const { settings } = this.state
 			setData<CatalogSettings>('catalogSettings', settings)
 		})
 	}
@@ -93,7 +89,12 @@ class Catalog extends Component<{}, CatalogState> {
 
 		settings.favoriteItemsQuantity = updatedFavoriteItemsQuantity
 
-		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated })
+		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated }, () => {
+			// save original items, so favorites are tracking even on play page without reload
+			setData<Item[]>('originalItems', updatedOriginalItems)
+			// and favorite item's quantity
+			setData<CatalogSettings>('catalogSettings', settings)
+		})
 
 		if (filters.areOnlyFavorite) {
 			const filterd = updatedFilteredItems.filter(item => item.isFavorite === true)
@@ -170,7 +171,7 @@ class Catalog extends Component<{}, CatalogState> {
 						</div>
 						<div className="additional-panel__text">Toys found: {filteredItems.length}</div>
 					</div>
-					<div className={`no-matches-message ${hasMatches ? 'hidden' : null}`}>
+					<div className={`no-matches-message ${hasMatches ? 'hidden' : ''}`}>
 						<div className="no-matches-message__first">No matches found!</div>
 						<div className="no-matches-message__second">Try something else</div>
 					</div>

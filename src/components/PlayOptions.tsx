@@ -17,7 +17,7 @@ class PlayOptions extends Component<PlayOptionsProps, {}> {
 
 	render() {
 		const { title, options, isLights } = this.props
-		const { quantity, className } = options
+		const { quantity, active, className } = options
 
 		return (
 			<section className="options-section">
@@ -26,7 +26,10 @@ class PlayOptions extends Component<PlayOptionsProps, {}> {
 					{Array(quantity)
 						.fill(null)
 						.map((value, index) => (
-							<div key={index} className={`options__option options__option_active options__option_${className} ${className}-${index + 1}`} />
+							<div
+								key={index}
+								className={`options__option ${active === index ? `options__option_active` : ''} options__option-${className} options__option-${className}-${index + 1}`}
+							/>
 						))}
 					{isLights ? <Switch /> : null}
 				</div>

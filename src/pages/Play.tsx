@@ -1,32 +1,54 @@
+/* eslint-disable react/no-unused-state */
 import '../styles/pages/__play.scss'
 import { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
-import { PlayState } from '../types/Play'
+import { getData } from '../utils/utils'
+import { PlayOptionsObject } from '../types/Play'
+import Item from '../types/Item'
+
+interface PlayState {
+	options: PlayOptionsObject
+	items: Item[]
+}
 
 class Play extends Component<{}, PlayState> {
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
-			// eslint-disable-next-line react/no-unused-state
 			options: {
 				scene: {
 					className: 'scene',
-					quantity: 4,
+					active: 1,
+					quantity: 6,
 				},
 				tree: {
 					className: 'tree',
-					quantity: 4,
+					active: 2,
+					quantity: 6,
 				},
 				lights: {
 					className: 'lights',
+					active: 3,
 					quantity: 5,
 				},
 			},
+			items: [],
+		}
+	}
+
+	async componentDidMount() {
+		const storedItems = await getData('originalItems')
+		const storedFavoriteItems = storedItems.filter((item: Item) => item.isFavorite)
+		if (storedFavoriteItems.length === 0) {
+			const firstTwentyItems = storedItems.slice(0, 20)
+			this.setState({ items: firstTwentyItems })
+		} else {
+			this.setState({ items: storedFavoriteItems })
 		}
 	}
 
 	render() {
-		const { options } = this.state
+		const { options, items } = this.state
 
 		return (
 			<div className="play-container fullpage">
@@ -34,19 +56,6 @@ class Play extends Component<{}, PlayState> {
 					<PlayOptions title="Background" options={options.scene} />
 					<PlayOptions title="Tree" options={options.tree} />
 					<PlayOptions title="Lights" options={options.lights} isLights />
-					{/* <section className="aside-section">
-						<h3 className="aside-section__title">Lights</h3>
-						<div className="lights">
-							<span className="material-icons lights-1">lightbulb</span>
-							<span className="material-icons lights-2">lightbulb</span>
-							<span className="material-icons lights-3">lightbulb</span>
-							<span className="material-icons lights-4">lightbulb</span>
-							<span className="material-icons lights-5">lightbulb</span>
-							<button type="button" className="lights-switcher" title="Switch Lights">
-								<span className="material-icons">power_settings_new</span>
-							</button>
-						</div>
-					</section> */}
 					<div className="settings">
 						<div className="settings__block">
 							<input className="checkbox" type="checkbox" id="music-toggle" name="music-toggle" value="Music Toggle" />
@@ -68,7 +77,14 @@ class Play extends Component<{}, PlayState> {
 				</aside>
 				<div className="play-main" />
 				<aside className="aside">
-					<div className="toys" />
+					<div className="items-play">
+						{items.map(item => (
+							<div key={item.id} className="item-play">
+								<img src={`images/${item.id}.png`} alt={item.name} className="item-play__img" />
+								<div className="item-play__amount">{item.amount}</div>
+							</div>
+						))}
+					</div>
 				</aside>
 			</div>
 		)
