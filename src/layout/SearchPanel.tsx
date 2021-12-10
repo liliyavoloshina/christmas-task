@@ -1,16 +1,19 @@
 import { Component } from 'react'
-import Multiselect from '../components/MultiSelect'
+import Multiselect from '../components/Multiselect'
 import Select from '../components/Select'
 import Range from '../components/Range'
-import { RangeOptions, Filters, AllOptions, Colors, Sizes, Shapes, SortOptionsKeys } from '../types/Filter'
+import { RangeOptions, CatalogFilters, CatalogFiltersValues, Colors, Sizes, Shapes, SortKeys, MultiselectOptions } from '../types/Catalog'
 import '../styles/layout/__searchPanel.scss'
 import '../styles/components/__checkbox.scss'
+import Btn from '../components/Btn'
 
 interface SearchPanelProps {
-	filters: Filters
-	sort: SortOptionsKeys
-	onFilter(type: string, options: AllOptions): void
+	filters: CatalogFilters
+	sort: SortKeys
+	favoriteItemsQuantity: number
+	onFilter(type: string, options: CatalogFiltersValues): void
 	onSort(key: string): void
+	onClear(): void
 }
 
 class SearchPanel extends Component<SearchPanelProps> {
@@ -19,7 +22,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 		this.state = {}
 	}
 
-	handleFilter(type: string, prop: AllOptions) {
+	handleFilter(type: string, prop: CatalogFiltersValues) {
 		const { onFilter } = this.props
 		onFilter(type, prop)
 	}
@@ -30,16 +33,19 @@ class SearchPanel extends Component<SearchPanelProps> {
 	}
 
 	render() {
-		const { filters, sort } = this.props
+		const shapeOptions = ['ball', 'figure', 'bell', 'cone', 'snowflake'] as MultiselectOptions
+		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
+		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
+		const { filters, sort, onClear, favoriteItemsQuantity } = this.props
 		const { year, amount, shape, color, size, areOnlyFavorite } = filters
 
 		return (
 			<div className="search-panel">
 				<div className="selecting">
 					<Select onSelect={(key: string) => this.handleSort(key)} initialSort={sort} />
-					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter('shape', prop)} initialFilter={shape} />
-					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter('color', prop)} initialFilter={color} />
-					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter('size', prop)} initialFilter={size} />
+					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter('shape', prop)} initialFilter={shape} options={shapeOptions} />
+					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter('color', prop)} initialFilter={color} options={colorOptions} />
+					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter('size', prop)} initialFilter={size} options={sizeOptions} />
 				</div>
 
 				<div className="filtering">
@@ -58,17 +64,12 @@ class SearchPanel extends Component<SearchPanelProps> {
 						checked={areOnlyFavorite}
 					/>
 					<label className="only-favorite__label search-panel-label" htmlFor="only-favorite">
-						Only favorite
+						Only favorite ({favoriteItemsQuantity})
 					</label>
 				</div>
 
 				<div className="search-panel__actions">
-					<button type="button" className="btn clear-filter">
-						Clear
-					</button>
-					<button type="button" className="btn save-filter">
-						Save
-					</button>
+					<Btn onClick={() => onClear()} text="Clear" size="md" />
 				</div>
 			</div>
 		)

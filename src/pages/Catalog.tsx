@@ -1,17 +1,25 @@
-import { Component } from 'react'
+/* eslint-disable jsx-a11y/no-autofocus */
+import '../styles/pages/__catalog.scss'
+import React, { Component } from 'react'
+import { Flipper, Flipped } from 'react-flip-toolkit'
 import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
 import Item from '../types/Item'
-import '../styles/pages/__catalog.scss'
-import { Filters, AllOptions, SortOptionsKeys } from '../types/Filter'
-import { filterArray, getFromStorage, setToStorage, sortArray } from '../utils/utils'
+import Popup from '../components/Popup'
+import Btn from '../components/Btn'
+import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
+import { FlippedProps } from '../types/utils'
+import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
 interface CatalogState {
 	isLoaded: boolean
-	items: Item[]
-	original: Item[]
-	filters: Filters
-	sort: SortOptionsKeys
+	settings: CatalogSettings
+	search: string
+	filteredItems: Item[]
+	originalItems: Item[]
+	defaultFilters: CatalogFilters
+	isPopupHidden: boolean
+	isAnimated: boolean
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -19,75 +27,121 @@ class Catalog extends Component<{}, CatalogState> {
 		super(props)
 		this.state = {
 			isLoaded: false,
-			filters: {
-				year: {
-					min: 1940,
-					max: 2020,
-				},
-				amount: {
-					min: 1,
-					max: 12,
-				},
-				shape: ['ball', 'figure', 'bell', 'cone', 'snowflake'],
-				color: ['green', 'white', 'red', 'blue', 'yellow'],
-				size: ['large', 'medium', 'small'],
-				areOnlyFavorite: false,
-			},
-			sort: 'az',
-			items: [],
-			original: [],
+			settings: {} as CatalogSettings,
+			filteredItems: [],
+			originalItems: [],
+			defaultFilters: {} as CatalogFilters,
+			isPopupHidden: true,
+			isAnimated: false,
+			search: '',
 		}
 	}
 
 	async componentDidMount() {
-		const req = await fetch('data.json')
-		const res = await req.json()
-		const storedFilters = getFromStorage('filters')
-		const storedSort = getFromStorage('sort')
+		const storedItems = await getData('originalItems')
+		const storedSettings = await getData('catalogSettings')
+		const defaultFilters = await getData('defaultFilters')
 
-		this.setState({ isLoaded: true, original: res, filters: storedFilters, sort: storedSort })
-
-		this.filter()
+		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters }, async () => {
+			await this.filter()
+			await this.sort()
+			this.setState({ isLoaded: true })
+		})
 
 		window.addEventListener('beforeunload', () => {
-			const { filters, sort } = this.state
-
-			setToStorage<Filters>('filters', filters)
-			setToStorage<SortOptionsKeys>('sort', sort)
+			const { settings } = this.state
+			setData<CatalogSettings>('catalogSettings', settings)
 		})
 	}
 
-	handleFilter(type: string, options: AllOptions) {
-		const { filters } = this.state
-
-		filters[type] = options
-
-		this.setState({ filters }, () => {
+	handleFilter(type: string, options: CatalogFiltersValues) {
+		const { settings } = this.state
+		settings.filters[type] = options
+		this.setState({ settings }, () => {
 			this.filter()
 		})
 	}
 
-	handleSort(key: SortOptionsKeys) {
-		this.setState({ sort: key }, () => {
+	handleSort(key: SortKeys) {
+		const { settings } = this.state
+		settings.sort = key
+
+		this.setState({ settings }, () => {
 			this.sort()
 		})
 	}
 
-	filter() {
-		const { filters } = this.state
-		const { original } = this.state
-		const filtered = filterArray(original, filters)
-		this.setState({ items: filtered })
+	handleFavorite(id: string, isFavorite: boolean) {
+		const { settings, filteredItems, originalItems, isAnimated } = this.state
+		const { filters, favoriteItemsQuantity } = settings
+
+		if (favoriteItemsQuantity === FAVORITE_MAX_QUANTITY && isFavorite === true) {
+			this.setState({ isPopupHidden: false, isAnimated: !isAnimated })
+			setTimeout(() => {
+				this.setState({ isPopupHidden: true })
+			}, 4000)
+			return
+		}
+
+		const updatedOriginalItems = originalItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
+		const updatedFilteredItems = filteredItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
+		const updatedFavoriteItemsQuantity = isFavorite ? favoriteItemsQuantity + 1 : favoriteItemsQuantity - 1
+
+		settings.favoriteItemsQuantity = updatedFavoriteItemsQuantity
+
+		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated }, () => {
+			// save original items, so favorites are tracking even on play page without reload
+			setData<Item[]>('originalItems', updatedOriginalItems)
+			// and favorite item's quantity
+			setData<CatalogSettings>('catalogSettings', settings)
+		})
+
+		if (filters.areOnlyFavorite) {
+			const filterd = updatedFilteredItems.filter(item => item.isFavorite === true)
+			this.setState({ filteredItems: filterd, isAnimated: !isAnimated })
+		}
 	}
 
-	sort() {
-		const { items, sort } = this.state
-		const sorted = sortArray(items, sort)
-		this.setState({ items: sorted! })
+	async filter() {
+		const { originalItems, settings, isAnimated } = this.state
+		const { filters } = settings
+		const filtered = await filterArray(originalItems, filters)
+		this.setState({ filteredItems: filtered, isAnimated: !isAnimated })
+	}
+
+	async sort() {
+		const { filteredItems, settings, isAnimated } = this.state
+		const { sort } = settings
+		const sorted = await sortArray(filteredItems, sort)
+		this.setState({ filteredItems: sorted, isAnimated: !isAnimated })
+	}
+
+	search(e: React.SyntheticEvent) {
+		const { isAnimated } = this.state
+		const { value } = e.target as HTMLInputElement
+		this.setState({ search: value, isAnimated: !isAnimated })
+	}
+
+	async clear() {
+		const { originalItems, defaultFilters, isAnimated, settings } = this.state
+		settings.filters = { ...defaultFilters }
+
+		this.setState({ settings, filteredItems: originalItems, isAnimated: !isAnimated }, async () => {
+			await this.sort()
+		})
+	}
+
+	changeView(viewType: string) {
+		const { settings } = this.state
+		settings.isCardExpanded = viewType === 'list'
+		this.setState({ settings })
 	}
 
 	render() {
-		const { isLoaded, items, filters, sort } = this.state
+		const { isLoaded, filteredItems, settings, search, isPopupHidden, isAnimated } = this.state
+		const { filters, sort, favoriteItemsQuantity, isCardExpanded } = settings
+		const hasMatches = searchArray(filteredItems, search).length > 0
+		const springConfig = { stiffness: 2000, damping: 300, mass: 3 }
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -95,21 +149,42 @@ class Catalog extends Component<{}, CatalogState> {
 
 		return (
 			<div className="catalog">
+				<Popup text="Sorry, all slots are full!" isHidden={isPopupHidden} />
 				<div className="search-bar">
-					<input type="text" placeholder="Search..." className="search-bar__input" />
-					<button type="button" className="search-bar__expand-btn">
-						<span className="material-icons">search</span>
-					</button>
+					<input onInput={e => this.search(e)} autoFocus type="search" placeholder="Search..." className="search-bar__input" autoComplete="off" />
 				</div>
 
-				<SearchPanel onFilter={(type: string, options) => this.handleFilter(type, options)} filters={filters} sort={sort} onSort={(key: SortOptionsKeys) => this.handleSort(key)} />
+				<SearchPanel
+					onFilter={(type: string, options) => this.handleFilter(type, options)}
+					filters={filters}
+					sort={sort}
+					favoriteItemsQuantity={favoriteItemsQuantity}
+					onSort={(key: SortKeys) => this.handleSort(key)}
+					onClear={() => this.clear()}
+				/>
 
 				<div className="items">
-					<div className="items__list">
-						{items.map(item => (
-							<Card key={item.id} {...item} />
-						))}
+					<div className="additional-panel">
+						<div className="additional-panel__change-view">
+							<Btn onClick={() => this.changeView('grid')} accented={!isCardExpanded} icon="grid_view" form="square" title="change view" />
+							<Btn onClick={() => this.changeView('list')} accented={isCardExpanded} icon="view_list" form="square" title="change view" />
+						</div>
+						<div className="additional-panel__text">Toys found: {filteredItems.length}</div>
 					</div>
+					<div className={`no-matches-message ${hasMatches ? 'hidden' : ''}`}>
+						<div className="no-matches-message__first">No matches found!</div>
+						<div className="no-matches-message__second">Try something else</div>
+					</div>
+
+					<Flipper className={`items__list${isCardExpanded ? ' expanded' : ''}`} flipKey={isAnimated} spring={springConfig}>
+						{searchArray(filteredItems, search).map(item => (
+							<Flipped key={item.id} flipId={item.id}>
+								{(flippedProps: FlippedProps) => (
+									<Card flippedProps={flippedProps} isCardExpanded={isCardExpanded} onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />
+								)}
+							</Flipped>
+						))}
+					</Flipper>
 				</div>
 			</div>
 		)

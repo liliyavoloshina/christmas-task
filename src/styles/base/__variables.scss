@@ -1,22 +1,24 @@
 :root {
-  --root-px: 16px;
-  --nav-s: 50px;
-  --bg-dark: rgba(16, 18, 27, 40%);
-  --bg-light: rgb(146, 151, 179, 13%);
-  --bg-black: #14162b;
-  --white: #f9fafb;
-  --grey: rgba(113, 119, 144, 78%);
-  --yellow-bright: #ffb01e;
-  --green-bright: #1eff45;
-  --pink-bright: #ff1ec7;
-  --red-bright: #ff1e1e;
-  --accent: #6200ee;
-  --black: #383838;
-  --shadow-grey: 0 0 0 1px var(--grey);
+	--root-px: 16px;
+	--nav-s: 50px;
+	--bg-dark: rgba(16, 18, 27, 40%);
+	--bg-light: rgb(146, 151, 179, 13%);
+	--bg-black: #14162b;
+	--white: #f9fafb;
+	--grey: rgba(113, 119, 144, 78%);
+	--yellow-bright: #ffb01e;
+	--green-bright: #1eff45;
+	--pink-bright: #ff1ec7;
+	--red-bright: #ff1e1e;
+	--accent: #6200ee;
+	--black: #383838;
+	--error-text-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--red-bright), 0 0 20px var(--red-bright), 0 0 40px rgb(255, 72, 0), 0 0 80px rgb(255, 72, 0),
+		0 0 90px rgb(255, 72, 0), 0 0 100px rgb(255, 72, 0), 0 0 150px rgb(255, 72, 0);
+	--shadow-grey: 0 0 0 1px var(--grey);
 }
 
 @media (min-width: 768px) {
-  :root {
-    --root-px: 18px;
-  }
+	:root {
+		--root-px: 18px;
+	}
 }

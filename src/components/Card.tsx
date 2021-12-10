@@ -1,23 +1,42 @@
+import '../styles/components/__card.scss'
 import { Component } from 'react'
 import BtnFavorite from './BtnFavorite'
-import Item from '../types/Item'
-import '../styles/components/__card.scss'
+import { FlippedProps } from '../types/utils'
 
-class Card extends Component<Item> {
-	constructor(props: Item) {
+interface ItemProps {
+	id: string
+	name: string
+	amount: number
+	year: number
+	shape: 'ball' | 'figure' | 'bell' | 'cone' | 'snowflake'
+	color: 'green' | 'white' | 'red' | 'blue' | 'yellow'
+	size: 'large' | 'medium' | 'small'
+	isFavorite: boolean
+	flippedProps: FlippedProps
+	isCardExpanded: boolean
+	onFavorite(id: string, isFavorite: boolean): void
+}
+
+class Card extends Component<ItemProps> {
+	constructor(props: ItemProps) {
 		super(props)
 		this.state = {}
 	}
 
+	handleFavorite(isFavorite: boolean) {
+		const { id, onFavorite } = this.props
+		onFavorite(id, isFavorite)
+	}
+
 	render() {
-		const { id, name, amount, year, shape, color, size, isFavorite } = this.props
+		const { id, name, amount, year, shape, color, size, isFavorite, flippedProps, isCardExpanded } = this.props
 		const imageSrc = `images/${id}.png`
 
 		return (
-			<div className="card">
+			<div className={`card${isCardExpanded ? ' expanded' : ''}`} {...flippedProps}>
 				<div className="card__header">
 					<h3 className="card__title">{name}</h3>
-					<BtnFavorite isFavorite={isFavorite} />
+					<BtnFavorite onFavorite={props => this.handleFavorite(props)} isFavorite={isFavorite} />
 				</div>
 				<div className="card__img">
 					<img src={imageSrc} alt={name} />

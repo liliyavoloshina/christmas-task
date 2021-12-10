@@ -3,6 +3,7 @@
 	display: block;
 
 	&__box {
+		cursor: pointer;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
@@ -32,16 +33,13 @@
 	}
 
 	&__input {
-		flex: 1 1 100px;
-		display: block;
-		color: var(--white);
-		background-color: var(--bg-black);
+		height: 0;
+		border-radius: 4px;
 		border: none;
-		font-size: 1em;
-		text-align: left;
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
+		cursor: pointer;
 	}
 }
 
@@ -109,6 +107,8 @@
 }
 
 .selected-options {
+	// position: absolute;
+	// z-index: 1;
 	list-style-type: none;
 }
 

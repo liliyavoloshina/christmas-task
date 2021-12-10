@@ -4,8 +4,6 @@
 	margin-right: auto;
 	margin-left: auto;
 	width: 100%;
-	max-width: 1440px;
-	padding: 0;
 	background: var(--bg-light);
 }
 
@@ -15,18 +13,18 @@
 }
 
 .aside {
-	flex: 0 1 250px;
+	flex: 0 1 300px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	row-gap: 2rem;
+	row-gap: 0.5rem;
 	overflow: auto;
 	height: 100%;
-	padding: 1rem;
+	padding: 0.5rem;
 	background: var(--bg-dark);
 }
 
-.aside-section {
+.options-section {
 	&__title {
 		margin-bottom: 0.5rem;
 		font-size: 1rem;
@@ -35,110 +33,109 @@
 
 .options {
 	display: flex;
-	justify-content: space-between;
+	align-items: center;
 	flex-wrap: wrap;
+	gap: 0.5em;
 
 	&__option {
 		position: relative;
-		width: 45px;
-		height: 45px;
-		border-radius: 100%;
 		border: 1px solid var(--grey);
 		cursor: pointer;
 		transition: 0.3s;
+		background: var(--bg-light);
 
-		&:hover,
-		&:hover::after {
-			transform: scale(1.1);
-			background-color: transparent;
-		}
-
-		&::after {
-			content: '';
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			right: 0;
-			left: 0;
-			border-radius: 100%;
-			background-color: rgba(128, 128, 128, 0.685);
-		}
-
-		&_active::after {
-			background-color: transparent;
-		}
-
-		&_scene {
-			background: url('/img/iconscene.png') no-repeat;
-		}
-
-		&_tree {
-			background: url('/img/icontree.png') no-repeat;
+		&_active,
+		&:hover {
+			box-shadow: 0 0 5px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright);
 		}
 	}
 
-	.scene-1 {
-		background-position: 0 0;
-	}
-
-	.scene-2 {
-		background-position: -45px 0;
-	}
-
-	.scene-3 {
-		background-position: 0 -45px;
-	}
-
-	.scene-4 {
-		background-position: -92px -46px;
-	}
-
-	.tree-1 {
-		background-position: 0 0;
-	}
-
-	.tree-2 {
-		background-position: -40px 0;
-	}
-
-	.tree-3 {
-		background-position: -80px 0;
-	}
-
-	.tree-4 {
-		background-position: -120px 0;
+	.switch {
+		margin-left: auto;
 	}
 }
 
-.lights {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	flex-wrap: wrap;
-
-	& > span {
-		cursor: pointer;
-		transition: 0.3s;
-
-		&:hover {
-			transform: scale(1.1);
-		}
-	}
+.options__option-scene {
+	flex: 1 1 70px;
+	height: 60px;
+	border-radius: 4px;
+	background-size: cover;
 
 	&-1 {
-		color: var(--red-bright);
+		background-image: url('/img/scene/1.jpg');
 	}
 
 	&-2 {
-		color: var(--pink-bright);
+		background-image: url('/img/scene/2.jpg');
 	}
 
 	&-3 {
-		color: var(--green-bright);
+		background-image: url('/img/scene/3.jpg');
 	}
 
 	&-4 {
-		color: var(--yellow-bright);
+		background-image: url('/img/scene/4.jpg');
+	}
+
+	&-5 {
+		background-image: url('/img/scene/5.jpg');
+	}
+
+	&-6 {
+		background-image: url('/img/scene/6.jpg');
+	}
+}
+
+.options__option-tree {
+	flex: 1 1 80px;
+	height: 100px;
+	border-radius: 4px;
+	background-size: cover;
+
+	&-1 {
+		background-image: url('/img/tree/1.png');
+	}
+
+	&-2 {
+		background-image: url('/img/tree/2.png');
+	}
+
+	&-3 {
+		background-image: url('/img/tree/3.png');
+	}
+
+	&-4 {
+		background-image: url('/img/tree/4.png');
+	}
+
+	&-5 {
+		background-image: url('/img/tree/5.png');
+	}
+
+	&-6 {
+		background-image: url('/img/tree/6.png');
+	}
+}
+
+.options__option-lights {
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+
+	&-1 {
+		background: var(--red-bright);
+	}
+
+	&-2 {
+		background: var(--pink-bright);
+	}
+
+	&-3 {
+		background: var(--green-bright);
+	}
+
+	&-4 {
+		background: var(--yellow-bright);
 	}
 
 	&-5 {
@@ -173,5 +170,43 @@
 
 	&__btn {
 		width: 100%;
+	}
+}
+
+.items-play {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+	gap: 1em;
+}
+
+.item-play {
+	position: relative;
+	aspect-ratio: 1/1;
+	padding: 0.5em;
+	border-radius: 4px;
+	background: var(--bg-light);
+	box-shadow: var(--shadow-grey);
+
+	&__img {
+		width: 100%;
+		height: 100%;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+	}
+
+	&__amount {
+		position: absolute;
+		top: -5px;
+		right: -5px;
+		height: 20px;
+		width: 20px;
+		font-size: 14px;
+		text-align: center;
+		border-radius: 100%;
+		background: var(--accent);
 	}
 }

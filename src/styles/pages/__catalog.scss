@@ -1,3 +1,5 @@
+@import '../base/_mixins';
+
 :root {
 	--search-bar-h: 40px;
 }
@@ -14,7 +16,7 @@
 }
 
 .items {
-	flex: 1 1 700px;
+	flex: 1 1 60%;
 
 	&__title {
 		margin-bottom: 1rem;
@@ -26,6 +28,23 @@
 		grid-auto-rows: minmax(200px, auto);
 		gap: 1em;
 		align-items: stretch;
+
+		&.expanded {
+			grid-template-columns: unset;
+		}
+	}
+}
+
+.additional-panel {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1.5rem;
+	font-size: 1.2rem;
+
+	&__change-view {
+		display: flex;
+		column-gap: 2em;
 	}
 }
 
@@ -58,14 +77,25 @@
 			box-shadow: 0 0 3px 2px var(--accent);
 			outline: 5px solid transparent;
 		}
+
+		&::-webkit-search-cancel-button {
+			cursor: pointer;
+		}
+	}
+}
+
+.no-matches-message {
+	font-size: 2em;
+
+	&__first {
+		@include flicker(-0.3s);
 	}
 
-	&__expand-btn {
-		height: 100%;
-		padding: 0 0.5rem;
-		background: none;
-		border-radius: 4px;
-		border: 1px solid var(--grey);
-		color: var(--white);
+	&__second {
+		@include flicker();
+	}
+
+	&.hidden {
+		display: none;
 	}
 }
