@@ -1,8 +1,11 @@
 /* eslint-disable react/no-array-index-key */
+
 import '../styles/layout/__playOptions.scss'
 import { Component } from 'react'
 import Switch from './Switch'
 import { PlayOptionItem } from '../types/Play'
+
+// const ThemeContext = React.createContext('light');
 
 interface PlayOptionsProps {
 	title: string

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import '../styles/pages/__play.scss'
@@ -17,6 +18,7 @@ interface PlayState {
 	options: PlayOptionsObject
 	items: Item[]
 	treesPaths: TreePaths
+	draggableTarget: HTMLImageElement | null
 }
 
 class Play extends Component<{}, PlayState> {
@@ -49,6 +51,7 @@ class Play extends Component<{}, PlayState> {
 				6: tree6,
 			},
 			items: [],
+			draggableTarget: null,
 		}
 	}
 
@@ -63,34 +66,26 @@ class Play extends Component<{}, PlayState> {
 		}
 	}
 
-	handleItemDragEnd(e: React.DragEvent<HTMLImageElement>) {
-		const target = e.target as HTMLImageElement
-		const { pageX, pageY } = e
-		target.style.position = 'fixed'
-
-		target.style.width = `${30}px`
-		target.style.height = `${30}px`
-		target.style.left = `${pageX - target.offsetWidth / 2}px`
-		target.style.top = `${pageY - target.offsetHeight / 2}px`
-	}
-
 	onDragOver(e: React.DragEvent<HTMLAreaElement>) {
 		e.preventDefault()
 	}
 
 	onDragStart(e: React.DragEvent<HTMLImageElement>, id: string) {
+		const target = e.target as HTMLImageElement
 		e.dataTransfer.setData('id', id)
+		this.setState({ draggableTarget: target })
 	}
 
 	onDrop(e: React.DragEvent<HTMLAreaElement>) {
-		const target = e.target as HTMLImageElement
+		const { draggableTarget } = this.state
 		const { pageX, pageY } = e
-		const id = e.dataTransfer.getData('id')
-		console.log(target)
+		// const id = e.dataTransfer.getData('id')
 
-		// target.style.position = 'absolute'
-		// target.style.left = `${pageX - target.offsetWidth / 2}px`
-		// target.style.top = `${pageY - target.offsetHeight / 2}px`
+		draggableTarget!.style.position = 'fixed'
+		draggableTarget!.style.width = `${30}px`
+		draggableTarget!.style.height = `${30}px`
+		draggableTarget!.style.left = `${pageX - draggableTarget!.offsetWidth / 2}px`
+		draggableTarget!.style.top = `${pageY - draggableTarget!.offsetHeight / 2}px`
 	}
 
 	render() {
@@ -138,15 +133,7 @@ class Play extends Component<{}, PlayState> {
 					<div className="items-play">
 						{items.map(item => (
 							<div key={item.id} className="item-play">
-								<img
-									src={`images/${item.id}.png`}
-									alt={item.name}
-									className="item-play__img"
-									draggable
-									role="presentation"
-									onDragStart={e => this.onDragStart(e, item.id)}
-									onDragEnd={e => this.handleItemDragEnd(e)}
-								/>
+								<img src={`images/${item.id}.png`} alt={item.name} className="item-play__img" draggable role="presentation" onDragStart={e => this.onDragStart(e, item.id)} />
 								<div className="item-play__amount">{item.amount}</div>
 							</div>
 						))}
