@@ -1,0 +1,111 @@
+.options {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5em;
+
+	&__option {
+		position: relative;
+		border: 1px solid var(--grey);
+		cursor: pointer;
+		transition: 0.3s;
+		background: var(--bg-light);
+
+		&_active,
+		&:hover {
+			box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 10px var(--accent), 0 0 10px var(--accent);
+		}
+	}
+
+	.switch {
+		margin-left: auto;
+	}
+}
+
+.options__option-scene {
+	flex: 1 1 70px;
+	height: 60px;
+	border-radius: 4px;
+	background-size: cover;
+
+	&-1 {
+		background-image: url('/img/scene/1.jpg');
+	}
+
+	&-2 {
+		background-image: url('/img/scene/2.jpg');
+	}
+
+	&-3 {
+		background-image: url('/img/scene/3.jpg');
+	}
+
+	&-4 {
+		background-image: url('/img/scene/4.jpg');
+	}
+
+	&-5 {
+		background-image: url('/img/scene/5.jpg');
+	}
+
+	&-6 {
+		background-image: url('/img/scene/6.jpg');
+	}
+}
+
+.options__option-tree {
+	flex: 1 1 80px;
+	height: 100px;
+	border-radius: 4px;
+	background-size: cover;
+
+	&-1 {
+		background-image: url('/img/tree/1.png');
+	}
+
+	&-2 {
+		background-image: url('/img/tree/2.png');
+	}
+
+	&-3 {
+		background-image: url('/img/tree/3.png');
+	}
+
+	&-4 {
+		background-image: url('/img/tree/4.png');
+	}
+
+	&-5 {
+		background-image: url('/img/tree/5.png');
+	}
+
+	&-6 {
+		background-image: url('/img/tree/6.png');
+	}
+}
+
+.options__option-lights {
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+
+	&-1 {
+		background: var(--red-bright);
+	}
+
+	&-2 {
+		background: var(--pink-bright);
+	}
+
+	&-3 {
+		background: var(--green-bright);
+	}
+
+	&-4 {
+		background: var(--yellow-bright);
+	}
+
+	&-5 {
+		background: linear-gradient(11deg, var(--red-bright) 0%, var(--pink-bright) 30%, var(--yellow-bright) 50%, var(--green-bright) 100%);
+	}
+}

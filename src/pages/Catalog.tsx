@@ -92,7 +92,7 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated }, () => {
 			// save original items, so favorites are tracking even on play page without reload
 			setData<Item[]>('originalItems', updatedOriginalItems)
-			// and favorite item's quantity
+			// and favorite item's quantity - updated on time (maybe use "global state"?)
 			setData<CatalogSettings>('catalogSettings', settings)
 		})
 

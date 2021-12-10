@@ -1,14 +1,22 @@
-/* eslint-disable react/no-unused-state */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable class-methods-use-this */
 import '../styles/pages/__play.scss'
-import { Component } from 'react'
+import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
 import { getData } from '../utils/utils'
-import { PlayOptionsObject } from '../types/Play'
+import { PlayOptionsObject, TreePaths } from '../types/Play'
 import Item from '../types/Item'
+import tree1 from '../img/tree/1.png'
+import tree2 from '../img/tree/2.png'
+import tree3 from '../img/tree/3.png'
+import tree4 from '../img/tree/4.png'
+import tree5 from '../img/tree/5.png'
+import tree6 from '../img/tree/6.png'
 
 interface PlayState {
 	options: PlayOptionsObject
 	items: Item[]
+	treesPaths: TreePaths
 }
 
 class Play extends Component<{}, PlayState> {
@@ -23,14 +31,22 @@ class Play extends Component<{}, PlayState> {
 				},
 				tree: {
 					className: 'tree',
-					active: 2,
+					active: 1,
 					quantity: 6,
 				},
 				lights: {
 					className: 'lights',
-					active: 3,
+					active: 1,
 					quantity: 5,
 				},
+			},
+			treesPaths: {
+				1: tree1,
+				2: tree2,
+				3: tree3,
+				4: tree4,
+				5: tree5,
+				6: tree6,
 			},
 			items: [],
 		}
@@ -47,8 +63,39 @@ class Play extends Component<{}, PlayState> {
 		}
 	}
 
+	handleItemDragEnd(e: React.DragEvent<HTMLImageElement>) {
+		const target = e.target as HTMLImageElement
+		const { pageX, pageY } = e
+		target.style.position = 'fixed'
+
+		target.style.width = `${30}px`
+		target.style.height = `${30}px`
+		target.style.left = `${pageX - target.offsetWidth / 2}px`
+		target.style.top = `${pageY - target.offsetHeight / 2}px`
+	}
+
+	onDragOver(e: React.DragEvent<HTMLAreaElement>) {
+		e.preventDefault()
+	}
+
+	onDragStart(e: React.DragEvent<HTMLImageElement>, id: string) {
+		e.dataTransfer.setData('id', id)
+	}
+
+	onDrop(e: React.DragEvent<HTMLAreaElement>) {
+		const target = e.target as HTMLImageElement
+		const { pageX, pageY } = e
+		const id = e.dataTransfer.getData('id')
+		console.log(target)
+
+		// target.style.position = 'absolute'
+		// target.style.left = `${pageX - target.offsetWidth / 2}px`
+		// target.style.top = `${pageY - target.offsetHeight / 2}px`
+	}
+
 	render() {
-		const { options, items } = this.state
+		const { options, items, treesPaths } = this.state
+		const { tree } = options
 
 		return (
 			<div className="play-container fullpage">
@@ -75,12 +122,31 @@ class Play extends Component<{}, PlayState> {
 						</button>
 					</div>
 				</aside>
-				<div className="play-main" />
+				<div className="play-main">
+					<map name="tree-map">
+						<area
+							coords="365,699,189,706,113,683,31,608,2,555,2,539,18,437,73,351,106,224,161,134,243,-1,306,75,353,144,399,221,424,359,452,459,496,550,444,664"
+							alt="tree-area"
+							shape="poly"
+							onDragOver={e => this.onDragOver(e)}
+							onDrop={e => this.onDrop(e)}
+						/>
+					</map>
+					<img src={treesPaths[tree.active]} className="tree-main-image" useMap="#tree-map" alt="tree" />
+				</div>
 				<aside className="aside">
 					<div className="items-play">
 						{items.map(item => (
 							<div key={item.id} className="item-play">
-								<img src={`images/${item.id}.png`} alt={item.name} className="item-play__img" />
+								<img
+									src={`images/${item.id}.png`}
+									alt={item.name}
+									className="item-play__img"
+									draggable
+									role="presentation"
+									onDragStart={e => this.onDragStart(e, item.id)}
+									onDragEnd={e => this.handleItemDragEnd(e)}
+								/>
 								<div className="item-play__amount">{item.amount}</div>
 							</div>
 						))}

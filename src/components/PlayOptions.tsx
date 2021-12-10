@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+import '../styles/layout/__playOptions.scss'
 import { Component } from 'react'
 import Switch from './Switch'
 import { PlayOptionItem } from '../types/Play'
@@ -28,7 +29,7 @@ class PlayOptions extends Component<PlayOptionsProps, {}> {
 						.map((value, index) => (
 							<div
 								key={index}
-								className={`options__option ${active === index ? `options__option_active` : ''} options__option-${className} options__option-${className}-${index + 1}`}
+								className={`options__option ${active === index + 1 ? `options__option_active` : ''} options__option-${className} options__option-${className}-${index + 1}`}
 							/>
 						))}
 					{isLights ? <Switch /> : null}
