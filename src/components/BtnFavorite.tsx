@@ -14,8 +14,6 @@ class BtnFavorite extends Component<BtnFavoriteProps, {}> {
 
 	toggleFavorite() {
 		const { onFavorite, isFavorite } = this.props
-		console.log('toggle fav to', !isFavorite)
-
 		onFavorite(!isFavorite)
 	}
 

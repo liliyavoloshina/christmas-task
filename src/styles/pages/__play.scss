@@ -4,8 +4,6 @@
 	margin-right: auto;
 	margin-left: auto;
 	width: 100%;
-	max-width: 1440px;
-	padding: 0;
 	background: var(--bg-light);
 }
 
@@ -15,7 +13,7 @@
 }
 
 .aside {
-	flex: 0 1 250px;
+	flex: 0 1 300px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -26,7 +24,7 @@
 	background: var(--bg-dark);
 }
 
-.aside-section {
+.options-section {
 	&__title {
 		margin-bottom: 0.5rem;
 		font-size: 1rem;
@@ -175,3 +173,7 @@
 		width: 100%;
 	}
 }
+
+// ! multicolor
+// background: linear-gradient(
+// 124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8);

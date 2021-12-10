@@ -1,35 +1,40 @@
 import '../styles/pages/__play.scss'
 import { Component } from 'react'
+import PlayOptions from '../components/PlayOptions'
+import { PlayState } from '../types/Play'
 
-class Play extends Component<{}> {
+class Play extends Component<{}, PlayState> {
 	constructor(props: Readonly<{}>) {
 		super(props)
-		this.state = {}
+		this.state = {
+			// eslint-disable-next-line react/no-unused-state
+			options: {
+				scene: {
+					className: 'scene',
+					quantity: 4,
+				},
+				tree: {
+					className: 'tree',
+					quantity: 4,
+				},
+				lights: {
+					className: 'lights',
+					quantity: 5,
+				},
+			},
+		}
 	}
 
 	render() {
+		const { options } = this.state
+
 		return (
 			<div className="play-container fullpage">
 				<aside className="aside">
-					<section className="aside-section">
-						<h3 className="aside-section__title">Background</h3>
-						<div className="options">
-							<div className="options__option options__option_active  options__option_scene scene-1" />
-							<div className="options__option options__option_scene scene-2" />
-							<div className="options__option options__option_scene scene-3" />
-							<div className="options__option options__option_scene scene-4" />
-						</div>
-					</section>
-					<section className="aside-section">
-						<h3 className="aside-section__title">Tree</h3>
-						<div className="options">
-							<div className="options__option options__option_active  options__option_tree tree-1" />
-							<div className="options__option options__option_tree tree-2" />
-							<div className="options__option options__option_tree tree-3" />
-							<div className="options__option options__option_tree tree-4" />
-						</div>
-					</section>
-					<section className="aside-section">
+					<PlayOptions title="Background" options={options.scene} />
+					<PlayOptions title="Tree" options={options.tree} />
+					<PlayOptions title="Lights" options={options.lights} isLights />
+					{/* <section className="aside-section">
 						<h3 className="aside-section__title">Lights</h3>
 						<div className="lights">
 							<span className="material-icons lights-1">lightbulb</span>
@@ -41,7 +46,7 @@ class Play extends Component<{}> {
 								<span className="material-icons">power_settings_new</span>
 							</button>
 						</div>
-					</section>
+					</section> */}
 					<div className="settings">
 						<div className="settings__block">
 							<input className="checkbox" type="checkbox" id="music-toggle" name="music-toggle" value="Music Toggle" />

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-autofocus */
 import '../styles/pages/__catalog.scss'
 import React, { Component } from 'react'
 import { Flipper, Flipped } from 'react-flip-toolkit'
@@ -8,6 +9,7 @@ import Popup from '../components/Popup'
 import Btn from '../components/Btn'
 import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
 import { FlippedProps } from '../types/utils'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
 interface CatalogState {
@@ -22,8 +24,6 @@ interface CatalogState {
 }
 
 class Catalog extends Component<{}, CatalogState> {
-	private searchInput: React.RefObject<HTMLInputElement>
-
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
@@ -36,7 +36,6 @@ class Catalog extends Component<{}, CatalogState> {
 			isAnimated: false,
 			search: '',
 		}
-		this.searchInput = React.createRef()
 	}
 
 	async componentDidMount() {
@@ -44,9 +43,10 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedSettings = await getData('catalogSettings')
 		const defaultFilters = await getData('defaultFilters')
 
-		this.setState({ isLoaded: true, originalItems: storedItems, settings: storedSettings, defaultFilters }, () => {
-			this.filter()
-			this.focusInput()
+		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters }, async () => {
+			await this.filter()
+			await this.sort()
+			this.setState({ isLoaded: true })
 		})
 
 		window.addEventListener('beforeunload', () => {
@@ -101,22 +101,18 @@ class Catalog extends Component<{}, CatalogState> {
 		}
 	}
 
-	focusInput() {
-		this.searchInput.current?.focus()
-	}
-
-	filter() {
+	async filter() {
 		const { originalItems, settings, isAnimated } = this.state
 		const { filters } = settings
-		const filtered = filterArray(originalItems, filters)
+		const filtered = await filterArray(originalItems, filters)
 		this.setState({ filteredItems: filtered, isAnimated: !isAnimated })
 	}
 
-	sort() {
+	async sort() {
 		const { filteredItems, settings, isAnimated } = this.state
 		const { sort } = settings
-		const sorted = sortArray(filteredItems, sort)
-		this.setState({ filteredItems: sorted!, isAnimated: !isAnimated })
+		const sorted = await sortArray(filteredItems, sort)
+		this.setState({ filteredItems: sorted, isAnimated: !isAnimated })
 	}
 
 	search(e: React.SyntheticEvent) {
@@ -125,10 +121,13 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ search: value, isAnimated: !isAnimated })
 	}
 
-	clear() {
+	async clear() {
 		const { originalItems, defaultFilters, isAnimated, settings } = this.state
-		settings.filters = defaultFilters
-		this.setState({ settings, filteredItems: originalItems, isAnimated: !isAnimated })
+		settings.filters = { ...defaultFilters }
+
+		this.setState({ settings, filteredItems: originalItems, isAnimated: !isAnimated }, async () => {
+			await this.sort()
+		})
 	}
 
 	changeView(viewType: string) {
@@ -141,7 +140,7 @@ class Catalog extends Component<{}, CatalogState> {
 		const { isLoaded, filteredItems, settings, search, isPopupHidden, isAnimated } = this.state
 		const { filters, sort, favoriteItemsQuantity, isCardExpanded } = settings
 		const hasMatches = searchArray(filteredItems, search).length > 0
-		const springConfig = { stiffness: 1900, damping: 500, mass: 3 }
+		const springConfig = { stiffness: 2000, damping: 300, mass: 3 }
 
 		if (!isLoaded) {
 			return <div>Loading....</div>
@@ -151,7 +150,7 @@ class Catalog extends Component<{}, CatalogState> {
 			<div className="catalog">
 				<Popup text="Sorry, all slots are full!" isHidden={isPopupHidden} />
 				<div className="search-bar">
-					<input onInput={e => this.search(e)} type="search" placeholder="Search..." className="search-bar__input" ref={this.searchInput} autoComplete="off" />
+					<input onInput={e => this.search(e)} autoFocus type="search" placeholder="Search..." className="search-bar__input" autoComplete="off" />
 				</div>
 
 				<SearchPanel

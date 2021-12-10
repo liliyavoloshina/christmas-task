@@ -1,6 +1,14 @@
-interface PlayOption {
-  imageUrl: string
+interface PlayOptionItem {
+  className: string
+  quantity: number
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export type { PlayOption } 
+interface PlayOptionsObject {
+  [key: string]: PlayOptionItem
+}
+
+interface PlayState {
+  options: PlayOptionsObject
+}
+
+export type { PlayOptionItem, PlayState, PlayOptionsObject } 
