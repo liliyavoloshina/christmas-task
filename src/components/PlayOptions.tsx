@@ -5,18 +5,22 @@ import { Component } from 'react'
 import Switch from './Switch'
 import { PlayOptionItem } from '../types/Play'
 
-// const ThemeContext = React.createContext('light');
-
 interface PlayOptionsProps {
 	title: string
 	options: PlayOptionItem
 	isLights?: boolean
+	onSelect(optionType: string, optionIndex: number): void
 }
 
 class PlayOptions extends Component<PlayOptionsProps, {}> {
 	constructor(props: PlayOptionsProps) {
 		super(props)
 		this.state = {}
+	}
+
+	selectOption(optionType: string, optionIndex: number) {
+		const { onSelect } = this.props
+		onSelect(optionType, optionIndex)
 	}
 
 	render() {
@@ -33,6 +37,11 @@ class PlayOptions extends Component<PlayOptionsProps, {}> {
 							<div
 								key={index}
 								className={`options__option ${active === index + 1 ? `options__option_active` : ''} options__option-${className} options__option-${className}-${index + 1}`}
+								onClick={() => this.selectOption(className, index + 1)}
+								onKeyPress={() => this.selectOption(className, index + 1)}
+								role="button"
+								tabIndex={0}
+								aria-label="select option"
 							/>
 						))}
 					{isLights ? <Switch /> : null}

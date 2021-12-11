@@ -4,7 +4,7 @@ interface PlayOptionItem {
   quantity: number
 }
 
-interface TreePaths {
+interface ObjectIndexNumber {
   [key: number]: string
 }
 
@@ -12,4 +12,8 @@ interface PlayOptionsObject {
   [key: string]: PlayOptionItem
 }
 
-export type { PlayOptionItem, PlayOptionsObject, TreePaths } 
+interface ParentCardsObject {
+  [key: string]: HTMLDivElement
+}
+
+export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, ParentCardsObject } 
