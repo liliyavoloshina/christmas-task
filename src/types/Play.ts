@@ -4,6 +4,18 @@ interface PlayOptionItem {
   quantity: number
 }
 
+interface FavoriteItemCopy {
+  id: string
+  coords: [string, string]
+}
+
+interface FavoriteItem {
+  id: string
+  amount: number
+  itemsSetted: FavoriteItemCopy[]
+  itemsNotSetted: FavoriteItemCopy[]
+}
+
 interface ObjectIndexNumber {
   [key: number]: string
 }
@@ -12,8 +24,4 @@ interface PlayOptionsObject {
   [key: string]: PlayOptionItem
 }
 
-interface ParentCardsObject {
-  [key: string]: HTMLDivElement
-}
-
-export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, ParentCardsObject } 
+export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, FavoriteItemCopy, FavoriteItem } 

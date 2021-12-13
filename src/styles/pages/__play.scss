@@ -84,9 +84,23 @@
 	box-shadow: var(--shadow-grey);
 
 	&__img {
-		position: absolute;
-		width: 80%;
-		height: 80%;
+		&.not-setted {
+			position: absolute;
+			width: 80%;
+			height: 80%;
+		}
+
+		&.setted {
+			position: fixed;
+			width: 30px;
+			height: 30px;
+		}
+
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
+		}
 
 		img {
 			width: 100%;

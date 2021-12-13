@@ -1,18 +1,8 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
-import { getData } from '../utils/utils'
-import { PlayOptionsObject, ObjectIndexNumber, ParentCardsObject } from '../types/Play'
-import Item from '../types/Item'
+import { getData, idToInitial } from '../utils/utils'
+import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy } from '../types/Play'
 import tree1 from '../img/tree/1.png'
 import tree2 from '../img/tree/2.png'
 import tree3 from '../img/tree/3.png'
@@ -22,16 +12,15 @@ import tree6 from '../img/tree/6.png'
 
 interface PlayState {
 	options: PlayOptionsObject
-	items: Item[]
+	favoriteItems: FavoriteItem[]
+	itemsSetted: FavoriteItemCopy[]
+	itemsNotSetted: FavoriteItemCopy[]
 	treesPaths: ObjectIndexNumber
-	draggableTarget: HTMLImageElement | null
+	draggableId: string
+	isAlreadyOnTheTree: boolean
 }
 
 class Play extends Component<{}, PlayState> {
-	private outsideTree: React.RefObject<HTMLDivElement>
-
-	private parentCards: ParentCardsObject
-
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
@@ -60,22 +49,40 @@ class Play extends Component<{}, PlayState> {
 				5: tree5,
 				6: tree6,
 			},
-			items: [],
-			draggableTarget: null,
+			itemsSetted: [],
+			itemsNotSetted: [],
+			draggableId: '',
+			favoriteItems: [],
+			isAlreadyOnTheTree: false,
 		}
-
-		this.parentCards = {} as ParentCardsObject
-		this.outsideTree = React.createRef()
 	}
 
 	async componentDidMount() {
-		const storedItems = await getData('originalItems')
-		const storedFavoriteItems = storedItems.filter((item: Item) => item.isFavorite)
-		if (storedFavoriteItems.length === 0) {
-			const firstTwentyItems = storedItems.slice(0, 20)
-			this.setState({ items: firstTwentyItems })
-		} else {
-			this.setState({ items: storedFavoriteItems })
+		const favoriteItems = await getData('favoriteItems')
+
+		let setted: FavoriteItemCopy[] = []
+		let notSetted: FavoriteItemCopy[] = []
+
+		favoriteItems.forEach((item: FavoriteItem) => {
+			setted = item.itemsSetted
+			notSetted = [...notSetted, ...item.itemsNotSetted]
+		})
+
+		this.setState({ favoriteItems, itemsSetted: setted, itemsNotSetted: notSetted })
+	}
+
+	handleDragEnd(e: React.DragEvent<HTMLImageElement>, id: string) {
+		e.preventDefault()
+		const { itemsNotSetted, itemsSetted, isAlreadyOnTheTree } = this.state
+		const currentDroppable = e.target
+		const elemBelow = document.elementFromPoint(e.clientX, e.clientY)
+
+		if (currentDroppable !== elemBelow && !elemBelow?.classList.contains('droppable') && isAlreadyOnTheTree) {
+			const itemToUnset = itemsSetted.find(item => item.id === id)
+			const updatedItemsNotSetted = [...itemsNotSetted, itemToUnset!]
+			const updatedItemsSetted = itemsSetted.filter(item => item.id !== id)
+
+			this.setState({ itemsSetted: updatedItemsSetted, itemsNotSetted: updatedItemsNotSetted })
 		}
 	}
 
@@ -84,59 +91,44 @@ class Play extends Component<{}, PlayState> {
 		console.log(optionType, optionIndex)
 	}
 
-	handleDragEnd(e: React.DragEvent<HTMLImageElement>, id: string) {
-		console.log(e)
-	}
-
-	handleDropCancel(e: React.DragEvent<HTMLDivElement>) {
-		const mainTree = this.outsideTree.current as HTMLDivElement
-		const id = e.dataTransfer.getData('id')
-		const parentCard = this.parentCards[id]
-		const { draggableTarget } = this.state
-
-		if (mainTree?.contains(draggableTarget)) {
-			mainTree?.removeChild(draggableTarget as HTMLElement)
-			parentCard?.appendChild(draggableTarget as HTMLElement)
-
-			this.styleDraggable('absolute', '80%', '80%', 'unset', 'unset')
-		}
-	}
-
-	onDragOver(e: React.DragEvent<HTMLAreaElement | HTMLDivElement>) {
-		e.preventDefault()
-	}
-
 	onDrop(e: React.DragEvent<HTMLAreaElement>) {
 		e.stopPropagation()
-		// const id = e.dataTransfer.getData('id')
-		const mainTree = this.outsideTree.current as HTMLDivElement
-		const { draggableTarget } = this.state
+		const { draggableId, itemsNotSetted, itemsSetted, isAlreadyOnTheTree } = this.state
+
+		// TODO: how to access element in dom without querySelector ???
+		const draggableTarget = document.querySelector<HTMLElement>(`[id="${draggableId}"]`)
 		const { pageX, pageY } = e
 
-		// works, but pin to page height/width instead of tree
-		this.styleDraggable('fixed', '30px', '30px', `${pageX - draggableTarget!.offsetWidth / 2}px`, `${pageY - draggableTarget!.offsetHeight / 2}px`)
+		const leftCoord = pageX - draggableTarget!.offsetWidth / 2
+		const rightCoord = pageY - draggableTarget!.offsetHeight / 2
+		let itemToReplace: FavoriteItemCopy
 
-		mainTree?.appendChild(draggableTarget as HTMLElement)
+		if (isAlreadyOnTheTree) {
+			itemToReplace = itemsSetted.find(item => item.id === draggableId)!
+
+			// TODO: just fire rereder, so coords change (is it possible to avoid this???)
+			const updatedItemsSetted = itemsSetted
+			this.setState({ itemsSetted: updatedItemsSetted })
+		} else {
+			itemToReplace = itemsNotSetted.find(item => item.id === draggableId)!
+			const updatedItemsNotSetted = itemsNotSetted.filter(item => item.id !== draggableId)
+			const updatedItemsSetted = [...itemsSetted, itemToReplace]
+			this.setState({ itemsSetted: updatedItemsSetted, itemsNotSetted: updatedItemsNotSetted })
+		}
+
+		itemToReplace!.coords[0] = `${leftCoord}px`
+		itemToReplace!.coords[1] = `${rightCoord}px`
 	}
 
-	onDragStart(e: React.DragEvent<HTMLImageElement>, id: string) {
-		const target = e.target as HTMLImageElement
-		e.dataTransfer.setData('id', id)
-		this.setState({ draggableTarget: target })
-	}
+	onDragStart(id: string) {
+		const { itemsSetted } = this.state
+		const isAlreadyOnTheTree = itemsSetted.findIndex(item => item.id === id) !== -1
 
-	styleDraggable(pos: string, width: string, height: string, left: string, top: string) {
-		const { draggableTarget } = this.state
-
-		draggableTarget!.style.position = pos
-		draggableTarget!.style.width = width
-		draggableTarget!.style.height = height
-		draggableTarget!.style.left = left
-		draggableTarget!.style.top = top
+		this.setState({ draggableId: id, isAlreadyOnTheTree })
 	}
 
 	render() {
-		const { options, items, treesPaths } = this.state
+		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted } = this.state
 		const { tree } = options
 
 		return (
@@ -164,29 +156,58 @@ class Play extends Component<{}, PlayState> {
 						</button>
 					</div>
 				</aside>
-				<div className="play-main" ref={this.outsideTree as React.RefObject<HTMLDivElement>} onDrop={e => this.handleDropCancel(e)} onDragOver={e => this.onDragOver(e)}>
+				<div className="play-main">
 					<map name="tree-map">
 						<area
+							className="droppable"
 							coords="365,699,189,706,113,683,31,608,2,555,2,539,18,437,73,351,106,224,161,134,243,-1,306,75,353,144,399,221,424,359,452,459,496,550,444,664"
 							alt="tree-area"
 							shape="poly"
-							onDragOver={e => this.onDragOver(e)}
+							onDragOver={e => e.preventDefault()}
 							onDrop={e => this.onDrop(e)}
 						/>
+						{itemsSetted.map(toy => {
+							const id = idToInitial(toy.id)
+							return (
+								<img
+									key={toy.id}
+									src={`images/${id}.png`}
+									alt="lll"
+									className="item-play__img setted"
+									style={{ left: toy.coords[0], top: toy.coords[1] }}
+									draggable
+									onDragStart={() => this.onDragStart(toy.id)}
+									onDragEnd={e => this.handleDragEnd(e, toy.id)}
+									id={toy.id}
+								/>
+							)
+						})}
 					</map>
 					<img src={treesPaths[tree.active]} className="tree-main-image" useMap="#tree-map" alt="tree" />
 				</div>
 				<aside className="aside">
 					<div className="items-play">
-						{items.map(item => (
-							<div key={item.id} className="item-play" ref={el => (this.parentCards[item.id] = el!)}>
-								{[...Array(+item.amount)].map((el, index) => (
-									<img key={index} src={`images/${item.id}.png`} alt={item.name} className="item-play__img" draggable onDragStart={e => this.onDragStart(e, item.id)} />
-								))}
+						{favoriteItems.map(item => {
+							const displayInCard = itemsNotSetted.filter(notSettedItem => idToInitial(notSettedItem.id) === item.id)
+							return (
+								<div key={item.id} className="item-play">
+									{displayInCard.map(toy => (
+										<img
+											key={toy.id}
+											src={`images/${item.id}.png`}
+											alt="nnn"
+											className="item-play__img not-setted"
+											draggable
+											onDragStart={() => this.onDragStart(toy.id)}
+											onDragEnd={e => this.handleDragEnd(e, toy.id)}
+											id={toy.id}
+										/>
+									))}
 
-								<div className="item-play__amount">{item.amount}</div>
-							</div>
-						))}
+									<div className="item-play__amount">{displayInCard.length}</div>
+								</div>
+							)
+						})}
 					</div>
 				</aside>
 			</div>

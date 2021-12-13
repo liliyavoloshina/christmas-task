@@ -1,7 +1,7 @@
 import Item from '../types/Item'
 import { CatalogSettings, SortKeys, CatalogFilters } from '../types/Catalog'
 
-type DataKey = 'originalItems' | 'catalogSettings' | 'defaultFilters'
+type DataKey = 'originalItems' | 'catalogSettings' | 'defaultFilters' | 'favoriteItems'
 
 const FAVORITE_MAX_QUANTITY = 5
 
@@ -58,6 +58,23 @@ const searchArray = (array: Item[], key: string) =>
     return item.name.toLocaleLowerCase().includes(key.toLowerCase())
   })
 
+
+const idToInitial = (id: string) => id.split('-').slice(0, 1).join('')
+
+const updateItemsArrayToFavorite = (arr: Item[]) => {
+  const updatedFavoriteItems = arr.map((item: Item) => {
+    const itemsNotSetted = [...Array(item.amount)].map((el, index) => {
+      const toy = { id: `${item.id}-${index}`, coords: [0, 0] }
+      return toy
+    })
+
+    const itemForFavorite = { id: item.id, amount: item.amount, itemsNotSetted, itemsSetted: [] }
+    return itemForFavorite
+  })
+
+  return updatedFavoriteItems
+}
+
 const serverRequest = async <T>(url: string): Promise<T> => {
   const req = await fetch(url)
   const res = await req.json()
@@ -86,8 +103,22 @@ const getData = async (key: DataKey) => {
     return defaultFilters.filters
   }
 
+  if (key === 'favoriteItems') {
+    const storedItems = JSON.parse(window.localStorage.getItem('originalItems')!)
+    const onlyFavoriteItems = storedItems!.filter((item: Item) => item.isFavorite)
+
+    if (onlyFavoriteItems.length === 0) {
+      const firstTwentyItems = storedItems.slice(0, 20)
+      const updatedFavoriteItems = updateItemsArrayToFavorite(firstTwentyItems)
+      return updatedFavoriteItems
+    }
+
+    const updatedFavoriteItems = updateItemsArrayToFavorite(onlyFavoriteItems)
+    return updatedFavoriteItems
+  }
+
   const initialItemsFromServer = await serverRequest<Item[]>('data/items.json')
   return initialItemsFromServer
 }
 
-export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY }
+export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, idToInitial }
