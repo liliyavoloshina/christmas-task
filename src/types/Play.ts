@@ -24,4 +24,12 @@ interface PlayOptionsObject {
   [key: string]: PlayOptionItem
 }
 
-export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, FavoriteItemCopy, FavoriteItem } 
+interface PlaySettings {
+  activeScene: number
+  activeTree: number
+  activeLights: number
+  isSnow: boolean
+  isMusic: boolean
+}
+
+export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, FavoriteItemCopy, FavoriteItem, PlaySettings } 

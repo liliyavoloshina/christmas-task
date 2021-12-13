@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
-import { getData, idToInitial } from '../utils/utils'
-import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy } from '../types/Play'
+import { getData, idToInitial, setData } from '../utils/utils'
+import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
 import tree1 from '../img/tree/1.png'
 import tree2 from '../img/tree/2.png'
 import tree3 from '../img/tree/3.png'
@@ -18,6 +19,8 @@ interface PlayState {
 	treesPaths: ObjectIndexNumber
 	draggableId: string
 	isAlreadyOnTheTree: boolean
+	isSnow: boolean
+	isMusic: boolean
 }
 
 class Play extends Component<{}, PlayState> {
@@ -28,7 +31,7 @@ class Play extends Component<{}, PlayState> {
 				scene: {
 					className: 'scene',
 					active: 1,
-					quantity: 6,
+					quantity: 9,
 				},
 				tree: {
 					className: 'tree',
@@ -54,21 +57,38 @@ class Play extends Component<{}, PlayState> {
 			draggableId: '',
 			favoriteItems: [],
 			isAlreadyOnTheTree: false,
+			isSnow: false,
+			isMusic: false,
 		}
 	}
 
 	async componentDidMount() {
+		const { itemsSetted, itemsNotSetted, isSnow, isMusic, options } = this.state
 		const favoriteItems = await getData('favoriteItems')
+		const storedPlaySettings = await getData('playSettings')
 
 		let setted: FavoriteItemCopy[] = []
 		let notSetted: FavoriteItemCopy[] = []
 
 		favoriteItems.forEach((item: FavoriteItem) => {
 			setted = item.itemsSetted
-			notSetted = [...notSetted, ...item.itemsNotSetted]
+			notSetted = item.itemsNotSetted
 		})
 
-		this.setState({ favoriteItems, itemsSetted: setted, itemsNotSetted: notSetted })
+		options.scene.active = storedPlaySettings.activeScene
+		options.tree.active = storedPlaySettings.activeTree
+		options.lights.active = storedPlaySettings.activeLights
+
+		this.setState({ favoriteItems, itemsSetted: setted, itemsNotSetted: notSetted, options, isSnow: storedPlaySettings.isSnow, isMusic: storedPlaySettings.isMusic })
+
+		window.addEventListener('beforeunload', () => {
+			const { scene, tree, lights } = options
+			const updatedFavoriteItems = favoriteItems.map((item: FavoriteItem) => ({ id: item.id, amount: item.amount, itemsSetted, itemsNotSetted }))
+			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic }
+
+			setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
+			setData<PlaySettings>('playSettings', playSettings)
+		})
 	}
 
 	handleDragEnd(e: React.DragEvent<HTMLImageElement>, id: string) {

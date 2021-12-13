@@ -1,7 +1,7 @@
 import Item from '../types/Item'
 import { CatalogSettings, SortKeys, CatalogFilters } from '../types/Catalog'
 
-type DataKey = 'originalItems' | 'catalogSettings' | 'defaultFilters' | 'favoriteItems'
+type DataKey = 'originalItems' | 'catalogSettings' | 'defaultFilters' | 'favoriteItems' | 'playSettings'
 
 const FAVORITE_MAX_QUANTITY = 5
 
@@ -115,6 +115,17 @@ const getData = async (key: DataKey) => {
 
     const updatedFavoriteItems = updateItemsArrayToFavorite(onlyFavoriteItems)
     return updatedFavoriteItems
+  }
+
+  if (key === 'playSettings') {
+    const defaultPlaySettings = {
+      activeScene: 1,
+      activeTree: 2,
+      activeLights: 4,
+      isSnow: false,
+      isMusic: false,
+    }
+    return defaultPlaySettings
   }
 
   const initialItemsFromServer = await serverRequest<Item[]>('data/items.json')
