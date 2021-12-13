@@ -88,7 +88,9 @@ class Play extends Component<{}, PlayState> {
 
 	// eslint-disable-next-line class-methods-use-this
 	handleSelectOption(optionType: string, optionIndex: number) {
-		console.log(optionType, optionIndex)
+		const { options } = this.state
+		options[optionType].active = optionIndex
+		this.setState({ options })
 	}
 
 	onDrop(e: React.DragEvent<HTMLAreaElement>) {
@@ -129,7 +131,8 @@ class Play extends Component<{}, PlayState> {
 
 	render() {
 		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted } = this.state
-		const { tree } = options
+		const { tree, scene } = options
+		const treeContainerClass = `tree-container scene-${scene.active}`
 
 		return (
 			<div className="play-container fullpage">
@@ -156,7 +159,7 @@ class Play extends Component<{}, PlayState> {
 						</button>
 					</div>
 				</aside>
-				<div className="play-main">
+				<div className={treeContainerClass}>
 					<map name="tree-map">
 						<area
 							className="droppable"
