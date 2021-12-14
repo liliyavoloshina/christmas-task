@@ -41,10 +41,10 @@ const sortArray = (array: Item[], key: SortKeys) => {
     return array.sort((a, b) => b.name.localeCompare(a.name))
   }
   if (key === 'asc') {
-    return array.sort((a, b) => a.amount - b.amount)
+    return array.sort((a, b) => a.year - b.year)
   }
   if (key === 'desc') {
-    return array.sort((a, b) => b.amount - a.amount)
+    return array.sort((a, b) => b.year - a.year)
   }
 
   return array

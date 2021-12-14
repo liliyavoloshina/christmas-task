@@ -21,8 +21,8 @@ class Select extends Component<SelectProps, SelectState> {
 			options: [
 				{ key: 'az', text: 'by name from A to Z' },
 				{ key: 'za', text: 'by name from Z to A' },
-				{ key: 'asc', text: 'by quantity ascending' },
-				{ key: 'desc', text: 'by quantity descending' },
+				{ key: 'asc', text: 'by year ascending' },
+				{ key: 'desc', text: 'by year descending' },
 			],
 			innerText: '',
 		}
