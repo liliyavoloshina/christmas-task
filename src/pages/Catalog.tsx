@@ -8,7 +8,7 @@ import Item from '../types/Item'
 import Popup from '../components/Popup'
 import Btn from '../components/Btn'
 import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
-import { FlippedProps } from '../types/utils'
+import { FlippedProps, LocalStorage } from '../types/utils'
 import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY } from '../utils/utils'
 
 interface CatalogState {
@@ -38,9 +38,9 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	async componentDidMount() {
-		const storedItems = await getData('originalItems')
-		const storedSettings = await getData('catalogSettings')
-		const defaultFilters = await getData('defaultFilters')
+		const storedItems = await getData(LocalStorage.OriginalItems)
+		const storedSettings = await getData(LocalStorage.CatalogSettings)
+		const defaultFilters = await getData(LocalStorage.DefaultFilters)
 
 		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters }, async () => {
 			await this.filter()
@@ -50,7 +50,7 @@ class Catalog extends Component<{}, CatalogState> {
 
 		window.addEventListener('beforeunload', () => {
 			const { settings } = this.state
-			setData<CatalogSettings>('catalogSettings', settings)
+			setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
 		})
 	}
 
@@ -91,9 +91,9 @@ class Catalog extends Component<{}, CatalogState> {
 
 		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated }, () => {
 			// save original items, so favorites are tracking even on play page without reload
-			setData<Item[]>('originalItems', updatedOriginalItems)
+			setData<Item[]>(LocalStorage.OriginalItems, updatedOriginalItems)
 			// and favorite item's quantity - updated on time (maybe use "global state"?)
-			setData<CatalogSettings>('catalogSettings', settings)
+			setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
 		})
 
 		if (filters.areOnlyFavorite) {

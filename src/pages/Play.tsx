@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
 import { getData, idToInitial, setData, getSnowflakes } from '../utils/utils'
 import Btn from '../components/Btn'
+import { LocalStorage } from '../types/utils'
 import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
 import tree1 from '../img/tree/1.png'
 import tree2 from '../img/tree/2.png'
@@ -70,8 +71,8 @@ class Play extends Component<{}, PlayState> {
 
 	async componentDidMount() {
 		const { options } = this.state
-		const favoriteItems = await getData('favoriteItems')
-		const storedPlaySettings = await getData('playSettings')
+		const favoriteItems = await getData(LocalStorage.FavoriteItems)
+		const storedPlaySettings = await getData(LocalStorage.PlaySettings)
 
 		let setted: FavoriteItemCopy[] = []
 		let notSetted: FavoriteItemCopy[] = []
@@ -97,7 +98,7 @@ class Play extends Component<{}, PlayState> {
 			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic }
 
 			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
-			setData<PlaySettings>('playSettings', playSettings)
+			setData<PlaySettings>(LocalStorage.PlaySettings, playSettings)
 		})
 	}
 
@@ -185,6 +186,7 @@ class Play extends Component<{}, PlayState> {
 		this.audio.pause()
 		this.audio = new Audio('/audio/1.mp3')
 		this.setState({ options, isSnow: false, isMusic: false })
+		window.localStorage.removeItem(LocalStorage.PlaySettings)
 	}
 
 	checkMusic() {

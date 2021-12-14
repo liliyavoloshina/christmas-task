@@ -2,5 +2,13 @@ interface FlippedProps {
   [key: string]: string
 }
 
-// eslint-disable-next-line import/prefer-default-export
+enum LocalStorage {
+  OriginalItems = 'originalItems',
+  CatalogSettings = 'catalogSettings',
+  DefaultFilters = 'defaultFilters',
+  FavoriteItems = 'favoriteItems',
+  PlaySettings = 'playSettings',
+}
+
+export { LocalStorage }
 export type { FlippedProps }
