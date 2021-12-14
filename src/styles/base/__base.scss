@@ -21,17 +21,11 @@ body {
 }
 
 .container {
-	margin-right: auto;
-	margin-left: auto;
 	width: 100%;
 	max-width: 1440px;
 	height: 100%;
+	margin: 0 auto;
 	padding: 0 0.7rem;
-
-	@media (min-width: 768px) {
-		// padding + sidenav width
-		// padding: 0 80px;
-	}
 }
 
 .fullpage {

@@ -4,6 +4,6 @@
 	background: var(--bg-dark);
 
 	@media (min-width: 768px) {
-		margin-left: var(--nav-s);
+		padding: calc(var(--nav-h) + 30px) 0;
 	}
 }

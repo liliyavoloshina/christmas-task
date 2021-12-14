@@ -63,7 +63,7 @@ class Play extends Component<{}, PlayState> {
 	}
 
 	async componentDidMount() {
-		const { itemsSetted, itemsNotSetted, isSnow, isMusic, options } = this.state
+		const { isSnow, isMusic, options } = this.state
 		const favoriteItems = await getData('favoriteItems')
 		const storedPlaySettings = await getData('playSettings')
 
@@ -71,8 +71,8 @@ class Play extends Component<{}, PlayState> {
 		let notSetted: FavoriteItemCopy[] = []
 
 		favoriteItems.forEach((item: FavoriteItem) => {
-			setted = item.itemsSetted
-			notSetted = item.itemsNotSetted
+			setted = [...setted, ...item.itemsSetted]
+			notSetted = [...notSetted, ...item.itemsNotSetted]
 		})
 
 		options.scene.active = storedPlaySettings.activeScene
@@ -82,11 +82,15 @@ class Play extends Component<{}, PlayState> {
 		this.setState({ favoriteItems, itemsSetted: setted, itemsNotSetted: notSetted, options, isSnow: storedPlaySettings.isSnow, isMusic: storedPlaySettings.isMusic })
 
 		window.addEventListener('beforeunload', () => {
+			const { itemsSetted, itemsNotSetted } = this.state
 			const { scene, tree, lights } = options
+
+			console.log(itemsSetted, 'itemsSetted')
+
 			const updatedFavoriteItems = favoriteItems.map((item: FavoriteItem) => ({ id: item.id, amount: item.amount, itemsSetted, itemsNotSetted }))
 			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic }
 
-			setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
+			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
 			setData<PlaySettings>('playSettings', playSettings)
 		})
 	}
@@ -179,6 +183,9 @@ class Play extends Component<{}, PlayState> {
 						</button>
 					</div>
 				</aside>
+				<div className="snowflakes">
+					<div className="snowflake" />
+				</div>
 				<div className={treeContainerClass}>
 					<map name="tree-map">
 						<area

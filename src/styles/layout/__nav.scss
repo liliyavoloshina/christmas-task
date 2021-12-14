@@ -2,14 +2,20 @@
 	position: sticky;
 	bottom: 0;
 	width: 100%;
-	max-width: 1200px;
 	height: 80px;
 	padding: 1.5rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	background: var(--grey);
-	// background: var(--bg-black);
+
+	&__wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 200px;
+		margin: 0 auto;
+	}
 
 	&__list {
 		display: flex;
@@ -51,14 +57,9 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		width: var(--nav-s);
-		height: 100%;
+		right: 0;
+		width: 100%;
+		height: var(--nav-h);
 		padding: unset;
-		// background: var(--bg-light);
-
-		&__list {
-			flex-direction: column;
-			height: 150px;
-		}
 	}
 }
