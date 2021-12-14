@@ -3,6 +3,7 @@ import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
 import { getData, idToInitial, setData, getSnowflakes } from '../utils/utils'
+import Btn from '../components/Btn'
 import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
 import tree1 from '../img/tree/1.png'
 import tree2 from '../img/tree/2.png'
@@ -10,7 +11,6 @@ import tree3 from '../img/tree/3.png'
 import tree4 from '../img/tree/4.png'
 import tree5 from '../img/tree/5.png'
 import tree6 from '../img/tree/6.png'
-// import sound from '../audio/1.mp3'
 
 interface PlayState {
 	options: PlayOptionsObject
@@ -65,6 +65,7 @@ class Play extends Component<{}, PlayState> {
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
+		this.audio.loop = true
 	}
 
 	async componentDidMount() {
@@ -132,7 +133,6 @@ class Play extends Component<{}, PlayState> {
 		}
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	handleSelectOption(optionType: string, optionIndex: number) {
 		const { options } = this.state
 		options[optionType].active = optionIndex
@@ -173,6 +173,18 @@ class Play extends Component<{}, PlayState> {
 		const isAlreadyOnTheTree = itemsSetted.findIndex(item => item.id === id) !== -1
 
 		this.setState({ draggableId: id, isAlreadyOnTheTree })
+	}
+
+	clear() {
+		const { options } = this.state
+
+		options.scene.active = 1
+		options.tree.active = 1
+		options.lights.active = 1
+
+		this.audio.pause()
+		this.audio = new Audio('/audio/1.mp3')
+		this.setState({ options, isSnow: false, isMusic: false })
 	}
 
 	checkMusic() {
@@ -218,12 +230,8 @@ class Play extends Component<{}, PlayState> {
 						</div>
 					</div>
 					<div className="actions">
-						<button type="button" className="actions__btn btn">
-							Clear
-						</button>
-						<button type="button" className="actions__btn btn btn_yellow">
-							Shine Christmas Tree!
-						</button>
+						<Btn onClick={() => this.clear()} text="Clear" />
+						<Btn text="Shine Christmas Tree!" accented />
 					</div>
 				</aside>
 				<div className={treeContainerClass}>
