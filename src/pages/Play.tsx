@@ -71,7 +71,7 @@ class Play extends Component<{}, PlayState> {
 
 	async componentDidMount() {
 		const { options } = this.state
-		const favoriteItems = await getData(LocalStorage.FavoriteItems)
+		const favoriteItems = await getData(LocalStorage.PlayFavoriteItems)
 		const storedPlaySettings = await getData(LocalStorage.PlaySettings)
 
 		let setted: FavoriteItemCopy[] = []

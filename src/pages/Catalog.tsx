@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/no-unused-state */
 /* eslint-disable jsx-a11y/no-autofocus */
 import '../styles/pages/__catalog.scss'
 import React, { Component } from 'react'
@@ -17,6 +19,7 @@ interface CatalogState {
 	search: string
 	filteredItems: Item[]
 	originalItems: Item[]
+	favoriteItems: Item[]
 	defaultFilters: CatalogFilters
 	isPopupHidden: boolean
 	isAnimated: boolean
@@ -30,6 +33,7 @@ class Catalog extends Component<{}, CatalogState> {
 			settings: {} as CatalogSettings,
 			filteredItems: [],
 			originalItems: [],
+			favoriteItems: [],
 			defaultFilters: {} as CatalogFilters,
 			isPopupHidden: true,
 			isAnimated: false,
@@ -39,18 +43,31 @@ class Catalog extends Component<{}, CatalogState> {
 
 	async componentDidMount() {
 		const storedItems = await getData(LocalStorage.OriginalItems)
+		const favoriteItems = await getData(LocalStorage.FavoriteItems)
+
+		if (favoriteItems) {
+			favoriteItems.forEach((favoriteItem: Item) => {
+				const favoriteItemIndex = storedItems.findIndex((item: Item) => item.id === favoriteItem.id)
+
+				if (favoriteItemIndex !== -1) {
+					storedItems[favoriteItemIndex].isFavorite = true
+				}
+			})
+		}
+
 		const storedSettings = await getData(LocalStorage.CatalogSettings)
 		const defaultFilters = await getData(LocalStorage.DefaultFilters)
 
-		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters }, async () => {
+		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, async () => {
 			await this.filter()
 			await this.sort()
 			this.setState({ isLoaded: true })
 		})
 
 		window.addEventListener('beforeunload', () => {
-			const { settings } = this.state
-			setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
+			// const { settings } = this.state
+			// setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
+			// setData<Item[]>(LocalStorage.FavoriteItems, favoriteItems)
 		})
 	}
 
@@ -72,10 +89,10 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	handleFavorite(id: string, isFavorite: boolean) {
-		const { settings, filteredItems, originalItems, isAnimated } = this.state
-		const { filters, favoriteItemsQuantity } = settings
+		const { settings, filteredItems, favoriteItems, originalItems, isAnimated } = this.state
+		const { filters } = settings
 
-		if (favoriteItemsQuantity === FAVORITE_MAX_QUANTITY && isFavorite === true) {
+		if (favoriteItems.length === FAVORITE_MAX_QUANTITY && isFavorite === true) {
 			this.setState({ isPopupHidden: false, isAnimated: !isAnimated })
 			setTimeout(() => {
 				this.setState({ isPopupHidden: true })
@@ -83,17 +100,21 @@ class Catalog extends Component<{}, CatalogState> {
 			return
 		}
 
+		const checkedItem = originalItems.find(item => item.id === id)
+
 		const updatedOriginalItems = originalItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
 		const updatedFilteredItems = filteredItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
-		const updatedFavoriteItemsQuantity = isFavorite ? favoriteItemsQuantity + 1 : favoriteItemsQuantity - 1
+		let updatedFavoriteItems = favoriteItems
 
-		settings.favoriteItemsQuantity = updatedFavoriteItemsQuantity
+		if (isFavorite === true) {
+			updatedFavoriteItems.push(checkedItem!)
+		} else {
+			updatedFavoriteItems = updatedFavoriteItems.filter(item => item.id !== id)
+		}
 
-		this.setState({ originalItems: updatedOriginalItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated }, () => {
-			// save original items, so favorites are tracking even on play page without reload
-			setData<Item[]>(LocalStorage.OriginalItems, updatedOriginalItems)
-			// and favorite item's quantity - updated on time (maybe use "global state"?)
-			setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
+		this.setState({ originalItems: updatedOriginalItems, favoriteItems: updatedFavoriteItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated }, () => {
+			// save favorite items, so favorites are tracking even on play page without reload
+			setData<Item[]>(LocalStorage.FavoriteItems, updatedFavoriteItems)
 		})
 
 		if (filters.areOnlyFavorite) {
@@ -138,8 +159,8 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	render() {
-		const { isLoaded, filteredItems, settings, search, isPopupHidden, isAnimated } = this.state
-		const { filters, sort, favoriteItemsQuantity, isCardExpanded } = settings
+		const { isLoaded, filteredItems, favoriteItems, settings, search, isPopupHidden, isAnimated } = this.state
+		const { filters, sort, isCardExpanded } = settings
 		const hasMatches = searchArray(filteredItems, search).length > 0
 		const springConfig = { stiffness: 2000, damping: 300, mass: 3 }
 
@@ -158,7 +179,7 @@ class Catalog extends Component<{}, CatalogState> {
 					onFilter={(type: string, options) => this.handleFilter(type, options)}
 					filters={filters}
 					sort={sort}
-					favoriteItemsQuantity={favoriteItemsQuantity}
+					favoriteItemsQuantity={favoriteItems.length}
 					onSort={(key: SortKeys) => this.handleSort(key)}
 					onClear={() => this.clear()}
 				/>

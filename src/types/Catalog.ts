@@ -35,7 +35,6 @@ interface CatalogFilters extends CatalogFiltersObject {
 interface CatalogSettings extends CatalogSettingsObject {
   filters: CatalogFilters
   sort: SortKeys,
-  favoriteItemsQuantity: number,
   isCardExpanded: boolean
 }
 

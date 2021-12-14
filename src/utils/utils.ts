@@ -1,7 +1,6 @@
 import Item from '../types/Item'
 import { CatalogSettings, SortKeys, CatalogFilters } from '../types/Catalog'
-
-type DataKey = 'originalItems' | 'catalogSettings' | 'defaultFilters' | 'favoriteItems' | 'playSettings'
+import { LocalStorage } from '../types/utils'
 
 const FAVORITE_MAX_QUANTITY = 5
 const SNOWFLAKES_COUNT = 200
@@ -82,43 +81,47 @@ const serverRequest = async <T>(url: string): Promise<T> => {
   return res
 }
 
-const setData = <T>(key: DataKey, value: T) => {
+const setData = <T>(key: LocalStorage, value: T) => {
   const stringified = JSON.stringify(value)
   window.localStorage.setItem(key, stringified)
 }
 
-const getData = async (key: DataKey) => {
+const getData = async (key: LocalStorage) => {
   const stored = window.localStorage.getItem(key)
 
   if (stored) {
     return JSON.parse(stored)
   }
 
-  if (key === 'catalogSettings') {
+  if (key === LocalStorage.CatalogSettings) {
     const defaultSettingsFromServer = await serverRequest<CatalogSettings>('data/catalogSettings.json')
     return defaultSettingsFromServer
   }
 
-  if (key === 'defaultFilters') {
+  if (key === LocalStorage.DefaultFilters) {
     const defaultFilters = await serverRequest<CatalogSettings>('data/catalogSettings.json')
     return defaultFilters.filters
   }
 
-  if (key === 'favoriteItems') {
-    const storedItems = JSON.parse(window.localStorage.getItem('originalItems')!)
-    const onlyFavoriteItems = storedItems!.filter((item: Item) => item.isFavorite)
+  if (key === LocalStorage.FavoriteItems) {
+    return []
+  }
 
-    if (onlyFavoriteItems.length === 0) {
+  if (key === LocalStorage.PlayFavoriteItems) {
+    const favoriteItems = JSON.parse(window.localStorage.getItem(LocalStorage.FavoriteItems)!)
+
+    if (favoriteItems.length === 0) {
+      const storedItems = JSON.parse(window.localStorage.getItem(LocalStorage.OriginalItems)!)
       const firstTwentyItems = storedItems.slice(0, 20)
       const updatedFavoriteItems = updateItemsArrayToFavorite(firstTwentyItems)
       return updatedFavoriteItems
     }
 
-    const updatedFavoriteItems = updateItemsArrayToFavorite(onlyFavoriteItems)
+    const updatedFavoriteItems = updateItemsArrayToFavorite(favoriteItems)
     return updatedFavoriteItems
   }
 
-  if (key === 'playSettings') {
+  if (key === LocalStorage.PlaySettings) {
     const defaultPlaySettings = {
       activeScene: 1,
       activeTree: 2,

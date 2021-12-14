@@ -8,6 +8,7 @@ enum LocalStorage {
   DefaultFilters = 'defaultFilters',
   FavoriteItems = 'favoriteItems',
   PlaySettings = 'playSettings',
+  PlayFavoriteItems = 'PlayFavoriteItems'
 }
 
 export { LocalStorage }
