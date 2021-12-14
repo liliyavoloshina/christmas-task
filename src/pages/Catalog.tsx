@@ -12,6 +12,7 @@ import Btn from '../components/Btn'
 import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
 import { FlippedProps, LocalStorage } from '../types/utils'
 import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY } from '../utils/utils'
+import Loader from '../components/Loader'
 
 interface CatalogState {
 	isLoaded: boolean
@@ -58,8 +59,8 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedSettings = await getData(LocalStorage.CatalogSettings)
 		const defaultFilters = await getData(LocalStorage.DefaultFilters)
 
-		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, () => {
-			this.filter()
+		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, async () => {
+			await this.filter()
 			this.setState({ isLoaded: true })
 		})
 
@@ -121,7 +122,7 @@ class Catalog extends Component<{}, CatalogState> {
 		}
 	}
 
-	filter() {
+	async filter() {
 		const { originalItems, settings, isAnimated } = this.state
 		const { filters } = settings
 		const filtered = filterArray(originalItems, filters)
@@ -165,7 +166,7 @@ class Catalog extends Component<{}, CatalogState> {
 		const springConfig = { stiffness: 2000, damping: 300, mass: 3 }
 
 		if (!isLoaded) {
-			return <div>Loading....</div>
+			return <Loader />
 		}
 
 		return (

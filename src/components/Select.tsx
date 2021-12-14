@@ -1,6 +1,6 @@
+import '../styles/components/__select.scss'
 import { Component } from 'react'
 import { SortKeys, SortOptions } from '../types/Catalog'
-import '../styles/components/__select.scss'
 
 interface SelectProps {
 	initialSort: SortKeys
