@@ -31,10 +31,10 @@ class Catalog extends Component<{}, CatalogState> {
 		this.state = {
 			isLoaded: false,
 			settings: {} as CatalogSettings,
+			defaultFilters: {} as CatalogFilters,
 			filteredItems: [],
 			originalItems: [],
 			favoriteItems: [],
-			defaultFilters: {} as CatalogFilters,
 			isPopupHidden: true,
 			isAnimated: false,
 			search: '',
@@ -58,16 +58,14 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedSettings = await getData(LocalStorage.CatalogSettings)
 		const defaultFilters = await getData(LocalStorage.DefaultFilters)
 
-		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, async () => {
-			await this.filter()
-			await this.sort()
+		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, () => {
+			this.filter()
 			this.setState({ isLoaded: true })
 		})
 
 		window.addEventListener('beforeunload', () => {
-			// const { settings } = this.state
-			// setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
-			// setData<Item[]>(LocalStorage.FavoriteItems, favoriteItems)
+			const { settings } = this.state
+			setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
 		})
 	}
 
@@ -123,17 +121,19 @@ class Catalog extends Component<{}, CatalogState> {
 		}
 	}
 
-	async filter() {
+	filter() {
 		const { originalItems, settings, isAnimated } = this.state
 		const { filters } = settings
-		const filtered = await filterArray(originalItems, filters)
-		this.setState({ filteredItems: filtered, isAnimated: !isAnimated })
+		const filtered = filterArray(originalItems, filters)
+		this.setState({ filteredItems: filtered, isAnimated: !isAnimated }, () => {
+			this.sort()
+		})
 	}
 
-	async sort() {
+	sort() {
 		const { filteredItems, settings, isAnimated } = this.state
 		const { sort } = settings
-		const sorted = await sortArray(filteredItems, sort)
+		const sorted = sortArray(filteredItems, sort)
 		this.setState({ filteredItems: sorted, isAnimated: !isAnimated })
 	}
 
@@ -143,12 +143,12 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ search: value, isAnimated: !isAnimated })
 	}
 
-	async clear() {
+	clear() {
 		const { originalItems, defaultFilters, isAnimated, settings } = this.state
 		settings.filters = { ...defaultFilters }
 
-		this.setState({ settings, filteredItems: originalItems, isAnimated: !isAnimated }, async () => {
-			await this.sort()
+		this.setState({ settings, filteredItems: originalItems, isAnimated: !isAnimated }, () => {
+			this.sort()
 		})
 	}
 

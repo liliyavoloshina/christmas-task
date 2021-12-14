@@ -16,7 +16,7 @@ const searchOptions = (value: string, options: string[] = [], exclude: string[] 
     return matches && exclude.indexOf(option) < 0
   })
 
-const filterArray = async (items: Item[], filters: CatalogFilters) => {
+const filterArray = (items: Item[], filters: CatalogFilters) => {
   const isCorrectYear = (item: Item) => item.year >= filters.year.min && item.year <= filters.year.max
   const isCorrectAmount = (item: Item) => item.amount >= filters.amount.min && item.amount <= filters.amount.max
   const isCorrectShape = (item: Item) => filters.shape.includes(item.shape)
@@ -33,7 +33,7 @@ const filterArray = async (items: Item[], filters: CatalogFilters) => {
   return items.filter(item => isCorrectYear(item) && isCorrectAmount(item) && isCorrectShape(item) && isCorrectColor(item) && isCorrectSize(item) && isCorrectFavorite(item))
 }
 
-const sortArray = async (array: Item[], key: SortKeys) => {
+const sortArray = (array: Item[], key: SortKeys) => {
   if (key === 'az') {
     return array.sort((a, b) => a.name.localeCompare(b.name))
   }
