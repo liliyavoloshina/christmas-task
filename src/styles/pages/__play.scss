@@ -8,6 +8,8 @@
 }
 
 .tree-container {
+	position: relative;
+	overflow: hidden;
 	flex: 1 1 500px;
 	display: flex;
 	justify-content: center;
@@ -190,22 +192,20 @@
 
 .snowflakes {
 	position: absolute;
-	top: 0;
-	left: 50%;
-	right: 50%;
-	transform: translateX(-50%);
-	height: calc(100vh - 80px);
-	width: 500px;
-	pointer-events: none;
-	z-index: 100;
+	top: -100%;
+	left: 0;
+	right: 0;
+	bottom: 100px;
 	overflow: hidden;
+	z-index: 100;
+	pointer-events: none;
 
 	.snowflake {
 		display: inline-block;
 		color: #fff;
-		font-size: 3rem;
 		padding: 1rem;
-		animation: falling 2s linear forwards infinite;
+		animation: falling 5s linear forwards infinite;
+		pointer-events: none;
 	}
 
 	.snowflake::before {

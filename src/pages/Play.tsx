@@ -2,7 +2,7 @@
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
-import { getData, idToInitial, setData } from '../utils/utils'
+import { getData, idToInitial, setData, getSnowflakes } from '../utils/utils'
 import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
 import tree1 from '../img/tree/1.png'
 import tree2 from '../img/tree/2.png'
@@ -63,7 +63,7 @@ class Play extends Component<{}, PlayState> {
 	}
 
 	async componentDidMount() {
-		const { isSnow, isMusic, options } = this.state
+		const { options } = this.state
 		const favoriteItems = await getData('favoriteItems')
 		const storedPlaySettings = await getData('playSettings')
 
@@ -82,10 +82,8 @@ class Play extends Component<{}, PlayState> {
 		this.setState({ favoriteItems, itemsSetted: setted, itemsNotSetted: notSetted, options, isSnow: storedPlaySettings.isSnow, isMusic: storedPlaySettings.isMusic })
 
 		window.addEventListener('beforeunload', () => {
-			const { itemsSetted, itemsNotSetted } = this.state
+			const { itemsSetted, itemsNotSetted, isSnow, isMusic } = this.state
 			const { scene, tree, lights } = options
-
-			console.log(itemsSetted, 'itemsSetted')
 
 			const updatedFavoriteItems = favoriteItems.map((item: FavoriteItem) => ({ id: item.id, amount: item.amount, itemsSetted, itemsNotSetted }))
 			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic }
@@ -93,6 +91,13 @@ class Play extends Component<{}, PlayState> {
 			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
 			setData<PlaySettings>('playSettings', playSettings)
 		})
+	}
+
+	handleCheckbox(type: 'snow' | 'music') {
+		if (type === 'snow') {
+			const { isSnow } = this.state
+			this.setState({ isSnow: !isSnow })
+		}
 	}
 
 	handleDragEnd(e: React.DragEvent<HTMLImageElement>, id: string) {
@@ -154,7 +159,7 @@ class Play extends Component<{}, PlayState> {
 	}
 
 	render() {
-		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted } = this.state
+		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow } = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
 
@@ -170,7 +175,7 @@ class Play extends Component<{}, PlayState> {
 							<label htmlFor="music-toggle">Music</label>
 						</div>
 						<div className="settings__block">
-							<input className="checkbox" type="checkbox" id="snow-toggle" name="snow-toggle" value="Snow Toggle" />
+							<input onChange={() => this.handleCheckbox('snow')} checked={isSnow} className="checkbox" type="checkbox" id="snow-toggle" name="snow-toggle" value="Snow Toggle" />
 							<label htmlFor="snow-toggle">Snow</label>
 						</div>
 					</div>
@@ -183,10 +188,18 @@ class Play extends Component<{}, PlayState> {
 						</button>
 					</div>
 				</aside>
-				<div className="snowflakes">
-					<div className="snowflake" />
-				</div>
 				<div className={treeContainerClass}>
+					<div className="snowflakes">
+						{isSnow
+							? getSnowflakes().map(snowflake => (
+									<div
+										key={snowflake.id}
+										style={{ right: snowflake.paddingLeft, opacity: snowflake.opacity, animationDuration: snowflake.animationDuration, fontSize: snowflake.fontSize }}
+										className="snowflake"
+									/>
+							  ))
+							: null}
+					</div>
 					<map name="tree-map">
 						<area
 							className="droppable"

@@ -4,6 +4,7 @@ import { CatalogSettings, SortKeys, CatalogFilters } from '../types/Catalog'
 type DataKey = 'originalItems' | 'catalogSettings' | 'defaultFilters' | 'favoriteItems' | 'playSettings'
 
 const FAVORITE_MAX_QUANTITY = 5
+const SNOWFLAKES_COUNT = 200
 
 const firstToUpperCase = (string: string) => {
   const first = string.charAt(0).toUpperCase()
@@ -132,4 +133,15 @@ const getData = async (key: DataKey) => {
   return initialItemsFromServer
 }
 
-export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, idToInitial }
+const getSnowflakes = () => Array(SNOWFLAKES_COUNT)
+  .fill(null)
+  .map((value, index) => {
+    const randomPaddingLeft = `${Math.random() * 10}px`
+    const randomAnimationDuration = `${Math.random() * 5 + 3}s`
+    const randomOpacity = Math.random() * 1
+    const randomFontSize = `${Math.random() * (1 - 1.4) + 1.4}rem`
+    const snowflake = { id: index, paddingLeft: randomPaddingLeft, animationDuration: randomAnimationDuration, opacity: randomOpacity, fontSize: randomFontSize }
+    return snowflake
+  })
+
+export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, idToInitial, getSnowflakes }
