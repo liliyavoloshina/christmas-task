@@ -10,6 +10,7 @@ import tree3 from '../img/tree/3.png'
 import tree4 from '../img/tree/4.png'
 import tree5 from '../img/tree/5.png'
 import tree6 from '../img/tree/6.png'
+// import sound from '../audio/1.mp3'
 
 interface PlayState {
 	options: PlayOptionsObject
@@ -24,6 +25,8 @@ interface PlayState {
 }
 
 class Play extends Component<{}, PlayState> {
+	private audio: HTMLAudioElement
+
 	constructor(props: Readonly<{}>) {
 		super(props)
 		this.state = {
@@ -60,6 +63,8 @@ class Play extends Component<{}, PlayState> {
 			isSnow: false,
 			isMusic: false,
 		}
+
+		this.audio = new Audio('/audio/1.mp3')
 	}
 
 	async componentDidMount() {
@@ -81,6 +86,8 @@ class Play extends Component<{}, PlayState> {
 
 		this.setState({ favoriteItems, itemsSetted: setted, itemsNotSetted: notSetted, options, isSnow: storedPlaySettings.isSnow, isMusic: storedPlaySettings.isMusic })
 
+		this.checkMusic()
+
 		window.addEventListener('beforeunload', () => {
 			const { itemsSetted, itemsNotSetted, isSnow, isMusic } = this.state
 			const { scene, tree, lights } = options
@@ -97,6 +104,16 @@ class Play extends Component<{}, PlayState> {
 		if (type === 'snow') {
 			const { isSnow } = this.state
 			this.setState({ isSnow: !isSnow })
+		} else {
+			const { isMusic } = this.state
+
+			if (!isMusic) {
+				this.audio.play()
+			} else {
+				this.audio.pause()
+			}
+
+			this.setState({ isMusic: !isMusic })
 		}
 	}
 
@@ -158,8 +175,21 @@ class Play extends Component<{}, PlayState> {
 		this.setState({ draggableId: id, isAlreadyOnTheTree })
 	}
 
+	checkMusic() {
+		const { isMusic } = this.state
+
+		if (isMusic) {
+			const playMusicOnClick = () => {
+				this.audio.play()
+				document.removeEventListener('click', playMusicOnClick)
+			}
+
+			document.addEventListener('click', playMusicOnClick)
+		}
+	}
+
 	render() {
-		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow } = this.state
+		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic } = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
 
@@ -171,7 +201,15 @@ class Play extends Component<{}, PlayState> {
 					<PlayOptions title="Lights" options={options.lights} isLights onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
 					<div className="settings">
 						<div className="settings__block">
-							<input className="checkbox" type="checkbox" id="music-toggle" name="music-toggle" value="Music Toggle" />
+							<input
+								onChange={() => this.handleCheckbox('music')}
+								checked={isMusic}
+								className="checkbox"
+								type="checkbox"
+								id="music-toggle"
+								name="music-toggle"
+								value="Music Toggle"
+							/>
 							<label htmlFor="music-toggle">Music</label>
 						</div>
 						<div className="settings__block">

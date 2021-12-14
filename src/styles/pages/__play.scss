@@ -94,8 +94,8 @@
 
 		&.setted {
 			position: fixed;
-			width: 30px;
-			height: 30px;
+			width: 35px;
+			height: 35px;
 		}
 
 		cursor: grab;
@@ -206,6 +206,7 @@
 		padding: 1rem;
 		animation: falling 5s linear forwards infinite;
 		pointer-events: none;
+		user-select: none;
 	}
 
 	.snowflake::before {
