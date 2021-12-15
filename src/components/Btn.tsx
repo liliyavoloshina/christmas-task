@@ -3,8 +3,8 @@ import '../styles/components/__btn.scss'
 
 interface BtnProps {
 	text?: string
-	size?: 'md'
-	action?: 'save' | 'clear'
+	size?: 'md' | 'lg'
+	action?: 'reset' | 'clear'
 	accented?: boolean
 	icon?: string
 	form?: 'square'

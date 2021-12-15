@@ -13,6 +13,7 @@ interface SearchPanelProps {
 	favoriteItemsQuantity: number
 	onFilter(type: string, options: CatalogFiltersValues): void
 	onSort(key: string): void
+	onReset(): void
 	onClear(): void
 }
 
@@ -36,7 +37,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 		const shapeOptions = ['ball', 'figure', 'bell', 'cone', 'snowflake'] as MultiselectOptions
 		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
 		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
-		const { filters, sort, onClear, favoriteItemsQuantity } = this.props
+		const { filters, sort, onReset, onClear, favoriteItemsQuantity } = this.props
 		const { year, amount, shape, color, size, areOnlyFavorite } = filters
 
 		return (
@@ -69,7 +70,8 @@ class SearchPanel extends Component<SearchPanelProps> {
 				</div>
 
 				<div className="search-panel__actions">
-					<Btn onClick={() => onClear()} text="Clear" size="md" />
+					<Btn onClick={() => onReset()} text="Reset" size="lg" action="reset" />
+					<Btn onClick={() => onClear()} text="Clear" size="lg" action="clear" />
 				</div>
 			</div>
 		)

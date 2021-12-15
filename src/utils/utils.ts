@@ -50,6 +50,24 @@ const sortArray = (array: Item[], key: SortKeys) => {
   return array
 }
 
+const mergeFavoriteAndOriginal = (favorite: Item[], original: Item[]): Item[] => {
+  const resettedOriginal = original.map(item => ({ ...item, isFavorite: false }))
+
+  const merged = [...resettedOriginal]
+
+  if (favorite.length > 0) {
+    favorite.forEach((favoriteItem: Item) => {
+      const favoriteItemIndex = merged.findIndex((item: Item) => item.id === favoriteItem.id)
+
+      if (favoriteItemIndex !== -1) {
+        merged[favoriteItemIndex].isFavorite = true
+      }
+    })
+  }
+
+  return merged
+}
+
 const searchArray = (array: Item[], key: string) =>
   array.filter(item => {
     if (key === '') {
@@ -110,8 +128,8 @@ const getData = async (key: LocalStorage) => {
   if (key === LocalStorage.PlayFavoriteItems) {
     const favoriteItems = JSON.parse(window.localStorage.getItem(LocalStorage.FavoriteItems)!)
 
-    if (favoriteItems.length === 0) {
-      const storedItems = JSON.parse(window.localStorage.getItem(LocalStorage.OriginalItems)!)
+    if (!favoriteItems) {
+      const storedItems = await serverRequest<Item[]>('data/items.json')
       const firstTwentyItems = storedItems.slice(0, 20)
       const updatedFavoriteItems = updateItemsArrayToFavorite(firstTwentyItems)
       return updatedFavoriteItems
@@ -147,4 +165,4 @@ const getSnowflakes = () => Array(SNOWFLAKES_COUNT)
     return snowflake
   })
 
-export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, idToInitial, getSnowflakes }
+export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, idToInitial, getSnowflakes, mergeFavoriteAndOriginal }

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable jsx-a11y/no-autofocus */
@@ -11,7 +12,7 @@ import Popup from '../components/Popup'
 import Btn from '../components/Btn'
 import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
 import { FlippedProps, LocalStorage } from '../types/utils'
-import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY } from '../utils/utils'
+import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, mergeFavoriteAndOriginal } from '../utils/utils'
 import Loader from '../components/Loader'
 
 interface CatalogState {
@@ -46,21 +47,11 @@ class Catalog extends Component<{}, CatalogState> {
 		const storedItems = await getData(LocalStorage.OriginalItems)
 		const favoriteItems = await getData(LocalStorage.FavoriteItems)
 
-		if (favoriteItems) {
-			favoriteItems.forEach((favoriteItem: Item) => {
-				const favoriteItemIndex = storedItems.findIndex((item: Item) => item.id === favoriteItem.id)
-
-				if (favoriteItemIndex !== -1) {
-					storedItems[favoriteItemIndex].isFavorite = true
-				}
-			})
-		}
-
 		const storedSettings = await getData(LocalStorage.CatalogSettings)
 		const defaultFilters = await getData(LocalStorage.DefaultFilters)
 
-		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, async () => {
-			await this.filter()
+		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, () => {
+			this.filter()
 			this.setState({ isLoaded: true })
 		})
 
@@ -79,11 +70,11 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	handleSort(key: SortKeys) {
-		const { settings } = this.state
+		const { filteredItems, settings, isAnimated } = this.state
 		settings.sort = key
 
 		this.setState({ settings }, () => {
-			this.sort()
+			this.sort(filteredItems, settings, isAnimated)
 		})
 	}
 
@@ -100,9 +91,6 @@ class Catalog extends Component<{}, CatalogState> {
 		}
 
 		const checkedItem = originalItems.find(item => item.id === id)
-
-		const updatedOriginalItems = originalItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
-		const updatedFilteredItems = filteredItems.map(item => (item.id === id ? { ...item, isFavorite } : item))
 		let updatedFavoriteItems = favoriteItems
 
 		if (isFavorite === true) {
@@ -111,30 +99,31 @@ class Catalog extends Component<{}, CatalogState> {
 			updatedFavoriteItems = updatedFavoriteItems.filter(item => item.id !== id)
 		}
 
-		this.setState({ originalItems: updatedOriginalItems, favoriteItems: updatedFavoriteItems, filteredItems: updatedFilteredItems, settings, isAnimated: !isAnimated }, () => {
+		const merged = mergeFavoriteAndOriginal(updatedFavoriteItems, filteredItems)
+
+		this.setState({ favoriteItems: updatedFavoriteItems, filteredItems: merged, settings }, () => {
 			// save favorite items, so favorites are tracking even on play page without reload
 			setData<Item[]>(LocalStorage.FavoriteItems, updatedFavoriteItems)
 		})
 
 		if (filters.areOnlyFavorite) {
-			const filterd = updatedFilteredItems.filter(item => item.isFavorite === true)
-			this.setState({ filteredItems: filterd, isAnimated: !isAnimated })
+			const filtered = merged.filter(item => item.isFavorite === true)
+			this.setState({ filteredItems: filtered, isAnimated: !isAnimated })
 		}
 	}
 
-	async filter() {
-		const { originalItems, settings, isAnimated } = this.state
+	// will fire sort every time, so filtered items remain sorted
+	filter() {
+		const { originalItems, favoriteItems, settings, isAnimated } = this.state
 		const { filters } = settings
-		const filtered = filterArray(originalItems, filters)
-		this.setState({ filteredItems: filtered, isAnimated: !isAnimated }, () => {
-			this.sort()
-		})
+		const merged = mergeFavoriteAndOriginal(favoriteItems, originalItems)
+		const filtered = filterArray(merged, filters)
+		this.sort(filtered, settings, isAnimated)
 	}
 
-	sort() {
-		const { filteredItems, settings, isAnimated } = this.state
+	sort(toSort: Item[], settings: CatalogSettings, isAnimated: boolean) {
 		const { sort } = settings
-		const sorted = sortArray(filteredItems, sort)
+		const sorted = sortArray(toSort, sort)
 		this.setState({ filteredItems: sorted, isAnimated: !isAnimated })
 	}
 
@@ -144,13 +133,25 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ search: value, isAnimated: !isAnimated })
 	}
 
-	clear() {
+	reset() {
 		const { originalItems, defaultFilters, isAnimated, settings } = this.state
 		settings.filters = { ...defaultFilters }
 
-		this.setState({ settings, filteredItems: originalItems, isAnimated: !isAnimated }, () => {
-			this.sort()
+		this.setState({ settings, filteredItems: originalItems }, () => {
+			this.sort(originalItems, settings, isAnimated)
 		})
+	}
+
+	clear() {
+		const { originalItems, defaultFilters, settings } = this.state
+		settings.filters = { ...defaultFilters }
+		settings.isCardExpanded = false
+		settings.sort = 'az'
+		this.setState({ favoriteItems: [], filteredItems: originalItems, settings, search: '' }, () => {
+			this.filter()
+		})
+		window.localStorage.removeItem(LocalStorage.FavoriteItems)
+		window.localStorage.removeItem(LocalStorage.CatalogSettings)
 	}
 
 	changeView(viewType: string) {
@@ -173,7 +174,7 @@ class Catalog extends Component<{}, CatalogState> {
 			<div className="catalog">
 				<Popup text="Sorry, all slots are full!" isHidden={isPopupHidden} />
 				<div className="search-bar">
-					<input onInput={e => this.search(e)} autoFocus type="search" placeholder="Search..." className="search-bar__input" autoComplete="off" />
+					<input onInput={e => this.search(e)} value={search} autoFocus type="search" placeholder="Search..." className="search-bar__input" autoComplete="off" />
 				</div>
 
 				<SearchPanel
@@ -182,6 +183,7 @@ class Catalog extends Component<{}, CatalogState> {
 					sort={sort}
 					favoriteItemsQuantity={favoriteItems.length}
 					onSort={(key: SortKeys) => this.handleSort(key)}
+					onReset={() => this.reset()}
 					onClear={() => this.clear()}
 				/>
 
