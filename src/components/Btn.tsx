@@ -1,5 +1,5 @@
-import { Component } from 'react'
 import '../styles/components/__btn.scss'
+import { Component } from 'react'
 
 interface BtnProps {
 	text?: string

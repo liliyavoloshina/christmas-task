@@ -1,11 +1,11 @@
 import { Component } from 'react'
 import Multiselect from '../components/Multiselect'
 import Select from '../components/Select'
+import Btn from '../components/Btn'
 import Range from '../components/Range'
 import { RangeOptions, CatalogFilters, CatalogFiltersValues, Colors, Sizes, Shapes, SortKeys, MultiselectOptions } from '../types/Catalog'
 import '../styles/layout/__searchPanel.scss'
 import '../styles/components/__checkbox.scss'
-import Btn from '../components/Btn'
 
 interface SearchPanelProps {
 	filters: CatalogFilters
@@ -28,7 +28,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 		onFilter(type, prop)
 	}
 
-	handleSort(key: string) {
+	handleSort(key: SortKeys) {
 		const { onSort } = this.props
 		onSort(key)
 	}
@@ -43,7 +43,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 		return (
 			<div className="search-panel">
 				<div className="selecting">
-					<Select onSelect={(key: string) => this.handleSort(key)} initialSort={sort} />
+					<Select onSelect={(key: SortKeys) => this.handleSort(key)} initialSort={sort} type="sort" />
 					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter('shape', prop)} initialFilter={shape} options={shapeOptions} />
 					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter('color', prop)} initialFilter={color} options={colorOptions} />
 					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter('size', prop)} initialFilter={size} options={sizeOptions} />
@@ -70,8 +70,8 @@ class SearchPanel extends Component<SearchPanelProps> {
 				</div>
 
 				<div className="search-panel__actions">
-					<Btn onClick={() => onReset()} text="Reset" size="lg" action="reset" />
-					<Btn onClick={() => onClear()} text="Clear" size="lg" action="clear" />
+					<Btn onClick={() => onReset()} text="Reset filters" size="lg" action="reset" />
+					<Btn onClick={() => onClear()} text="Clear all" size="lg" action="clear" />
 				</div>
 			</div>
 		)

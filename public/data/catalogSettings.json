@@ -14,5 +14,6 @@
 		"areOnlyFavorite": false
 	},
 	"sort": "az",
+	"itemsPerPage": 60,
 	"isCardExpanded": false
 }

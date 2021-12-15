@@ -10,7 +10,9 @@ import Card from '../components/Card'
 import Item from '../types/Item'
 import Popup from '../components/Popup'
 import Btn from '../components/Btn'
-import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues } from '../types/Catalog'
+import Select from '../components/Select'
+import Pagination from '../layout/Pagination'
+import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues, RadiusKeys } from '../types/Catalog'
 import { FlippedProps, LocalStorage } from '../types/utils'
 import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, mergeFavoriteAndOriginal } from '../utils/utils'
 import Loader from '../components/Loader'
@@ -25,6 +27,7 @@ interface CatalogState {
 	defaultFilters: CatalogFilters
 	isPopupHidden: boolean
 	isAnimated: boolean
+	currentPage: number
 }
 
 class Catalog extends Component<{}, CatalogState> {
@@ -39,6 +42,7 @@ class Catalog extends Component<{}, CatalogState> {
 			favoriteItems: [],
 			isPopupHidden: true,
 			isAnimated: false,
+			currentPage: 0,
 			search: '',
 		}
 	}
@@ -70,20 +74,23 @@ class Catalog extends Component<{}, CatalogState> {
 	}
 
 	handleSort(key: SortKeys) {
-		const { filteredItems, settings, isAnimated } = this.state
+		const { filteredItems, settings } = this.state
 		settings.sort = key
 
 		this.setState({ settings }, () => {
-			this.sort(filteredItems, settings, isAnimated)
+			this.sort(filteredItems, settings)
 		})
 	}
 
 	handleFavorite(id: string, isFavorite: boolean) {
-		const { settings, filteredItems, favoriteItems, originalItems, isAnimated } = this.state
+		const { settings, filteredItems, favoriteItems, originalItems } = this.state
 		const { filters } = settings
 
 		if (favoriteItems.length === FAVORITE_MAX_QUANTITY && isFavorite === true) {
-			this.setState({ isPopupHidden: false, isAnimated: !isAnimated })
+			this.setState({ isPopupHidden: false })
+
+			this.animate()
+
 			setTimeout(() => {
 				this.setState({ isPopupHidden: true })
 			}, 4000)
@@ -108,50 +115,25 @@ class Catalog extends Component<{}, CatalogState> {
 
 		if (filters.areOnlyFavorite) {
 			const filtered = merged.filter(item => item.isFavorite === true)
-			this.setState({ filteredItems: filtered, isAnimated: !isAnimated })
+			this.setState({ filteredItems: filtered })
+
+			this.animate()
 		}
 	}
 
-	// will fire sort every time, so filtered items remain sorted
-	filter() {
-		const { originalItems, favoriteItems, settings, isAnimated } = this.state
-		const { filters } = settings
-		const merged = mergeFavoriteAndOriginal(favoriteItems, originalItems)
-		const filtered = filterArray(merged, filters)
-		this.sort(filtered, settings, isAnimated)
+	handlePageChange(pageNum: number) {
+		this.setState({ currentPage: pageNum })
 	}
 
-	sort(toSort: Item[], settings: CatalogSettings, isAnimated: boolean) {
-		const { sort } = settings
-		const sorted = sortArray(toSort, sort)
-		this.setState({ filteredItems: sorted, isAnimated: !isAnimated })
+	changePaginationLimits(key: RadiusKeys) {
+		const { settings } = this.state
+		settings.itemsPerPage = key
+		this.setState({ settings })
 	}
 
-	search(e: React.SyntheticEvent) {
+	animate() {
 		const { isAnimated } = this.state
-		const { value } = e.target as HTMLInputElement
-		this.setState({ search: value, isAnimated: !isAnimated })
-	}
-
-	reset() {
-		const { originalItems, defaultFilters, isAnimated, settings } = this.state
-		settings.filters = { ...defaultFilters }
-
-		this.setState({ settings, filteredItems: originalItems }, () => {
-			this.sort(originalItems, settings, isAnimated)
-		})
-	}
-
-	clear() {
-		const { originalItems, defaultFilters, settings } = this.state
-		settings.filters = { ...defaultFilters }
-		settings.isCardExpanded = false
-		settings.sort = 'az'
-		this.setState({ favoriteItems: [], filteredItems: originalItems, settings, search: '' }, () => {
-			this.filter()
-		})
-		window.localStorage.removeItem(LocalStorage.FavoriteItems)
-		window.localStorage.removeItem(LocalStorage.CatalogSettings)
+		this.setState({ isAnimated: !isAnimated })
 	}
 
 	changeView(viewType: string) {
@@ -160,11 +142,64 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ settings })
 	}
 
+	clear() {
+		const { originalItems, defaultFilters, settings } = this.state
+		settings.filters = { ...defaultFilters }
+		settings.isCardExpanded = false
+		settings.sort = 'az'
+		settings.itemsPerPage = 60
+		this.setState({ favoriteItems: [], filteredItems: originalItems, settings, search: '' }, () => {
+			this.filter()
+		})
+		window.localStorage.removeItem(LocalStorage.FavoriteItems)
+		window.localStorage.removeItem(LocalStorage.CatalogSettings)
+	}
+
+	reset() {
+		const { originalItems, favoriteItems, defaultFilters, settings } = this.state
+		settings.filters = { ...defaultFilters }
+
+		const merged = mergeFavoriteAndOriginal(favoriteItems, originalItems)
+
+		this.setState({ settings, filteredItems: merged }, () => {
+			this.sort(merged, settings)
+		})
+	}
+
+	search(e: React.SyntheticEvent) {
+		const { value } = e.target as HTMLInputElement
+		this.setState({ search: value })
+
+		this.animate()
+	}
+
+	sort(toSort: Item[], settings: CatalogSettings) {
+		const { sort } = settings
+		const sorted = sortArray(toSort, sort)
+		this.setState({ filteredItems: sorted })
+
+		this.animate()
+	}
+
+	// will fire sort every time, so filtered items remain sorted
+	filter() {
+		const { originalItems, favoriteItems, settings } = this.state
+		const { filters } = settings
+		const merged = mergeFavoriteAndOriginal(favoriteItems, originalItems)
+		const filtered = filterArray(merged, filters)
+		this.sort(filtered, settings)
+	}
+
 	render() {
-		const { isLoaded, filteredItems, favoriteItems, settings, search, isPopupHidden, isAnimated } = this.state
-		const { filters, sort, isCardExpanded } = settings
+		const { isLoaded, filteredItems, favoriteItems, settings, search, isPopupHidden, isAnimated, currentPage } = this.state
+		const { filters, sort, itemsPerPage, isCardExpanded } = settings
+
+		console.log(typeof itemsPerPage, itemsPerPage)
+
 		const hasMatches = searchArray(filteredItems, search).length > 0
 		const springConfig = { stiffness: 2000, damping: 300, mass: 3 }
+
+		const pageSliceFrom = currentPage === 0 ? 0 : currentPage * +itemsPerPage
 
 		if (!isLoaded) {
 			return <Loader />
@@ -193,21 +228,34 @@ class Catalog extends Component<{}, CatalogState> {
 							<Btn onClick={() => this.changeView('grid')} accented={!isCardExpanded} icon="grid_view" form="square" title="change view" />
 							<Btn onClick={() => this.changeView('list')} accented={isCardExpanded} icon="view_list" form="square" title="change view" />
 						</div>
-						<div className="additional-panel__text">Toys found: {filteredItems.length}</div>
+						<div className="additional-panel__text">
+							<Select type="pagination" initialSort={itemsPerPage} onSelect={(key: RadiusKeys) => this.changePaginationLimits(key)} />
+						</div>
 					</div>
+
+					<Pagination onPageChanged={(page: number) => this.handlePageChange(page)} totalItems={filteredItems.length} itemsPerPage={+itemsPerPage} />
+
 					<div className={`no-matches-message ${hasMatches ? 'hidden' : ''}`}>
 						<div className="no-matches-message__first">No matches found!</div>
 						<div className="no-matches-message__second">Try something else</div>
 					</div>
 
 					<Flipper className={`items__list${isCardExpanded ? ' expanded' : ''}`} flipKey={isAnimated} spring={springConfig}>
-						{searchArray(filteredItems, search).map(item => (
-							<Flipped key={item.id} flipId={item.id}>
-								{(flippedProps: FlippedProps) => (
-									<Card flippedProps={flippedProps} isCardExpanded={isCardExpanded} onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)} key={item.id} {...item} />
-								)}
-							</Flipped>
-						))}
+						{searchArray(filteredItems, search)
+							.slice(pageSliceFrom, pageSliceFrom + +itemsPerPage)
+							.map(item => (
+								<Flipped key={item.id} flipId={item.id}>
+									{(flippedProps: FlippedProps) => (
+										<Card
+											flippedProps={flippedProps}
+											isCardExpanded={isCardExpanded}
+											onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)}
+											key={item.id}
+											{...item}
+										/>
+									)}
+								</Flipped>
+							))}
 					</Flipper>
 				</div>
 			</div>
