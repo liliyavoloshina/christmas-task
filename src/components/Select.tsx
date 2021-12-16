@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import '../styles/components/__select.scss'
 import { Component } from 'react'
 import { SortKeys, SortOptions, RadiusKeys } from '../types/Catalog'
@@ -47,7 +46,8 @@ class Select extends Component<SelectProps, SelectState> {
 		}
 
 		this.setState({ options }, () => {
-			const initialText = options.find(option => option.key === initialSort)
+			const initialText = options.find(option => `${option.key}` === `${initialSort}`)
+
 			this.setState({ innerText: initialText!.text })
 		})
 	}
@@ -64,11 +64,7 @@ class Select extends Component<SelectProps, SelectState> {
 		this.setState({ isActive: false, innerText: text })
 
 		if (type === 'pagination') {
-			// console.log(typeof key)
-
 			onSelect(+key! as RadiusKeys)
-
-			// console.log(typeof key)
 		} else {
 			onSelect(key! as SortKeys)
 		}

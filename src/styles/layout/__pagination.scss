@@ -1,0 +1,30 @@
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin-top: auto;
+
+	&__wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+	}
+
+	&__btn {
+		width: 30px;
+		height: 30px;
+		border: none;
+		border-radius: 4px;
+		font-family: inherit;
+		color: var(--white);
+		background-color: var(--bg-black);
+		box-shadow: var(--shadow-grey);
+		transition: 0.3s;
+		cursor: pointer;
+
+		&:hover,
+		&.active {
+			background-color: var(--accent);
+		}
+	}
+}

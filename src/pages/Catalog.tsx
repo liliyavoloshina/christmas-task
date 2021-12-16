@@ -129,6 +129,7 @@ class Catalog extends Component<{}, CatalogState> {
 		const { settings } = this.state
 		settings.itemsPerPage = key
 		this.setState({ settings })
+		this.handlePageChange(0)
 	}
 
 	animate() {
@@ -194,12 +195,10 @@ class Catalog extends Component<{}, CatalogState> {
 		const { isLoaded, filteredItems, favoriteItems, settings, search, isPopupHidden, isAnimated, currentPage } = this.state
 		const { filters, sort, itemsPerPage, isCardExpanded } = settings
 
-		console.log(typeof itemsPerPage, itemsPerPage)
-
 		const hasMatches = searchArray(filteredItems, search).length > 0
 		const springConfig = { stiffness: 2000, damping: 300, mass: 3 }
 
-		const pageSliceFrom = currentPage === 0 ? 0 : currentPage * +itemsPerPage
+		const pageSliceFrom = currentPage === 0 ? 0 : currentPage * itemsPerPage
 
 		if (!isLoaded) {
 			return <Loader />
@@ -233,8 +232,6 @@ class Catalog extends Component<{}, CatalogState> {
 						</div>
 					</div>
 
-					<Pagination onPageChanged={(page: number) => this.handlePageChange(page)} totalItems={filteredItems.length} itemsPerPage={+itemsPerPage} />
-
 					<div className={`no-matches-message ${hasMatches ? 'hidden' : ''}`}>
 						<div className="no-matches-message__first">No matches found!</div>
 						<div className="no-matches-message__second">Try something else</div>
@@ -242,7 +239,7 @@ class Catalog extends Component<{}, CatalogState> {
 
 					<Flipper className={`items__list${isCardExpanded ? ' expanded' : ''}`} flipKey={isAnimated} spring={springConfig}>
 						{searchArray(filteredItems, search)
-							.slice(pageSliceFrom, pageSliceFrom + +itemsPerPage)
+							.slice(pageSliceFrom, pageSliceFrom + itemsPerPage)
 							.map(item => (
 								<Flipped key={item.id} flipId={item.id}>
 									{(flippedProps: FlippedProps) => (
@@ -257,6 +254,8 @@ class Catalog extends Component<{}, CatalogState> {
 								</Flipped>
 							))}
 					</Flipper>
+
+					<Pagination onPageChanged={(page: number) => this.handlePageChange(page)} currentPage={currentPage} totalItems={filteredItems.length} itemsPerPage={+itemsPerPage} />
 				</div>
 			</div>
 		)

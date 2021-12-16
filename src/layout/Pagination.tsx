@@ -1,30 +1,21 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/no-unused-state */
 import '../styles/layout/__pagination.scss'
 import { Component } from 'react'
 
 interface PaginationProps {
 	totalItems: number
 	itemsPerPage: number
+	currentPage: number
 	onPageChanged(pageNum: number): void
 }
 
-interface PaginationState {
-	btnsCount: number[]
-}
-
-class Pagination extends Component<PaginationProps, PaginationState> {
+class Pagination extends Component<PaginationProps, {}> {
 	constructor(props: PaginationProps) {
 		super(props)
-		this.state = {
-			btnsCount: [],
-		}
+		this.state = {}
 	}
 
 	render() {
-		const { totalItems, itemsPerPage, onPageChanged } = this.props
+		const { totalItems, itemsPerPage, onPageChanged, currentPage } = this.props
 		const pageAmount = Math.ceil(totalItems / itemsPerPage)
 
 		if (pageAmount === 1) return null
@@ -38,11 +29,13 @@ class Pagination extends Component<PaginationProps, PaginationState> {
 
 		return (
 			<div className="pagination">
-				{btnsAmount.map(pageNum => (
-					<button key={pageNum} onClick={() => onPageChanged(pageNum)} type="button" className="pagination__btn">
-						{pageNum + 1}
-					</button>
-				))}
+				<div className="pagination__wrapper">
+					{btnsAmount.map(pageNum => (
+						<button key={pageNum} onClick={() => onPageChanged(pageNum)} type="button" className={`pagination__btn${currentPage === pageNum ? ' active' : ''}`}>
+							{pageNum + 1}
+						</button>
+					))}
+				</div>
 			</div>
 		)
 	}
