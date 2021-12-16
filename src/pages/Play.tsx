@@ -1,17 +1,31 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable react/no-unused-class-component-methods */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
-import { getData, idToInitial, setData, getSnowflakes } from '../utils/utils'
 import Btn from '../components/Btn'
+import Loader from '../components/Loader'
+import { getData, idToInitial, setData, getSnowflakes } from '../utils/utils'
 import { LocalStorage } from '../types/utils'
 import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
+// TODO: is there another way to load images from src folder ???
+import mainBg from '../img/wallpaper/main.jpg'
 import tree1 from '../img/tree/1.png'
 import tree2 from '../img/tree/2.png'
 import tree3 from '../img/tree/3.png'
 import tree4 from '../img/tree/4.png'
 import tree5 from '../img/tree/5.png'
 import tree6 from '../img/tree/6.png'
+import scene1 from '../img/scene/1.jpg'
+import scene2 from '../img/scene/2.jpg'
+import scene3 from '../img/scene/3.jpg'
+import scene4 from '../img/scene/4.jpg'
+import scene5 from '../img/scene/5.jpg'
+import scene6 from '../img/scene/6.jpg'
+import scene7 from '../img/scene/7.jpg'
+import scene8 from '../img/scene/8.jpg'
+import scene9 from '../img/scene/9.jpg'
 
 interface PlayState {
 	options: PlayOptionsObject
@@ -19,10 +33,12 @@ interface PlayState {
 	itemsSetted: FavoriteItemCopy[]
 	itemsNotSetted: FavoriteItemCopy[]
 	treesPaths: ObjectIndexNumber
+	scenePaths: ObjectIndexNumber
 	draggableId: string
 	isAlreadyOnTheTree: boolean
 	isSnow: boolean
 	isMusic: boolean
+	isLoaded: boolean
 }
 
 class Play extends Component<{}, PlayState> {
@@ -56,6 +72,17 @@ class Play extends Component<{}, PlayState> {
 				5: tree5,
 				6: tree6,
 			},
+			scenePaths: {
+				1: scene1,
+				2: scene2,
+				3: scene3,
+				4: scene4,
+				5: scene5,
+				6: scene6,
+				7: scene7,
+				8: scene8,
+				9: scene9,
+			},
 			itemsSetted: [],
 			itemsNotSetted: [],
 			draggableId: '',
@@ -63,6 +90,7 @@ class Play extends Component<{}, PlayState> {
 			isAlreadyOnTheTree: false,
 			isSnow: false,
 			isMusic: false,
+			isLoaded: false,
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
@@ -70,7 +98,7 @@ class Play extends Component<{}, PlayState> {
 	}
 
 	async componentDidMount() {
-		const { options } = this.state
+		const { options, treesPaths, scenePaths } = this.state
 		const favoriteItems = await getData(LocalStorage.PlayFavoriteItems)
 		const storedPlaySettings = await getData(LocalStorage.PlaySettings)
 
@@ -100,6 +128,13 @@ class Play extends Component<{}, PlayState> {
 			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
 			setData<PlaySettings>(LocalStorage.PlaySettings, playSettings)
 		})
+
+		const treeImages = Object.keys(treesPaths).map(key => treesPaths[key])
+		const sceneImages = Object.keys(scenePaths).map(key => scenePaths[key])
+		await this.loadResources(treeImages)
+		await this.loadResources(sceneImages)
+		await this.loadResources([mainBg])
+		this.setState({ isLoaded: true })
 	}
 
 	handleCheckbox(type: 'snow' | 'music') {
@@ -176,6 +211,20 @@ class Play extends Component<{}, PlayState> {
 		this.setState({ draggableId: id, isAlreadyOnTheTree })
 	}
 
+	async loadResources(arr: string[]) {
+		const loadResource = async (resource: string) => {
+			const img = new Image()
+			img.src = resource
+			await img.decode()
+		}
+
+		await Promise.all(
+			arr.map(async resource => {
+				await loadResource(resource)
+			})
+		)
+	}
+
 	clear() {
 		const { options } = this.state
 
@@ -203,9 +252,13 @@ class Play extends Component<{}, PlayState> {
 	}
 
 	render() {
-		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic } = this.state
+		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded } = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
+
+		if (!isLoaded) {
+			return <Loader />
+		}
 
 		return (
 			<div className="play-container fullpage">
