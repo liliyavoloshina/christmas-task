@@ -11,7 +11,6 @@ interface SelectProps {
 interface SelectState {
 	isActive: boolean
 	options: SortOptions[]
-	innerText: string
 }
 
 class Select extends Component<SelectProps, SelectState> {
@@ -20,12 +19,11 @@ class Select extends Component<SelectProps, SelectState> {
 		this.state = {
 			isActive: false,
 			options: [],
-			innerText: 'by name from A to Z',
 		}
 	}
 
 	componentDidMount() {
-		const { initialSort, type } = this.props
+		const { type } = this.props
 		let options: SortOptions[] = []
 
 		if (type === 'pagination') {
@@ -45,11 +43,7 @@ class Select extends Component<SelectProps, SelectState> {
 			]
 		}
 
-		this.setState({ options }, () => {
-			const initialText = options.find(option => `${option.key}` === `${initialSort}`)
-
-			this.setState({ innerText: initialText!.text })
-		})
+		this.setState({ options })
 	}
 
 	toggleSelect() {
@@ -60,8 +54,7 @@ class Select extends Component<SelectProps, SelectState> {
 	chooseOption(e: React.SyntheticEvent) {
 		const { onSelect, type } = this.props
 		const { key } = (e.target as HTMLInputElement).dataset
-		const text = (e.target as HTMLInputElement).innerHTML
-		this.setState({ isActive: false, innerText: text })
+		this.setState({ isActive: false })
 
 		if (type === 'pagination') {
 			onSelect(+key! as RadiusKeys)
@@ -71,16 +64,27 @@ class Select extends Component<SelectProps, SelectState> {
 	}
 
 	render() {
-		const { type } = this.props
-		const { isActive, innerText, options } = this.state
+		const { type, initialSort } = this.props
+		const { isActive, options } = this.state
 
-		const label = type === 'sort' ? 'Sort' : 'Toys per page'
+		let selectedText: string | number = initialSort
+		let label = 'Toys per page'
+
+		if (type === 'sort') {
+			const sortOption = options.find(option => option.key === initialSort)!
+
+			if (sortOption) {
+				selectedText = sortOption.text
+			}
+
+			label = 'Sort'
+		}
 
 		return (
 			<div className="select-wrapper">
 				<h3 className="search-panel-label">{label}</h3>
 				<div className={`select ${isActive ? 'active' : ''}`} role="presentation" onClick={() => this.toggleSelect()}>
-					{innerText}
+					{selectedText}
 				</div>
 				<ul className="select-options">
 					{options.map(option => (

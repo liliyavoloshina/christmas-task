@@ -21,7 +21,8 @@ interface CatalogFiltersObject {
 }
 
 interface SortOptionsObject {
-  [key: string]: SortKeys | string | RadiusKeys
+  [key: string]: string | number
+  // [key: string]: SortKeys | string | RadiusKeys
 }
 
 interface CatalogFilters extends CatalogFiltersObject {
@@ -41,7 +42,8 @@ interface CatalogSettings extends CatalogSettingsObject {
 }
 
 interface SortOptions extends SortOptionsObject {
-  key: SortKeys | RadiusKeys | string
+  key: string | number
+  // key: SortKeys | RadiusKeys | string
   text: string
 }
 
