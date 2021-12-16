@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import '../styles/components/__btnFavorite.scss'
+import '../styles/components/__btn-favorite.scss'
 
 interface BtnFavoriteProps {
 	isFavorite: boolean

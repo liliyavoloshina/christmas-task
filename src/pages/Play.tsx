@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable react/no-unused-class-component-methods */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -6,7 +7,8 @@ import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
 import Btn from '../components/Btn'
 import Loader from '../components/Loader'
-import { getData, idToInitial, setData, getSnowflakes } from '../utils/utils'
+import Garland from '../layout/GarlandOptions'
+import { getData, idToInitial, setData, getSnowflakes, calculateGarlandOffset } from '../utils/utils'
 import { LocalStorage } from '../types/utils'
 import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
 // TODO: is there another way to load images from src folder ???
@@ -39,6 +41,8 @@ interface PlayState {
 	isSnow: boolean
 	isMusic: boolean
 	isLoaded: boolean
+	isGarland: boolean
+	garlandColor: 'multicolor' | 'yellow' | 'red' | 'blue' | 'green'
 }
 
 class Play extends Component<{}, PlayState> {
@@ -91,6 +95,8 @@ class Play extends Component<{}, PlayState> {
 			isSnow: false,
 			isMusic: false,
 			isLoaded: false,
+			isGarland: false,
+			garlandColor: 'multicolor',
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
@@ -114,16 +120,25 @@ class Play extends Component<{}, PlayState> {
 		options.tree.active = storedPlaySettings.activeTree
 		options.lights.active = storedPlaySettings.activeLights
 
-		this.setState({ favoriteItems, itemsSetted: setted, itemsNotSetted: notSetted, options, isSnow: storedPlaySettings.isSnow, isMusic: storedPlaySettings.isMusic })
+		this.setState({
+			favoriteItems,
+			itemsSetted: setted,
+			itemsNotSetted: notSetted,
+			options,
+			isSnow: storedPlaySettings.isSnow,
+			isMusic: storedPlaySettings.isMusic,
+			isGarland: storedPlaySettings.isGarland,
+			garlandColor: storedPlaySettings.garlandColor,
+		})
 
 		this.checkMusic()
 
 		window.addEventListener('beforeunload', () => {
-			const { itemsSetted, itemsNotSetted, isSnow, isMusic } = this.state
+			const { itemsSetted, itemsNotSetted, isSnow, isMusic, isGarland, garlandColor } = this.state
 			const { scene, tree, lights } = options
 
 			const updatedFavoriteItems = favoriteItems.map((item: FavoriteItem) => ({ id: item.id, amount: item.amount, itemsSetted, itemsNotSetted }))
-			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic }
+			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic, isGarland, garlandColor }
 
 			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
 			setData<PlaySettings>(LocalStorage.PlaySettings, playSettings)
@@ -175,6 +190,17 @@ class Play extends Component<{}, PlayState> {
 		this.setState({ options })
 	}
 
+	// handleGarland(checked: boolean) {
+	// 	this.setState({ isGarland: checked })
+	// }
+
+	onDragStart(id: string) {
+		const { itemsSetted } = this.state
+		const isAlreadyOnTheTree = itemsSetted.findIndex(item => item.id === id) !== -1
+
+		this.setState({ draggableId: id, isAlreadyOnTheTree })
+	}
+
 	onDrop(e: React.DragEvent<HTMLAreaElement>) {
 		e.stopPropagation()
 		const { draggableId, itemsNotSetted, itemsSetted, isAlreadyOnTheTree } = this.state
@@ -204,11 +230,8 @@ class Play extends Component<{}, PlayState> {
 		itemToReplace!.coords[1] = `${rightCoord}px`
 	}
 
-	onDragStart(id: string) {
-		const { itemsSetted } = this.state
-		const isAlreadyOnTheTree = itemsSetted.findIndex(item => item.id === id) !== -1
-
-		this.setState({ draggableId: id, isAlreadyOnTheTree })
+	toggleGarlandOptions(checked: boolean) {
+		this.setState({ isGarland: checked })
 	}
 
 	async loadResources(arr: string[]) {
@@ -252,7 +275,7 @@ class Play extends Component<{}, PlayState> {
 	}
 
 	render() {
-		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded } = this.state
+		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded, isGarland, garlandColor } = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
 
@@ -265,7 +288,7 @@ class Play extends Component<{}, PlayState> {
 				<aside className="aside">
 					<PlayOptions title="Background" options={options.scene} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
 					<PlayOptions title="Tree" options={options.tree} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
-					<PlayOptions title="Lights" options={options.lights} isLights onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
+					<Garland toggleGarlandOptions={checked => this.toggleGarlandOptions(checked)} />
 					<div className="settings">
 						<div className="settings__block">
 							<input
@@ -290,6 +313,16 @@ class Play extends Component<{}, PlayState> {
 					</div>
 				</aside>
 				<div className={treeContainerClass}>
+					<ul className={`garland ${isGarland ? `${garlandColor}` : 'hidden'}`}>
+						{Array(80)
+							.fill(null)
+							.map((light, index) => {
+								const topOffset = calculateGarlandOffset('top', index)
+								const leftOffset = calculateGarlandOffset('left', index)
+								const gap = index % 2 === 0 ? index + 1 : index
+								return <li key={index} className="garland__light" style={{ top: `${topOffset + gap}%`, left: `${leftOffset + index * 3.5}%` }} />
+							})}
+					</ul>
 					<div className="snowflakes">
 						{isSnow
 							? getSnowflakes().map(snowflake => (

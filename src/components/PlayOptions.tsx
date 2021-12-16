@@ -1,14 +1,11 @@
 /* eslint-disable react/no-array-index-key */
-
-import '../styles/layout/__playOptions.scss'
+import '../styles/layout/__play-options.scss'
 import { Component } from 'react'
-import Switch from './Switch'
 import { PlayOptionItem } from '../types/Play'
 
 interface PlayOptionsProps {
 	title: string
 	options: PlayOptionItem
-	isLights?: boolean
 	onSelect(optionType: string, optionIndex: number): void
 }
 
@@ -24,7 +21,7 @@ class PlayOptions extends Component<PlayOptionsProps, {}> {
 	}
 
 	render() {
-		const { title, options, isLights } = this.props
+		const { title, options } = this.props
 		const { quantity, active, className } = options
 
 		return (
@@ -44,7 +41,6 @@ class PlayOptions extends Component<PlayOptionsProps, {}> {
 								aria-label="select option"
 							/>
 						))}
-					{isLights ? <Switch /> : null}
 				</div>
 			</section>
 		)

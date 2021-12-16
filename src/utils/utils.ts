@@ -146,6 +146,8 @@ const getData = async (key: LocalStorage) => {
       activeLights: 4,
       isSnow: false,
       isMusic: false,
+      isGarland: false,
+      garlandColor: 'multicolor'
     }
     return defaultPlaySettings
   }
@@ -165,4 +167,47 @@ const getSnowflakes = () => Array(SNOWFLAKES_COUNT)
     return snowflake
   })
 
-export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, idToInitial, getSnowflakes, mergeFavoriteAndOriginal }
+const calculateGarlandOffset = (type: 'top' | 'left', index: number) => {
+  if (type === 'top') {
+    if (index <= 4) {
+      return 5
+    } if (index > 4 && index <= 12) {
+      return 10
+    }
+    if (index > 12 && index <= 24) {
+      return 15
+    }
+    if (index > 24 && index <= 38) {
+      return 20
+    }
+    if (index > 38 && index <= 58) {
+      return 22
+    }
+    if (index > 58 && index <= 80) {
+      return 23
+    }
+
+  }
+
+  if (index <= 4) {
+    return 40
+  } if (index > 4 && index <= 12) {
+    return 20
+  }
+  if (index > 12 && index <= 24) {
+    return -15
+  }
+  if (index > 24 && index <= 38) {
+    return -60
+  }
+  if (index > 38 && index <= 58) {
+    return -120
+  }
+  if (index > 58 && index <= 80) {
+    return -200
+  }
+
+  return 0
+}
+
+export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, idToInitial, getSnowflakes, mergeFavoriteAndOriginal, calculateGarlandOffset }

@@ -35,29 +35,3 @@
 	border-radius: 4px;
 	background-size: cover;
 }
-
-.options__option-lights {
-	width: 20px;
-	height: 20px;
-	border-radius: 100%;
-
-	&-1 {
-		background: var(--red-bright);
-	}
-
-	&-2 {
-		background: var(--pink-bright);
-	}
-
-	&-3 {
-		background: var(--green-bright);
-	}
-
-	&-4 {
-		background: var(--yellow-bright);
-	}
-
-	&-5 {
-		background: linear-gradient(11deg, var(--red-bright) 0%, var(--pink-bright) 30%, var(--yellow-bright) 50%, var(--green-bright) 100%);
-	}
-}

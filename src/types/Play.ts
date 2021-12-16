@@ -30,6 +30,8 @@ interface PlaySettings {
   activeLights: number
   isSnow: boolean
   isMusic: boolean
+  isGarland: boolean
+  garlandColor: 'multicolor' | 'yellow' | 'red' | 'blue' | 'green'
 }
 
 export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, FavoriteItemCopy, FavoriteItem, PlaySettings } 
