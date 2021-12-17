@@ -62,7 +62,7 @@ class Catalog extends Component<{}, CatalogState> {
 
 		window.addEventListener('beforeunload', () => {
 			const { settings } = this.state
-			// setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
+			setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
 		})
 	}
 

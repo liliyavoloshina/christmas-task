@@ -8,6 +8,7 @@ import PlayOptions from '../components/PlayOptions'
 import Btn from '../components/Btn'
 import Loader from '../components/Loader'
 import Garland from '../layout/GarlandOptions'
+import Checkbox from '../components/Checkbox'
 import { getData, idToInitial, setData, getSnowflakes, calculateGarlandOffset } from '../utils/utils'
 import { LocalStorage } from '../types/utils'
 import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
@@ -290,22 +291,8 @@ class Play extends Component<{}, PlayState> {
 					<PlayOptions title="Tree" options={options.tree} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
 					<Garland toggleGarlandOptions={checked => this.toggleGarlandOptions(checked)} />
 					<div className="settings">
-						<div className="settings__block">
-							<input
-								onChange={() => this.handleCheckbox('music')}
-								checked={isMusic}
-								className="checkbox"
-								type="checkbox"
-								id="music-toggle"
-								name="music-toggle"
-								value="Music Toggle"
-							/>
-							<label htmlFor="music-toggle">Music</label>
-						</div>
-						<div className="settings__block">
-							<input onChange={() => this.handleCheckbox('snow')} checked={isSnow} className="checkbox" type="checkbox" id="snow-toggle" name="snow-toggle" value="Snow Toggle" />
-							<label htmlFor="snow-toggle">Snow</label>
-						</div>
+						<Checkbox label="Music" name="music-toggle" isChecked={isMusic} onChange={() => this.handleCheckbox('music')} />
+						<Checkbox label="Snow" name="snow-toggle" isChecked={isSnow} onChange={() => this.handleCheckbox('snow')} />
 					</div>
 					<div className="actions">
 						<Btn onClick={() => this.clear()} text="Clear" />
