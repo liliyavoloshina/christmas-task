@@ -1,11 +1,11 @@
+import '../styles/layout/__search-panel.scss'
+import '../styles/components/__checkbox.scss'
 import { Component } from 'react'
 import Multiselect from '../components/Multiselect'
 import Select from '../components/Select'
 import Btn from '../components/Btn'
 import Range from '../components/Range'
 import { RangeOptions, CatalogFilters, CatalogFiltersValues, Colors, Sizes, Shapes, SortKeys, MultiselectOptions } from '../types/Catalog'
-import '../styles/layout/__search-panel.scss'
-import '../styles/components/__checkbox.scss'
 
 interface SearchPanelProps {
 	filters: CatalogFilters
