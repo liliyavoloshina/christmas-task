@@ -11,6 +11,7 @@ interface Item extends ItemObject {
 	color: 'green' | 'white' | 'red' | 'blue' | 'yellow'
 	size: 'large' | 'medium' | 'small'
 	isFavorite: boolean
+	isSelected: boolean
 }
 
 export default Item

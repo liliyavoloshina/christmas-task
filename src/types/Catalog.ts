@@ -32,6 +32,7 @@ interface CatalogFilters extends CatalogFiltersObject {
 	color: Colors[]
 	size: Sizes[]
 	areOnlyFavorite: boolean
+	areOnlySelected: boolean
 }
 
 interface CatalogSettings extends CatalogSettingsObject {

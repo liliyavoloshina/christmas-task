@@ -10,7 +10,7 @@ import { RangeOptions, CatalogFilters, CatalogFiltersValues, Colors, Sizes, Shap
 interface SearchPanelProps {
 	filters: CatalogFilters
 	sort: SortKeys
-	favoriteItemsQuantity: number
+	selectedItemsQuantity: number
 	onFilter(type: string, options: CatalogFiltersValues): void
 	onSort(key: string): void
 	onReset(): void
@@ -37,8 +37,8 @@ class SearchPanel extends Component<SearchPanelProps> {
 		const shapeOptions = ['ball', 'figure', 'bell', 'cone', 'snowflake'] as MultiselectOptions
 		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
 		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
-		const { filters, sort, onReset, onClear, favoriteItemsQuantity } = this.props
-		const { year, amount, shape, color, size, areOnlyFavorite } = filters
+		const { filters, sort, onReset, onClear, selectedItemsQuantity } = this.props
+		const { year, amount, shape, color, size, areOnlySelected } = filters
 
 		return (
 			<div className="search-panel">
@@ -54,18 +54,18 @@ class SearchPanel extends Component<SearchPanelProps> {
 					<Range type="amount" onFilter={(prop: RangeOptions) => this.handleFilter('amount', prop)} initialFilter={amount} />
 				</div>
 
-				<div className="only-favorite">
+				<div className="checkbox-only">
 					<input
-						onChange={() => this.handleFilter('areOnlyFavorite', !areOnlyFavorite)}
+						onChange={() => this.handleFilter('areOnlySelected', !areOnlySelected)}
 						className="checkbox"
 						type="checkbox"
-						id="only-favorite"
-						name="only-favorite"
-						value="Only favorite"
-						checked={areOnlyFavorite}
+						id="only-selected"
+						name="only-selected"
+						value="Only selected"
+						checked={areOnlySelected}
 					/>
-					<label className="only-favorite__label search-panel-label" htmlFor="only-favorite">
-						Only favorite ({favoriteItemsQuantity})
+					<label className="checkbox-only__label search-panel-label" htmlFor="only-selected">
+						Only selected ({selectedItemsQuantity})
 					</label>
 				</div>
 

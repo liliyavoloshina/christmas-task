@@ -14,7 +14,8 @@ import Select from '../components/Select'
 import Pagination from '../layout/Pagination'
 import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues, RadiusKeys } from '../types/Catalog'
 import { FlippedProps, LocalStorage } from '../types/utils'
-import { filterArray, getData, setData, sortArray, searchArray, FAVORITE_MAX_QUANTITY, mergeFavoriteAndOriginal } from '../utils/utils'
+import { filterArray, getData, setData, sortArray, searchArray, mergeSelectedAndOriginal } from '../utils/utils'
+import { SELECTED_MAX_QUANTITY } from '../utils/constants'
 import Loader from '../components/Loader'
 
 interface CatalogState {
@@ -23,7 +24,7 @@ interface CatalogState {
 	search: string
 	filteredItems: Item[]
 	originalItems: Item[]
-	favoriteItems: Item[]
+	selectedItems: Item[]
 	defaultFilters: CatalogFilters
 	isPopupHidden: boolean
 	isAnimated: boolean
@@ -39,7 +40,7 @@ class Catalog extends Component<{}, CatalogState> {
 			defaultFilters: {} as CatalogFilters,
 			filteredItems: [],
 			originalItems: [],
-			favoriteItems: [],
+			selectedItems: [],
 			isPopupHidden: true,
 			isAnimated: false,
 			currentPage: 0,
@@ -49,19 +50,19 @@ class Catalog extends Component<{}, CatalogState> {
 
 	async componentDidMount() {
 		const storedItems = await getData(LocalStorage.OriginalItems)
-		const favoriteItems = await getData(LocalStorage.FavoriteItems)
+		const selectedItems = await getData(LocalStorage.SelectedItems)
 
 		const storedSettings = await getData(LocalStorage.CatalogSettings)
 		const defaultFilters = await getData(LocalStorage.DefaultFilters)
 
-		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, favoriteItems }, () => {
+		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, selectedItems }, () => {
 			this.filter()
 			this.setState({ isLoaded: true })
 		})
 
 		window.addEventListener('beforeunload', () => {
 			const { settings } = this.state
-			setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
+			// setData<CatalogSettings>(LocalStorage.CatalogSettings, settings)
 		})
 	}
 
@@ -82,11 +83,11 @@ class Catalog extends Component<{}, CatalogState> {
 		})
 	}
 
-	handleFavorite(id: string, isFavorite: boolean) {
-		const { settings, filteredItems, favoriteItems, originalItems } = this.state
+	handleSelect(id: string, isSelected: boolean) {
+		const { settings, filteredItems, selectedItems, originalItems } = this.state
 		const { filters } = settings
 
-		if (favoriteItems.length === FAVORITE_MAX_QUANTITY && isFavorite === true) {
+		if (selectedItems.length === SELECTED_MAX_QUANTITY && isSelected === true) {
 			this.setState({ isPopupHidden: false })
 
 			this.animate()
@@ -98,23 +99,23 @@ class Catalog extends Component<{}, CatalogState> {
 		}
 
 		const checkedItem = originalItems.find(item => item.id === id)
-		let updatedFavoriteItems = favoriteItems
+		let updatedSelectedItems = selectedItems
 
-		if (isFavorite === true) {
-			updatedFavoriteItems.push(checkedItem!)
+		if (isSelected === true) {
+			updatedSelectedItems.push(checkedItem!)
 		} else {
-			updatedFavoriteItems = updatedFavoriteItems.filter(item => item.id !== id)
+			updatedSelectedItems = updatedSelectedItems.filter(item => item.id !== id)
 		}
 
-		const merged = mergeFavoriteAndOriginal(updatedFavoriteItems, filteredItems)
+		const merged = mergeSelectedAndOriginal(updatedSelectedItems, filteredItems)
 
-		this.setState({ favoriteItems: updatedFavoriteItems, filteredItems: merged, settings }, () => {
+		this.setState({ selectedItems: updatedSelectedItems, filteredItems: merged, settings }, () => {
 			// save favorite items, so favorites are tracking even on play page without reload
-			setData<Item[]>(LocalStorage.FavoriteItems, updatedFavoriteItems)
+			setData<Item[]>(LocalStorage.SelectedItems, updatedSelectedItems)
 		})
 
-		if (filters.areOnlyFavorite) {
-			const filtered = merged.filter(item => item.isFavorite === true)
+		if (filters.areOnlySelected) {
+			const filtered = merged.filter(item => item.isSelected === true)
 			this.setState({ filteredItems: filtered })
 
 			this.animate()
@@ -149,18 +150,18 @@ class Catalog extends Component<{}, CatalogState> {
 		settings.isCardExpanded = false
 		settings.sort = 'az'
 		settings.itemsPerPage = 60
-		this.setState({ favoriteItems: [], filteredItems: originalItems, settings, search: '' }, () => {
+		this.setState({ selectedItems: [], filteredItems: originalItems, settings, search: '' }, () => {
 			this.filter()
 		})
-		window.localStorage.removeItem(LocalStorage.FavoriteItems)
+		window.localStorage.removeItem(LocalStorage.SelectedItems)
 		window.localStorage.removeItem(LocalStorage.CatalogSettings)
 	}
 
 	reset() {
-		const { originalItems, favoriteItems, defaultFilters, settings } = this.state
+		const { originalItems, selectedItems, defaultFilters, settings } = this.state
 		settings.filters = { ...defaultFilters }
 
-		const merged = mergeFavoriteAndOriginal(favoriteItems, originalItems)
+		const merged = mergeSelectedAndOriginal(selectedItems, originalItems)
 
 		this.setState({ settings, filteredItems: merged }, () => {
 			this.sort(merged, settings)
@@ -184,15 +185,15 @@ class Catalog extends Component<{}, CatalogState> {
 
 	// will fire sort every time, so filtered items remain sorted
 	filter() {
-		const { originalItems, favoriteItems, settings } = this.state
+		const { originalItems, selectedItems, settings } = this.state
 		const { filters } = settings
-		const merged = mergeFavoriteAndOriginal(favoriteItems, originalItems)
+		const merged = mergeSelectedAndOriginal(selectedItems, originalItems)
 		const filtered = filterArray(merged, filters)
 		this.sort(filtered, settings)
 	}
 
 	render() {
-		const { isLoaded, filteredItems, favoriteItems, settings, search, isPopupHidden, isAnimated, currentPage } = this.state
+		const { isLoaded, filteredItems, selectedItems, settings, search, isPopupHidden, isAnimated, currentPage } = this.state
 		const { filters, sort, itemsPerPage, isCardExpanded } = settings
 
 		const hasMatches = searchArray(filteredItems, search).length > 0
@@ -215,7 +216,7 @@ class Catalog extends Component<{}, CatalogState> {
 					onFilter={(type: string, options) => this.handleFilter(type, options)}
 					filters={filters}
 					sort={sort}
-					favoriteItemsQuantity={favoriteItems.length}
+					selectedItemsQuantity={selectedItems.length}
 					onSort={(key: SortKeys) => this.handleSort(key)}
 					onReset={() => this.reset()}
 					onClear={() => this.clear()}
@@ -243,13 +244,7 @@ class Catalog extends Component<{}, CatalogState> {
 							.map(item => (
 								<Flipped key={item.id} flipId={item.id}>
 									{(flippedProps: FlippedProps) => (
-										<Card
-											flippedProps={flippedProps}
-											isCardExpanded={isCardExpanded}
-											onFavorite={(id, isFavorite) => this.handleFavorite(id, isFavorite)}
-											key={item.id}
-											{...item}
-										/>
+										<Card flippedProps={flippedProps} isCardExpanded={isCardExpanded} onSelect={(id, isSelected) => this.handleSelect(id, isSelected)} key={item.id} {...item} />
 									)}
 								</Flipped>
 							))}

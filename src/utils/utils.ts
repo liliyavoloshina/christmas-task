@@ -1,9 +1,7 @@
 import Item from '../types/Item'
 import { CatalogSettings, SortKeys, CatalogFilters } from '../types/Catalog'
 import { LocalStorage } from '../types/utils'
-
-const FAVORITE_MAX_QUANTITY = 5
-const SNOWFLAKES_COUNT = 200
+import { SNOWFLAKES_COUNT } from './constants'
 
 const firstToUpperCase = (string: string) => {
 	const first = string.charAt(0).toUpperCase()
@@ -30,7 +28,18 @@ const filterArray = (items: Item[], filters: CatalogFilters) => {
 		return true
 	}
 
-	return items.filter(item => isCorrectYear(item) && isCorrectAmount(item) && isCorrectShape(item) && isCorrectColor(item) && isCorrectSize(item) && isCorrectFavorite(item))
+	const isCorrectSelected = (item: Item) => {
+		if (filters.areOnlySelected === true) {
+			return item.isSelected === filters.areOnlySelected
+		}
+
+		return true
+	}
+
+	return items.filter(
+		item =>
+			isCorrectYear(item) && isCorrectAmount(item) && isCorrectShape(item) && isCorrectColor(item) && isCorrectSize(item) && isCorrectFavorite(item) && isCorrectSelected(item)
+	)
 }
 
 const sortArray = (array: Item[], key: SortKeys) => {
@@ -50,17 +59,17 @@ const sortArray = (array: Item[], key: SortKeys) => {
 	return array
 }
 
-const mergeFavoriteAndOriginal = (favorite: Item[], original: Item[]): Item[] => {
-	const resettedOriginal = original.map(item => ({ ...item, isFavorite: false }))
+const mergeSelectedAndOriginal = (selected: Item[], original: Item[]): Item[] => {
+	const resettedOriginal = original.map(item => ({ ...item, isSelected: false }))
 
 	const merged = [...resettedOriginal]
 
-	if (favorite.length > 0) {
-		favorite.forEach((favoriteItem: Item) => {
-			const favoriteItemIndex = merged.findIndex((item: Item) => item.id === favoriteItem.id)
+	if (selected.length > 0) {
+		selected.forEach((selectedItem: Item) => {
+			const selectedItemIndex = merged.findIndex((item: Item) => item.id === selectedItem.id)
 
-			if (favoriteItemIndex !== -1) {
-				merged[favoriteItemIndex].isFavorite = true
+			if (selectedItemIndex !== -1) {
+				merged[selectedItemIndex].isSelected = true
 			}
 		})
 	}
@@ -78,7 +87,7 @@ const searchArray = (array: Item[], key: string) =>
 
 const idToInitial = (id: string) => id.split('-').slice(0, 1).join('')
 
-const updateItemsArrayToFavorite = (arr: Item[]) => {
+const updateItemsArrayToSelected = (arr: Item[]) => {
 	const updatedFavoriteItems = arr.map((item: Item) => {
 		const itemsNotSetted = [...Array(item.amount)].map((el, index) => {
 			const toy = { id: `${item.id}-${index}`, coords: [0, 0] }
@@ -120,22 +129,23 @@ const getData = async (key: LocalStorage) => {
 		return defaultFilters.filters
 	}
 
-	if (key === LocalStorage.FavoriteItems) {
+	if (key === LocalStorage.SelectedItems) {
 		return []
 	}
 
-	if (key === LocalStorage.PlayFavoriteItems) {
-		const favoriteItems = JSON.parse(window.localStorage.getItem(LocalStorage.FavoriteItems)!)
+	// playSelectedItems and SelectedItems different because play page requires special data structure for toys (ex id for every item)
+	if (key === LocalStorage.playSelectedItems) {
+		const selectedItems = JSON.parse(window.localStorage.getItem(LocalStorage.SelectedItems)!)
 
-		if (!favoriteItems) {
+		if (!selectedItems) {
 			const storedItems = await serverRequest<Item[]>('data/items.json')
 			const firstTwentyItems = storedItems.slice(0, 20)
-			const updatedFavoriteItems = updateItemsArrayToFavorite(firstTwentyItems)
-			return updatedFavoriteItems
+			const updatedSelectedItems = updateItemsArrayToSelected(firstTwentyItems)
+			return updatedSelectedItems
 		}
 
-		const updatedFavoriteItems = updateItemsArrayToFavorite(favoriteItems)
-		return updatedFavoriteItems
+		const updatedSelectedItems = updateItemsArrayToSelected(selectedItems)
+		return updatedSelectedItems
 	}
 
 	if (key === LocalStorage.PlaySettings) {
@@ -211,17 +221,4 @@ const calculateGarlandOffset = (type: 'top' | 'left', index: number) => {
 	return 0
 }
 
-export {
-	firstToUpperCase,
-	searchOptions,
-	filterArray,
-	setData,
-	getData,
-	sortArray,
-	searchArray,
-	FAVORITE_MAX_QUANTITY,
-	idToInitial,
-	getSnowflakes,
-	mergeFavoriteAndOriginal,
-	calculateGarlandOffset,
-}
+export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, idToInitial, getSnowflakes, mergeSelectedAndOriginal, calculateGarlandOffset }
