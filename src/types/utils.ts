@@ -8,7 +8,7 @@ enum LocalStorage {
 	DefaultFilters = 'defaultFilters',
 	SelectedItems = 'selectedItems',
 	PlaySettings = 'playSettings',
-	playSelectedItems = 'playSelectedItems',
+	PlaySelectedItems = 'playSelectedItems',
 }
 
 export { LocalStorage }

@@ -133,8 +133,8 @@ const getData = async (key: LocalStorage) => {
 		return []
 	}
 
-	// playSelectedItems and SelectedItems different because play page requires special data structure for toys (ex id for every item)
-	if (key === LocalStorage.playSelectedItems) {
+	// difference between PlaySelectedItems and SelectedItems in structure (ex PlaySelectedItems has id and coords)
+	if (key === LocalStorage.PlaySelectedItems) {
 		const selectedItems = JSON.parse(window.localStorage.getItem(LocalStorage.SelectedItems)!)
 
 		if (!selectedItems) {

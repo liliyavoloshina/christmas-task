@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
@@ -7,7 +8,7 @@ import Garland from '../layout/GarlandOptions'
 import Checkbox from '../components/Checkbox'
 import { getData, idToInitial, setData, getSnowflakes, calculateGarlandOffset, loadResources } from '../utils/utils'
 import { LocalStorage } from '../types/utils'
-import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
+import { PlayOptionsObject, ObjectIndexNumber, PlaySelectedItem, PlaySelectedItemCopy, PlaySettings } from '../types/Play'
 // TODO: is there another way to load images from src folder ???
 import mainBg from '../img/wallpaper/main.jpg'
 import tree1 from '../img/tree/1.png'
@@ -28,9 +29,9 @@ import scene9 from '../img/scene/9.jpg'
 
 interface PlayState {
 	options: PlayOptionsObject
-	favoriteItems: FavoriteItem[]
-	itemsSetted: FavoriteItemCopy[]
-	itemsNotSetted: FavoriteItemCopy[]
+	playSelectedItems: PlaySelectedItem[]
+	itemsSetted: PlaySelectedItemCopy[]
+	itemsNotSetted: PlaySelectedItemCopy[]
 	treesPaths: ObjectIndexNumber
 	scenePaths: ObjectIndexNumber
 	draggableId: string
@@ -39,7 +40,7 @@ interface PlayState {
 	isMusic: boolean
 	isLoaded: boolean
 	isGarland: boolean
-	garlandColor: 'multicolor' | 'yellow' | 'red' | 'blue' | 'green'
+	garlandColor: 'multicolor' | 'yellow' | 'red' | 'pink' | 'green'
 }
 
 class Play extends Component<{}, PlayState> {
@@ -87,7 +88,7 @@ class Play extends Component<{}, PlayState> {
 			itemsSetted: [],
 			itemsNotSetted: [],
 			draggableId: '',
-			favoriteItems: [],
+			playSelectedItems: [],
 			isAlreadyOnTheTree: false,
 			isSnow: false,
 			isMusic: false,
@@ -102,13 +103,13 @@ class Play extends Component<{}, PlayState> {
 
 	async componentDidMount() {
 		const { options, treesPaths, scenePaths } = this.state
-		const favoriteItems = await getData(LocalStorage.playSelectedItems)
+		const playSelectedItems = await getData(LocalStorage.PlaySelectedItems)
 		const storedPlaySettings = await getData(LocalStorage.PlaySettings)
 
-		let setted: FavoriteItemCopy[] = []
-		let notSetted: FavoriteItemCopy[] = []
+		let setted: PlaySelectedItemCopy[] = []
+		let notSetted: PlaySelectedItemCopy[] = []
 
-		favoriteItems.forEach((item: FavoriteItem) => {
+		playSelectedItems.forEach((item: PlaySelectedItem) => {
 			setted = [...setted, ...item.itemsSetted]
 			notSetted = [...notSetted, ...item.itemsNotSetted]
 		})
@@ -118,7 +119,7 @@ class Play extends Component<{}, PlayState> {
 		options.lights.active = storedPlaySettings.activeLights
 
 		this.setState({
-			favoriteItems,
+			playSelectedItems,
 			itemsSetted: setted,
 			itemsNotSetted: notSetted,
 			options,
@@ -210,12 +211,12 @@ class Play extends Component<{}, PlayState> {
 
 		const leftCoord = pageX - draggableTarget!.offsetWidth / 2
 		const rightCoord = pageY - draggableTarget!.offsetHeight / 2
-		let itemToReplace: FavoriteItemCopy
+		let itemToReplace: PlaySelectedItemCopy
 
 		if (isAlreadyOnTheTree) {
 			itemToReplace = itemsSetted.find(item => item.id === draggableId)!
 
-			// TODO: just fire rereder, so coords change (is it possible to avoid this???)
+			// TODO: just fire rerender, so coords change (is it possible to fire rerender without set unchanged property???)
 			const updatedItemsSetted = itemsSetted
 			this.setState({ itemsSetted: updatedItemsSetted })
 		} else {
@@ -260,7 +261,7 @@ class Play extends Component<{}, PlayState> {
 	}
 
 	render() {
-		const { options, favoriteItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded, isGarland, garlandColor } = this.state
+		const { options, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded, isGarland, garlandColor } = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
 
@@ -320,7 +321,7 @@ class Play extends Component<{}, PlayState> {
 								<img
 									key={toy.id}
 									src={`images/${id}.png`}
-									alt="lll"
+									alt="drag me"
 									className="item-play__img setted"
 									style={{ left: toy.coords[0], top: toy.coords[1] }}
 									draggable
@@ -335,7 +336,7 @@ class Play extends Component<{}, PlayState> {
 				</div>
 				<aside className="aside">
 					<div className="items-play">
-						{favoriteItems.map(item => {
+						{playSelectedItems.map(item => {
 							const displayInCard = itemsNotSetted.filter(notSettedItem => idToInitial(notSettedItem.id) === item.id)
 							return (
 								<div key={item.id} className="item-play">
@@ -343,7 +344,7 @@ class Play extends Component<{}, PlayState> {
 										<img
 											key={toy.id}
 											src={`images/${item.id}.png`}
-											alt="nnn"
+											alt="drag me"
 											className="item-play__img not-setted"
 											draggable
 											onDragStart={() => this.onDragStart(toy.id)}

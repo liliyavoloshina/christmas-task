@@ -4,16 +4,16 @@ interface PlayOptionItem {
 	quantity: number
 }
 
-interface FavoriteItemCopy {
+interface PlaySelectedItemCopy {
 	id: string
 	coords: [string, string]
 }
 
-interface FavoriteItem {
+interface PlaySelectedItem {
 	id: string
 	amount: number
-	itemsSetted: FavoriteItemCopy[]
-	itemsNotSetted: FavoriteItemCopy[]
+	itemsSetted: PlaySelectedItemCopy[]
+	itemsNotSetted: PlaySelectedItemCopy[]
 }
 
 interface ObjectIndexNumber {
@@ -31,7 +31,7 @@ interface PlaySettings {
 	isSnow: boolean
 	isMusic: boolean
 	isGarland: boolean
-	garlandColor: 'multicolor' | 'yellow' | 'red' | 'blue' | 'green'
+	garlandColor: 'multicolor' | 'yellow' | 'red' | 'pink' | 'green'
 }
 
-export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, FavoriteItemCopy, FavoriteItem, PlaySettings }
+export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings }
