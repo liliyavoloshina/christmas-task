@@ -1,7 +1,3 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable jsx-a11y/no-autofocus */
 import '../styles/pages/__catalog.scss'
 import React, { Component } from 'react'
 import { Flipper, Flipped } from 'react-flip-toolkit'

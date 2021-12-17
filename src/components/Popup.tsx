@@ -1,5 +1,5 @@
-import { Component } from 'react'
 import '../styles/components/__popup.scss'
+import { Component } from 'react'
 
 interface PopupProps {
 	text: string

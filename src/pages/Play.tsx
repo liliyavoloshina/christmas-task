@@ -1,7 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
@@ -9,7 +5,7 @@ import Btn from '../components/Btn'
 import Loader from '../components/Loader'
 import Garland from '../layout/GarlandOptions'
 import Checkbox from '../components/Checkbox'
-import { getData, idToInitial, setData, getSnowflakes, calculateGarlandOffset } from '../utils/utils'
+import { getData, idToInitial, setData, getSnowflakes, calculateGarlandOffset, loadResources } from '../utils/utils'
 import { LocalStorage } from '../types/utils'
 import { PlayOptionsObject, ObjectIndexNumber, FavoriteItem, FavoriteItemCopy, PlaySettings } from '../types/Play'
 // TODO: is there another way to load images from src folder ???
@@ -135,10 +131,12 @@ class Play extends Component<{}, PlayState> {
 		this.checkMusic()
 
 		window.addEventListener('beforeunload', () => {
-			const { itemsSetted, itemsNotSetted, isSnow, isMusic, isGarland, garlandColor } = this.state
+			const { isSnow, isMusic, isGarland, garlandColor } = this.state
+			// const { itemsSetted, itemsNotSetted, isSnow, isMusic, isGarland, garlandColor } = this.state
 			const { scene, tree, lights } = options
 
-			const updatedFavoriteItems = favoriteItems.map((item: FavoriteItem) => ({ id: item.id, amount: item.amount, itemsSetted, itemsNotSetted }))
+			// TODO: saving toys position
+			// const updatedFavoriteItems = favoriteItems.map((item: FavoriteItem) => ({ id: item.id, amount: item.amount, itemsSetted, itemsNotSetted }))
 			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic, isGarland, garlandColor }
 
 			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
@@ -147,9 +145,9 @@ class Play extends Component<{}, PlayState> {
 
 		const treeImages = Object.keys(treesPaths).map(key => treesPaths[key])
 		const sceneImages = Object.keys(scenePaths).map(key => scenePaths[key])
-		await this.loadResources(treeImages)
-		await this.loadResources(sceneImages)
-		await this.loadResources([mainBg])
+		await loadResources(treeImages)
+		await loadResources(sceneImages)
+		await loadResources([mainBg])
 		this.setState({ isLoaded: true })
 	}
 
@@ -233,20 +231,6 @@ class Play extends Component<{}, PlayState> {
 
 	toggleGarlandOptions(checked: boolean) {
 		this.setState({ isGarland: checked })
-	}
-
-	async loadResources(arr: string[]) {
-		const loadResource = async (resource: string) => {
-			const img = new Image()
-			img.src = resource
-			await img.decode()
-		}
-
-		await Promise.all(
-			arr.map(async resource => {
-				await loadResource(resource)
-			})
-		)
 	}
 
 	clear() {

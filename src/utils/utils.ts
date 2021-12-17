@@ -221,4 +221,31 @@ const calculateGarlandOffset = (type: 'top' | 'left', index: number) => {
 	return 0
 }
 
-export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, idToInitial, getSnowflakes, mergeSelectedAndOriginal, calculateGarlandOffset }
+const loadResources = async (arr: string[]) => {
+	const loadResource = async (resource: string) => {
+		const img = new Image()
+		img.src = resource
+		await img.decode()
+	}
+
+	await Promise.all(
+		arr.map(async resource => {
+			await loadResource(resource)
+		})
+	)
+}
+
+export {
+	firstToUpperCase,
+	searchOptions,
+	filterArray,
+	setData,
+	getData,
+	sortArray,
+	searchArray,
+	idToInitial,
+	getSnowflakes,
+	mergeSelectedAndOriginal,
+	calculateGarlandOffset,
+	loadResources,
+}

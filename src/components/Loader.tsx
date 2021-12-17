@@ -8,12 +8,7 @@ class Loader extends Component<{}> {
 	}
 
 	render() {
-		return (
-			<div className="loader">
-				&#10052;
-				{/* <div>&#10052;</div> */}
-			</div>
-		)
+		return <div className="loader">&#10052;</div>
 	}
 }
 

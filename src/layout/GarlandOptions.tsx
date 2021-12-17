@@ -23,8 +23,8 @@ class GarlandOptions extends Component<GarlandOptionsProps, {}> {
 					<button type="button" className="light green" aria-label="switch light" />
 					<button type="button" className="light red" aria-label="switch light" />
 				</div>
-				<label className="switch">
-					<input onChange={e => toggleGarlandOptions(e.target.checked)} type="checkbox" />
+				<label htmlFor="garland-switch" className="switch">
+					<input onChange={e => toggleGarlandOptions(e.target.checked)} type="checkbox" id="garland-switch" />
 					<i />
 				</label>
 			</div>

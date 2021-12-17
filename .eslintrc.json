@@ -15,37 +15,17 @@
 	},
 	"plugins": ["react", "@typescript-eslint"],
 	"rules": {
-		"react/react-in-jsx-scope": "off",
 		"react/function-component-definition": [
 			2,
 			{
 				"namedComponents": "function-declaration"
 			}
 		],
-		"react/jsx-filename-extension": [
-			1,
-			{
-				"extensions": [".ts", ".tsx"]
-			}
-		],
-		// bug from eslint
-		"jsx-a11y/label-has-associated-control": [
-			"error",
-			{
-				"required": {
-					"some": ["nesting", "id"]
-				}
-			}
-		],
-		// bug from eslint
-		"jsx-a11y/label-has-for": [
-			"error",
-			{
-				"required": {
-					"some": ["nesting", "id"]
-				}
-			}
-		],
-		"react/jsx-props-no-spreading": "off"
+		// useful when need to pass all properties to component instead of passing one by one
+		"react/jsx-props-no-spreading": "off",
+		// useful when need to render static items without id (ex garland lights)
+		"react/no-array-index-key": "off",
+		// according to task requirements search input should be autofocused
+		"jsx-a11y/no-autofocus": "off"
 	}
 }

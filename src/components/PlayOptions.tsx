@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import '../styles/layout/__play-options.scss'
 import { Component } from 'react'
 import { PlayOptionItem } from '../types/Play'
