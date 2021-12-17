@@ -1,10 +1,10 @@
 import '../styles/components/__multiselect.scss'
 import React, { Component } from 'react'
-import { MultiselectOptions } from '../types/Catalog'
+import { MultiselectOptions, MultiselectOption } from '../types/Catalog'
 import { firstToUpperCase } from '../utils/utils'
 
 interface MultiselectProps {
-	type: 'shape' | 'color' | 'size'
+	type: MultiselectOption.Shape | MultiselectOption.Color | MultiselectOption.Size
 	options: MultiselectOptions
 	initialFilter: string[]
 	onFilter(options: string[]): void

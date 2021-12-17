@@ -2,15 +2,16 @@ import '../styles/components/__card.scss'
 import { Component } from 'react'
 import BtnSelected from './BtnSelected'
 import { FlippedProps } from '../types/utils'
+import { ItemColor, ItemShape, ItemSize } from '../types/Item'
 
-interface ItemProps {
+interface CardProps {
 	id: string
 	name: string
 	amount: number
 	year: number
-	shape: 'ball' | 'figure' | 'bell' | 'cone' | 'snowflake'
-	color: 'green' | 'white' | 'red' | 'blue' | 'yellow'
-	size: 'large' | 'medium' | 'small'
+	shape: ItemShape
+	color: ItemColor
+	size: ItemSize
 	isFavorite: boolean
 	isSelected: boolean
 	flippedProps: FlippedProps
@@ -18,8 +19,8 @@ interface ItemProps {
 	onSelect(id: string, isSelected: boolean): void
 }
 
-class Card extends Component<ItemProps> {
-	constructor(props: ItemProps) {
+class Card extends Component<CardProps> {
+	constructor(props: CardProps) {
 		super(props)
 		this.state = {}
 	}

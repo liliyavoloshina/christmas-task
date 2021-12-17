@@ -22,7 +22,6 @@ class Pagination extends Component<PaginationProps, {}> {
 
 		const btnsAmount = []
 
-		// eslint-disable-next-line no-plusplus
 		for (let i = 0; i < pageAmount; i++) {
 			btnsAmount.push(i)
 		}

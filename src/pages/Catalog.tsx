@@ -3,14 +3,16 @@ import React, { Component } from 'react'
 import { Flipper, Flipped } from 'react-flip-toolkit'
 import SearchPanel from '../layout/SearchPanel'
 import Card from '../components/Card'
-import Item from '../types/Item'
+import { Item } from '../types/Item'
 import Popup from '../components/Popup'
 import Btn from '../components/Btn'
 import Select from '../components/Select'
 import Pagination from '../layout/Pagination'
-import { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues, RadiusKeys } from '../types/Catalog'
+import { CatalogSettings, CatalogFilters, SortKey, CatalogFiltersValues, RadiusKeys, CatalogView } from '../types/Catalog'
 import { FlippedProps, LocalStorage } from '../types/utils'
-import { filterArray, getData, setData, sortArray, searchArray, mergeSelectedAndOriginal } from '../utils/utils'
+import { mergeSelectedAndOriginal } from '../utils/utils'
+import { getData, setData } from '../utils/data'
+import { filterArray, sortArray, searchArray } from '../utils/filters'
 import { SELECTED_MAX_QUANTITY } from '../utils/constants'
 import Loader from '../components/Loader'
 
@@ -70,7 +72,7 @@ class Catalog extends Component<{}, CatalogState> {
 		})
 	}
 
-	handleSort(key: SortKeys) {
+	handleSort(key: SortKey) {
 		const { filteredItems, settings } = this.state
 		settings.sort = key
 
@@ -134,9 +136,9 @@ class Catalog extends Component<{}, CatalogState> {
 		this.setState({ isAnimated: !isAnimated })
 	}
 
-	changeView(viewType: string) {
+	changeView(viewType: CatalogView) {
 		const { settings } = this.state
-		settings.isCardExpanded = viewType === 'list'
+		settings.isCardExpanded = viewType === CatalogView.List
 		this.setState({ settings })
 	}
 
@@ -144,7 +146,7 @@ class Catalog extends Component<{}, CatalogState> {
 		const { originalItems, defaultFilters, settings } = this.state
 		settings.filters = { ...defaultFilters }
 		settings.isCardExpanded = false
-		settings.sort = 'az'
+		settings.sort = SortKey.Az
 		settings.itemsPerPage = 60
 		this.setState({ selectedItems: [], filteredItems: originalItems, settings, search: '' }, () => {
 			this.filter()
@@ -213,7 +215,7 @@ class Catalog extends Component<{}, CatalogState> {
 					filters={filters}
 					sort={sort}
 					selectedItemsQuantity={selectedItems.length}
-					onSort={(key: SortKeys) => this.handleSort(key)}
+					onSort={(key: SortKey) => this.handleSort(key)}
 					onReset={() => this.reset()}
 					onClear={() => this.clear()}
 				/>
@@ -221,8 +223,8 @@ class Catalog extends Component<{}, CatalogState> {
 				<div className="items">
 					<div className="additional-panel">
 						<div className="additional-panel__change-view">
-							<Btn onClick={() => this.changeView('grid')} accented={!isCardExpanded} icon="grid_view" form="square" title="change view" />
-							<Btn onClick={() => this.changeView('list')} accented={isCardExpanded} icon="view_list" form="square" title="change view" />
+							<Btn onClick={() => this.changeView(CatalogView.Grid)} accented={!isCardExpanded} icon="grid_view" form="square" title="change view" />
+							<Btn onClick={() => this.changeView(CatalogView.List)} accented={isCardExpanded} icon="view_list" form="square" title="change view" />
 						</div>
 						<div className="additional-panel__text">
 							<Select type="pagination" initialSort={itemsPerPage} onSelect={(key: RadiusKeys) => this.changePaginationLimits(key)} />

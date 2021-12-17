@@ -1,16 +1,16 @@
 import '../styles/layout/__search-panel.scss'
-import '../styles/components/__checkbox.scss'
 import { Component } from 'react'
 import Multiselect from '../components/Multiselect'
 import Select from '../components/Select'
 import Btn from '../components/Btn'
 import Range from '../components/Range'
 import Checkbox from '../components/Checkbox'
-import { RangeOptions, CatalogFilters, CatalogFiltersValues, Colors, Sizes, Shapes, SortKeys, MultiselectOptions } from '../types/Catalog'
+import { RangeOptions, CatalogFilters, CatalogFiltersValues, SortKey, MultiselectOption } from '../types/Catalog'
+import { ItemColor, ItemShape, ItemSize } from '../types/Item'
 
 interface SearchPanelProps {
 	filters: CatalogFilters
-	sort: SortKeys
+	sort: SortKey
 	selectedItemsQuantity: number
 	onFilter(type: string, options: CatalogFiltersValues): void
 	onSort(key: string): void
@@ -29,25 +29,35 @@ class SearchPanel extends Component<SearchPanelProps> {
 		onFilter(type, prop)
 	}
 
-	handleSort(key: SortKeys) {
+	handleSort(key: SortKey) {
 		const { onSort } = this.props
 		onSort(key)
 	}
 
 	render() {
-		const shapeOptions = ['ball', 'figure', 'bell', 'cone', 'snowflake'] as MultiselectOptions
-		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
-		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
+		const shapeOptions = [ItemShape.Ball, ItemShape.Figure, ItemShape.Bell, ItemShape.Cone, ItemShape.Snowflake]
+		const colorOptions = [ItemColor.Green, ItemColor.White, ItemColor.Red, ItemColor.blue, ItemColor.Yellow]
+		const sizeOptions = [ItemSize.Large, ItemSize.Medium, ItemSize.Small]
 		const { filters, sort, onReset, onClear, selectedItemsQuantity } = this.props
 		const { year, amount, shape, color, size, areOnlySelected, areOnlyFavorite } = filters
 
 		return (
 			<div className="search-panel">
 				<div className="selecting">
-					<Select onSelect={(key: SortKeys) => this.handleSort(key)} initialSort={sort} type="sort" />
-					<Multiselect type="shape" onFilter={(prop: Shapes[]) => this.handleFilter('shape', prop)} initialFilter={shape} options={shapeOptions} />
-					<Multiselect type="color" onFilter={(prop: Colors[]) => this.handleFilter('color', prop)} initialFilter={color} options={colorOptions} />
-					<Multiselect type="size" onFilter={(prop: Sizes[]) => this.handleFilter('size', prop)} initialFilter={size} options={sizeOptions} />
+					<Select onSelect={(key: SortKey) => this.handleSort(key)} initialSort={sort} type="sort" />
+					<Multiselect
+						type={MultiselectOption.Shape}
+						onFilter={(prop: ItemShape[]) => this.handleFilter(MultiselectOption.Shape, prop)}
+						initialFilter={shape}
+						options={shapeOptions}
+					/>
+					<Multiselect
+						type={MultiselectOption.Color}
+						onFilter={(prop: ItemColor[]) => this.handleFilter(MultiselectOption.Color, prop)}
+						initialFilter={color}
+						options={colorOptions}
+					/>
+					<Multiselect type={MultiselectOption.Size} onFilter={(prop: ItemSize[]) => this.handleFilter(MultiselectOption.Size, prop)} initialFilter={size} options={sizeOptions} />
 				</div>
 
 				<div className="filtering">

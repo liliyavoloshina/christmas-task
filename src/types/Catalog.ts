@@ -1,10 +1,26 @@
-type Shapes = 'ball' | 'figure' | 'bell' | 'cone' | 'snowflake'
-type Colors = 'green' | 'white' | 'red' | 'blue' | 'yellow'
-type Sizes = 'large' | 'medium' | 'small'
-type SortKeys = 'az' | 'za' | 'asc' | 'desc'
+import { ItemColor, ItemShape, ItemSize } from './Item'
+
+enum SortKey {
+	Az = 'az',
+	Za = 'za',
+	Asc = 'asc',
+	Desc = 'desc',
+}
+
+enum CatalogView {
+	List = 'list',
+	Grid = 'grid',
+}
+
+enum MultiselectOption {
+	Shape = 'shape',
+	Color = 'color',
+	Size = 'size',
+}
+
 type RadiusKeys = 5 | 10 | 20 | 30 | 60
-type MultiselectOptions = Shapes[] | Colors[] | Sizes[]
-type CatalogSettingsValues = CatalogFilters | SortKeys | number | boolean | RadiusKeys
+type MultiselectOptions = ItemShape[] | ItemColor[] | ItemSize[]
+type CatalogSettingsValues = CatalogFilters | SortKey | number | boolean | RadiusKeys
 type CatalogFiltersValues = RangeOptions | MultiselectOptions | boolean
 
 interface RangeOptions {
@@ -27,16 +43,16 @@ interface SortOptionsObject {
 interface CatalogFilters extends CatalogFiltersObject {
 	year: RangeOptions
 	amount: RangeOptions
-	shape: Shapes[]
-	color: Colors[]
-	size: Sizes[]
+	shape: ItemShape[]
+	color: ItemColor[]
+	size: ItemSize[]
 	areOnlyFavorite: boolean
 	areOnlySelected: boolean
 }
 
 interface CatalogSettings extends CatalogSettingsObject {
 	filters: CatalogFilters
-	sort: SortKeys
+	sort: SortKey
 	itemsPerPage: RadiusKeys
 	isCardExpanded: boolean
 }
@@ -53,4 +69,6 @@ interface PaginationData {
 	totalPages: number
 }
 
-export type { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues, MultiselectOptions, RangeOptions, Shapes, Colors, Sizes, SortOptions, RadiusKeys, PaginationData }
+export type { CatalogSettings, CatalogFilters, CatalogFiltersValues, MultiselectOptions, RangeOptions, SortOptions, RadiusKeys, PaginationData }
+
+export { SortKey, CatalogView, MultiselectOption }

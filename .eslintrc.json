@@ -26,6 +26,7 @@
 		// useful when need to render static items without id (ex garland lights)
 		"react/no-array-index-key": "off",
 		// according to task requirements search input should be autofocused
-		"jsx-a11y/no-autofocus": "off"
+		"jsx-a11y/no-autofocus": "off",
+		"no-plusplus": "off"
 	}
 }

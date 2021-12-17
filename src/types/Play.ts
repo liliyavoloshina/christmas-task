@@ -1,5 +1,29 @@
+enum LightsOffsetType {
+	Top = 'top',
+	Left = 'left',
+}
+
+enum GarlandColor {
+	Multicolor = 'multicolor',
+	Yellow = 'yellow',
+	Red = 'red',
+	Pink = 'pink',
+	Green = 'green',
+}
+
+enum PlayOptionName {
+	Scene = 'scene',
+	Tree = 'tree',
+	Lights = 'lights',
+}
+
+enum PlayCheckboxName {
+	Snow = 'snow',
+	Music = 'music',
+}
+
 interface PlayOptionItem {
-	className: string
+	className: PlayOptionName
 	active: number
 	quantity: number
 }
@@ -31,7 +55,8 @@ interface PlaySettings {
 	isSnow: boolean
 	isMusic: boolean
 	isGarland: boolean
-	garlandColor: 'multicolor' | 'yellow' | 'red' | 'pink' | 'green'
+	garlandColor: GarlandColor
 }
 
 export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings }
+export { LightsOffsetType, GarlandColor, PlayOptionName, PlayCheckboxName }

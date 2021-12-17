@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-state */
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import PlayOptions from '../components/PlayOptions'
@@ -6,9 +5,20 @@ import Btn from '../components/Btn'
 import Loader from '../components/Loader'
 import Garland from '../layout/GarlandOptions'
 import Checkbox from '../components/Checkbox'
-import { getData, idToInitial, setData, getSnowflakes, calculateGarlandOffset, loadResources } from '../utils/utils'
+import { idToInitial, getSnowflakes, calculateGarlandOffset, loadResources } from '../utils/utils'
+import { getData, setData } from '../utils/data'
 import { LocalStorage } from '../types/utils'
-import { PlayOptionsObject, ObjectIndexNumber, PlaySelectedItem, PlaySelectedItemCopy, PlaySettings } from '../types/Play'
+import {
+	PlayOptionsObject,
+	ObjectIndexNumber,
+	PlaySelectedItem,
+	PlaySelectedItemCopy,
+	PlaySettings,
+	LightsOffsetType,
+	GarlandColor,
+	PlayOptionName,
+	PlayCheckboxName,
+} from '../types/Play'
 // TODO: is there another way to load images from src folder ???
 import mainBg from '../img/wallpaper/main.jpg'
 import tree1 from '../img/tree/1.png'
@@ -40,7 +50,7 @@ interface PlayState {
 	isMusic: boolean
 	isLoaded: boolean
 	isGarland: boolean
-	garlandColor: 'multicolor' | 'yellow' | 'red' | 'pink' | 'green'
+	garlandColor: GarlandColor
 }
 
 class Play extends Component<{}, PlayState> {
@@ -51,17 +61,17 @@ class Play extends Component<{}, PlayState> {
 		this.state = {
 			options: {
 				scene: {
-					className: 'scene',
+					className: PlayOptionName.Scene,
 					active: 1,
 					quantity: 9,
 				},
 				tree: {
-					className: 'tree',
+					className: PlayOptionName.Tree,
 					active: 1,
 					quantity: 6,
 				},
 				lights: {
-					className: 'lights',
+					className: PlayOptionName.Lights,
 					active: 1,
 					quantity: 5,
 				},
@@ -94,7 +104,7 @@ class Play extends Component<{}, PlayState> {
 			isMusic: false,
 			isLoaded: false,
 			isGarland: false,
-			garlandColor: 'multicolor',
+			garlandColor: GarlandColor.Multicolor,
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
@@ -152,8 +162,8 @@ class Play extends Component<{}, PlayState> {
 		this.setState({ isLoaded: true })
 	}
 
-	handleCheckbox(type: 'snow' | 'music') {
-		if (type === 'snow') {
+	handleCheckbox(type: PlayCheckboxName) {
+		if (type === PlayCheckboxName.Snow) {
 			const { isSnow } = this.state
 			this.setState({ isSnow: !isSnow })
 		} else {
@@ -276,8 +286,8 @@ class Play extends Component<{}, PlayState> {
 					<PlayOptions title="Tree" options={options.tree} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
 					<Garland toggleGarlandOptions={checked => this.toggleGarlandOptions(checked)} />
 					<div className="settings">
-						<Checkbox label="Music" name="music-toggle" isChecked={isMusic} onChange={() => this.handleCheckbox('music')} />
-						<Checkbox label="Snow" name="snow-toggle" isChecked={isSnow} onChange={() => this.handleCheckbox('snow')} />
+						<Checkbox label="Music" name="music-toggle" isChecked={isMusic} onChange={() => this.handleCheckbox(PlayCheckboxName.Music)} />
+						<Checkbox label="Snow" name="snow-toggle" isChecked={isSnow} onChange={() => this.handleCheckbox(PlayCheckboxName.Snow)} />
 					</div>
 					<div className="actions">
 						<Btn onClick={() => this.clear()} text="Clear" />
@@ -289,8 +299,8 @@ class Play extends Component<{}, PlayState> {
 						{Array(80)
 							.fill(null)
 							.map((light, index) => {
-								const topOffset = calculateGarlandOffset('top', index)
-								const leftOffset = calculateGarlandOffset('left', index)
+								const topOffset = calculateGarlandOffset(LightsOffsetType.Top, index)
+								const leftOffset = calculateGarlandOffset(LightsOffsetType.Left, index)
 								const gap = index % 2 === 0 ? index + 1 : index
 								return <li key={index} className="garland__light" style={{ top: `${topOffset + gap}%`, left: `${leftOffset + index * 3.5}%` }} />
 							})}

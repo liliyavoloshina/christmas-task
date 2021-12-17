@@ -1,11 +1,11 @@
 import '../styles/components/__select.scss'
 import { Component } from 'react'
-import { SortKeys, SortOptions, RadiusKeys } from '../types/Catalog'
+import { SortKey, SortOptions, RadiusKeys } from '../types/Catalog'
 
 interface SelectProps {
-	initialSort: SortKeys | RadiusKeys
+	initialSort: SortKey | RadiusKeys
 	type: 'sort' | 'pagination'
-	onSelect(key: SortKeys | RadiusKeys): void
+	onSelect(key: SortKey | RadiusKeys): void
 }
 
 interface SelectState {
@@ -36,10 +36,10 @@ class Select extends Component<SelectProps, SelectState> {
 			]
 		} else {
 			options = [
-				{ key: 'az', text: 'by name from A to Z' },
-				{ key: 'za', text: 'by name from Z to A' },
-				{ key: 'asc', text: 'by year ascending' },
-				{ key: 'desc', text: 'by year descending' },
+				{ key: SortKey.Az, text: 'by name from A to Z' },
+				{ key: SortKey.Za, text: 'by name from Z to A' },
+				{ key: SortKey.Asc, text: 'by year ascending' },
+				{ key: SortKey.Desc, text: 'by year descending' },
 			]
 		}
 
@@ -59,7 +59,7 @@ class Select extends Component<SelectProps, SelectState> {
 		if (type === 'pagination') {
 			onSelect(+key! as RadiusKeys)
 		} else {
-			onSelect(key! as SortKeys)
+			onSelect(key! as SortKey)
 		}
 	}
 
