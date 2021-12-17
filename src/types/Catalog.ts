@@ -8,50 +8,50 @@ type CatalogSettingsValues = CatalogFilters | SortKeys | number | boolean | Radi
 type CatalogFiltersValues = RangeOptions | MultiselectOptions | boolean
 
 interface RangeOptions {
-  min: number
-  max: number
+	min: number
+	max: number
 }
 
 interface CatalogSettingsObject {
-  [key: string]: CatalogSettingsValues
+	[key: string]: CatalogSettingsValues
 }
 
 interface CatalogFiltersObject {
-  [key: string]: RangeOptions | MultiselectOptions | boolean
+	[key: string]: RangeOptions | MultiselectOptions | boolean
 }
 
 interface SortOptionsObject {
-  [key: string]: string | number
-  // [key: string]: SortKeys | string | RadiusKeys
+	[key: string]: string | number
+	// [key: string]: SortKeys | string | RadiusKeys
 }
 
 interface CatalogFilters extends CatalogFiltersObject {
-  year: RangeOptions
-  amount: RangeOptions
-  shape: Shapes[],
-  color: Colors[],
-  size: Sizes[],
-  areOnlyFavorite: boolean,
+	year: RangeOptions
+	amount: RangeOptions
+	shape: Shapes[]
+	color: Colors[]
+	size: Sizes[]
+	areOnlyFavorite: boolean
 }
 
 interface CatalogSettings extends CatalogSettingsObject {
-  filters: CatalogFilters
-  sort: SortKeys,
-  itemsPerPage: RadiusKeys,
-  isCardExpanded: boolean
+	filters: CatalogFilters
+	sort: SortKeys
+	itemsPerPage: RadiusKeys
+	isCardExpanded: boolean
 }
 
 interface SortOptions extends SortOptionsObject {
-  key: string | number
-  // key: SortKeys | RadiusKeys | string
-  text: string
+	key: string | number
+	// key: SortKeys | RadiusKeys | string
+	text: string
 }
 
 interface PaginationData {
-  currentPage: number
-  pageLimit: number
-  totalItems: number
-  totalPages: number
+	currentPage: number
+	pageLimit: number
+	totalItems: number
+	totalPages: number
 }
 
 export type { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues, MultiselectOptions, RangeOptions, Shapes, Colors, Sizes, SortOptions, RadiusKeys, PaginationData }
