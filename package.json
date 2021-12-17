@@ -30,7 +30,8 @@
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"lint": "npx eslint --ext ts,tsx . ",
-		"prettier:fix": "prettier -w ."
+		"prettier:fix": "prettier -w .",
+		"pre-commit": "yarn lint-staged"
 	},
 	"lint-staged": {
 		"*.(ts|tsx)": [
