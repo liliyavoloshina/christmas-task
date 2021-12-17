@@ -59,7 +59,7 @@ class Card extends Component<ItemProps> {
 						Size: <span className="info__value">{size}</span>
 					</li>
 					<li className="info">
-						Granny favorite: <span className="info__value">{`${isFavorite ? 'yes' : 'no'}`}</span>
+						Granny&apos;s favorite: <span className="info__value">{`${isFavorite ? 'yes' : 'no'}`}</span>
 					</li>
 				</ul>
 			</div>

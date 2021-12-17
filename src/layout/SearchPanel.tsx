@@ -5,6 +5,7 @@ import Multiselect from '../components/Multiselect'
 import Select from '../components/Select'
 import Btn from '../components/Btn'
 import Range from '../components/Range'
+import Checkbox from '../components/Checkbox'
 import { RangeOptions, CatalogFilters, CatalogFiltersValues, Colors, Sizes, Shapes, SortKeys, MultiselectOptions } from '../types/Catalog'
 
 interface SearchPanelProps {
@@ -38,7 +39,7 @@ class SearchPanel extends Component<SearchPanelProps> {
 		const colorOptions = ['green', 'white', 'red', 'blue', 'yellow'] as MultiselectOptions
 		const sizeOptions = ['large', 'medium', 'small'] as MultiselectOptions
 		const { filters, sort, onReset, onClear, selectedItemsQuantity } = this.props
-		const { year, amount, shape, color, size, areOnlySelected } = filters
+		const { year, amount, shape, color, size, areOnlySelected, areOnlyFavorite } = filters
 
 		return (
 			<div className="search-panel">
@@ -54,20 +55,13 @@ class SearchPanel extends Component<SearchPanelProps> {
 					<Range type="amount" onFilter={(prop: RangeOptions) => this.handleFilter('amount', prop)} initialFilter={amount} />
 				</div>
 
-				<div className="checkbox-only">
-					<input
-						onChange={() => this.handleFilter('areOnlySelected', !areOnlySelected)}
-						className="checkbox"
-						type="checkbox"
-						id="only-selected"
-						name="only-selected"
-						value="Only selected"
-						checked={areOnlySelected}
-					/>
-					<label className="checkbox-only__label search-panel-label" htmlFor="only-selected">
-						Only selected ({selectedItemsQuantity})
-					</label>
-				</div>
+				<Checkbox
+					label={`Only selected (${selectedItemsQuantity})`}
+					name="only-selected"
+					isChecked={areOnlySelected}
+					onChange={() => this.handleFilter('areOnlySelected', !areOnlySelected)}
+				/>
+				<Checkbox label="Only granny's favorite" name="only-favorite" isChecked={areOnlyFavorite} onChange={() => this.handleFilter('areOnlyFavorite', !areOnlyFavorite)} />
 
 				<div className="search-panel__actions">
 					<Btn onClick={() => onReset()} text="Reset filters" size="lg" action="reset" />
