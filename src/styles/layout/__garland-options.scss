@@ -2,6 +2,7 @@
 	position: absolute;
 	top: 150px;
 	bottom: 130px;
+	z-index: 9;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -83,22 +84,42 @@
 
 		&.multicolor {
 			background: linear-gradient(11deg, var(--red-bright) 0%, var(--pink-bright) 30%, var(--yellow-bright) 50%, var(--green-bright) 100%);
+
+			&-active {
+				box-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--green-bright);
+			}
 		}
 
 		&.yellow {
 			background-color: var(--yellow-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
+			}
 		}
 
 		&.pink {
 			background-color: var(--pink-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright);
+			}
 		}
 
 		&.green {
 			background-color: var(--green-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright);
+			}
 		}
 
 		&.red {
 			background-color: var(--red-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright);
+			}
 		}
 	}
 }
@@ -179,8 +200,8 @@
 	}
 
 	50% {
-		background: rgb(255, 30, 199, 0.555);
-		box-shadow: 0 0 5px rgb(255, 30, 199, 0.555), 0 0 5px rgb(255, 30, 199, 0.555), 0 0 5px rgb(255, 30, 199, 0.555), 0 0 5px rgb(255, 30, 199, 0.555);
+		background: rgba(255, 30, 199, 0.555);
+		box-shadow: 0 0 5px rgba(255, 30, 199, 0.555), 0 0 5px rgba(255, 30, 199, 0.555), 0 0 5px rgba(255, 30, 199, 0.555), 0 0 5px rgba(255, 30, 199, 0.555);
 	}
 }
 

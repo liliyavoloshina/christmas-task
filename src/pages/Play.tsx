@@ -200,10 +200,6 @@ class Play extends Component<{}, PlayState> {
 		this.setState({ options })
 	}
 
-	// handleGarland(checked: boolean) {
-	// 	this.setState({ isGarland: checked })
-	// }
-
 	onDragStart(id: string) {
 		const { itemsSetted } = this.state
 		const isAlreadyOnTheTree = itemsSetted.findIndex(item => item.id === id) !== -1
@@ -215,12 +211,11 @@ class Play extends Component<{}, PlayState> {
 		e.stopPropagation()
 		const { draggableId, itemsNotSetted, itemsSetted, isAlreadyOnTheTree } = this.state
 
-		// TODO: how to access element in dom without querySelector ???
-		const draggableTarget = document.querySelector<HTMLElement>(`[id="${draggableId}"]`)
-		const { pageX, pageY } = e
-
-		const leftCoord = pageX - draggableTarget!.offsetWidth / 2
-		const rightCoord = pageY - draggableTarget!.offsetHeight / 2
+		// TODO: is there another way to access element without e.target ???
+		const node = e.target as HTMLElement
+		const rect = node.getBoundingClientRect()
+		const leftCoord = e.clientX - rect.left - 20
+		const rightCoord = e.clientY - rect.top - 20
 		let itemToReplace: PlaySelectedItemCopy
 
 		if (isAlreadyOnTheTree) {
@@ -240,8 +235,12 @@ class Play extends Component<{}, PlayState> {
 		itemToReplace!.coords[1] = `${rightCoord}px`
 	}
 
-	toggleGarlandOptions(checked: boolean) {
+	toggleGarland(checked: boolean) {
 		this.setState({ isGarland: checked })
+	}
+
+	switchGarlandLight(light: GarlandColor) {
+		this.setState({ garlandColor: light })
 	}
 
 	clear() {
@@ -284,7 +283,12 @@ class Play extends Component<{}, PlayState> {
 				<aside className="aside">
 					<PlayOptions title="Background" options={options.scene} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
 					<PlayOptions title="Tree" options={options.tree} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
-					<Garland toggleGarlandOptions={checked => this.toggleGarlandOptions(checked)} />
+					<Garland
+						toggleGarland={checked => this.toggleGarland(checked)}
+						switchGarlandLight={(light: GarlandColor) => this.switchGarlandLight(light)}
+						isGarland={isGarland}
+						activeLight={garlandColor}
+					/>
 					<div className="settings">
 						<Checkbox label="Music" name="music-toggle" isChecked={isMusic} onChange={() => this.handleCheckbox(PlayCheckboxName.Music)} />
 						<Checkbox label="Snow" name="snow-toggle" isChecked={isSnow} onChange={() => this.handleCheckbox(PlayCheckboxName.Snow)} />
@@ -316,7 +320,7 @@ class Play extends Component<{}, PlayState> {
 							  ))
 							: null}
 					</div>
-					<map name="tree-map">
+					<map name="tree-map" className="tree-map">
 						<area
 							className="droppable"
 							coords="365,699,189,706,113,683,31,608,2,555,2,539,18,437,73,351,106,224,161,134,243,-1,306,75,353,144,399,221,424,359,452,459,496,550,444,664"

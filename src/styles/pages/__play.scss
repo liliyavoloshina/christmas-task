@@ -4,12 +4,12 @@
 	margin-right: auto;
 	margin-left: auto;
 	width: 100%;
+	overflow: hidden;
 	background: var(--bg-light);
 }
 
 .tree-container {
 	position: relative;
-	overflow: hidden;
 	flex: 1 1 500px;
 	display: flex;
 	justify-content: center;
@@ -18,6 +18,16 @@
 	background-color: var(--bg-light);
 	background-size: cover;
 	background-position: center;
+}
+
+.tree-map {
+	width: 500px;
+	height: 714px;
+	position: relative;
+}
+
+.tree-main-image {
+	position: absolute;
 }
 
 .aside {
@@ -37,15 +47,6 @@
 		margin-bottom: 0.5rem;
 		font-size: 1rem;
 	}
-}
-
-.lights-switcher {
-	background: none;
-	border-radius: 20px;
-	border: none;
-	color: var(--white);
-	cursor: pointer;
-	transition: 0.3s;
 }
 
 .settings {
@@ -86,6 +87,8 @@
 	box-shadow: var(--shadow-grey);
 
 	&__img {
+		z-index: 100;
+
 		&.not-setted {
 			position: absolute;
 			width: 80%;
@@ -93,7 +96,7 @@
 		}
 
 		&.setted {
-			position: fixed;
+			position: absolute;
 			width: 35px;
 			height: 35px;
 		}

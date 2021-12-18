@@ -8,8 +8,8 @@ import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(
 	<BrowserRouter>
-		<Main />
 		<Nav />
+		<Main />
 		<Footer />
 	</BrowserRouter>,
 	document.getElementById('root')
