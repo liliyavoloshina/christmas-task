@@ -27,6 +27,7 @@
 		"react/no-array-index-key": "off",
 		// according to task requirements search input should be autofocused
 		"jsx-a11y/no-autofocus": "off",
-		"no-plusplus": "off"
+		"no-plusplus": "off",
+		"no-return-assign": "off"
 	}
 }

@@ -9,6 +9,7 @@ interface BtnProps {
 	icon?: string
 	form?: 'square'
 	title?: string
+	additionalClass?: string
 	onClick?(): void
 }
 
@@ -27,8 +28,8 @@ class Btn extends Component<BtnProps> {
 	}
 
 	render() {
-		const { text, size, action, icon, form, title, accented } = this.props
-		const options = ['btn', size, action, form]
+		const { text, size, action, icon, form, title, accented, additionalClass } = this.props
+		const options = ['btn', size, action, form, additionalClass]
 
 		if (accented) {
 			options.push('accented')

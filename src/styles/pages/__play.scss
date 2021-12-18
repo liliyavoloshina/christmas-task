@@ -6,6 +6,10 @@
 	width: 100%;
 	overflow: hidden;
 	background: var(--bg-light);
+
+	@media (max-width: 768px) {
+		position: relative;
+	}
 }
 
 .tree-container {
@@ -36,10 +40,72 @@
 	flex-direction: column;
 	justify-content: space-between;
 	row-gap: 0.5rem;
-	overflow: auto;
 	height: 100%;
-	padding: 0.5rem;
 	background: var(--bg-dark);
+
+	&__container {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		overflow: auto;
+		padding: 0.5rem;
+	}
+
+	&__header {
+		display: none;
+
+		@media (max-width: 768px) {
+			display: block;
+		}
+	}
+
+	&__toggler {
+		display: flex;
+		width: 30px;
+		height: 30px;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+	}
+
+	@media (max-width: 768px) {
+		position: absolute;
+		top: 0;
+		z-index: 1000;
+		background: rgba(16, 18, 27, 0.664);
+		transition: 1s;
+
+		&__toggler {
+			position: relative;
+			display: block;
+		}
+
+		&-left {
+			left: 0;
+			width: 200px;
+
+			&.hidden {
+				left: -200px;
+			}
+
+			.aside__toggler {
+				right: -100%;
+			}
+		}
+
+		&-right {
+			right: 0;
+			width: 200px;
+
+			&.hidden {
+				right: -200px;
+			}
+
+			.aside__toggler {
+				left: -30px;
+			}
+		}
+	}
 }
 
 .options-section {

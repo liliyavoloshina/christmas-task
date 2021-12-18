@@ -37,6 +37,11 @@ import scene7 from '../img/scene/7.jpg'
 import scene8 from '../img/scene/8.jpg'
 import scene9 from '../img/scene/9.jpg'
 
+enum AsideName {
+	Left = 'left',
+	Right = 'right',
+}
+
 interface PlayState {
 	options: PlayOptionsObject
 	playSelectedItems: PlaySelectedItem[]
@@ -51,6 +56,8 @@ interface PlayState {
 	isLoaded: boolean
 	isGarland: boolean
 	garlandColor: GarlandColor
+	leftAsideHidden: boolean
+	rightAsideHidden: boolean
 }
 
 class Play extends Component<{}, PlayState> {
@@ -105,6 +112,8 @@ class Play extends Component<{}, PlayState> {
 			isLoaded: false,
 			isGarland: false,
 			garlandColor: GarlandColor.Multicolor,
+			leftAsideHidden: false,
+			rightAsideHidden: false,
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
@@ -269,8 +278,18 @@ class Play extends Component<{}, PlayState> {
 		}
 	}
 
+	toggleAside(type: AsideName) {
+		const { leftAsideHidden, rightAsideHidden } = this.state
+		if (type === AsideName.Left) {
+			this.setState({ leftAsideHidden: !leftAsideHidden })
+		} else {
+			this.setState({ rightAsideHidden: !rightAsideHidden })
+		}
+	}
+
 	render() {
-		const { options, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded, isGarland, garlandColor } = this.state
+		const { options, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded, isGarland, garlandColor, leftAsideHidden, rightAsideHidden } =
+			this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
 
@@ -280,22 +299,35 @@ class Play extends Component<{}, PlayState> {
 
 		return (
 			<div className="play-container fullpage">
-				<aside className="aside">
-					<PlayOptions title="Background" options={options.scene} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
-					<PlayOptions title="Tree" options={options.tree} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
-					<Garland
-						toggleGarland={checked => this.toggleGarland(checked)}
-						switchGarlandLight={(light: GarlandColor) => this.switchGarlandLight(light)}
-						isGarland={isGarland}
-						activeLight={garlandColor}
-					/>
-					<div className="settings">
-						<Checkbox label="Music" name="music-toggle" isChecked={isMusic} onChange={() => this.handleCheckbox(PlayCheckboxName.Music)} />
-						<Checkbox label="Snow" name="snow-toggle" isChecked={isSnow} onChange={() => this.handleCheckbox(PlayCheckboxName.Snow)} />
+				<aside className={`aside aside-left ${leftAsideHidden ? 'hidden' : ''}`}>
+					<div className="aside__header">
+						<Btn
+							onClick={() => {
+								this.toggleAside(AsideName.Left)
+							}}
+							additionalClass="aside__toggler"
+							icon="chevron_right"
+							form="square"
+						/>
 					</div>
-					<div className="actions">
-						<Btn onClick={() => this.clear()} text="Clear" />
-						<Btn text="Shine Christmas Tree!" accented />
+
+					<div className="aside__container">
+						<PlayOptions title="Background" options={options.scene} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
+						<PlayOptions title="Tree" options={options.tree} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
+						<Garland
+							toggleGarland={checked => this.toggleGarland(checked)}
+							switchGarlandLight={(light: GarlandColor) => this.switchGarlandLight(light)}
+							isGarland={isGarland}
+							activeLight={garlandColor}
+						/>
+						<div className="settings">
+							<Checkbox label="Music" name="music-toggle" isChecked={isMusic} onChange={() => this.handleCheckbox(PlayCheckboxName.Music)} />
+							<Checkbox label="Snow" name="snow-toggle" isChecked={isSnow} onChange={() => this.handleCheckbox(PlayCheckboxName.Snow)} />
+						</div>
+						<div className="actions">
+							<Btn onClick={() => this.clear()} text="Clear" />
+							<Btn text="Shine Christmas Tree!" accented />
+						</div>
 					</div>
 				</aside>
 				<div className={treeContainerClass}>
@@ -348,29 +380,41 @@ class Play extends Component<{}, PlayState> {
 					</map>
 					<img src={treesPaths[tree.active]} className="tree-main-image" useMap="#tree-map" alt="tree" />
 				</div>
-				<aside className="aside">
-					<div className="items-play">
-						{playSelectedItems.map(item => {
-							const displayInCard = itemsNotSetted.filter(notSettedItem => idToInitial(notSettedItem.id) === item.id)
-							return (
-								<div key={item.id} className="item-play">
-									{displayInCard.map(toy => (
-										<img
-											key={toy.id}
-											src={`images/${item.id}.png`}
-											alt="drag me"
-											className="item-play__img not-setted"
-											draggable
-											onDragStart={() => this.onDragStart(toy.id)}
-											onDragEnd={e => this.handleDragEnd(e, toy.id)}
-											id={toy.id}
-										/>
-									))}
+				<aside className={`aside aside-right ${rightAsideHidden ? 'hidden' : ''}`}>
+					<div className="aside__header">
+						<Btn
+							onClick={() => {
+								this.toggleAside(AsideName.Right)
+							}}
+							additionalClass="aside__toggler"
+							icon="chevron_left"
+							form="square"
+						/>
+					</div>
+					<div className="aside__container">
+						<div className="items-play">
+							{playSelectedItems.map(item => {
+								const displayInCard = itemsNotSetted.filter(notSettedItem => idToInitial(notSettedItem.id) === item.id)
+								return (
+									<div key={item.id} className="item-play">
+										{displayInCard.map(toy => (
+											<img
+												key={toy.id}
+												src={`images/${item.id}.png`}
+												alt="drag me"
+												className="item-play__img not-setted"
+												draggable
+												onDragStart={() => this.onDragStart(toy.id)}
+												onDragEnd={e => this.handleDragEnd(e, toy.id)}
+												id={toy.id}
+											/>
+										))}
 
-									<div className="item-play__amount">{displayInCard.length}</div>
-								</div>
-							)
-						})}
+										<div className="item-play__amount">{displayInCard.length}</div>
+									</div>
+								)
+							})}
+						</div>
 					</div>
 				</aside>
 			</div>
