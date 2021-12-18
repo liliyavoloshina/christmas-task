@@ -109,7 +109,7 @@
 	}
 
 	&__light:nth-child(2n + 2) {
-		animation-name: blue;
+		animation-name: pink;
 	}
 
 	&__light:nth-child(3n + 3) {
@@ -133,9 +133,9 @@
 	}
 }
 
-.blue .garland {
+.pink .garland {
 	&__light {
-		animation-name: blue;
+		animation-name: pink;
 	}
 }
 
@@ -171,16 +171,16 @@
 	}
 }
 
-@keyframes blue {
+@keyframes pink {
 	0%,
 	100% {
-		background: rgb(24, 45, 234);
-		box-shadow: 0 0 5px rgb(24, 45, 234), 0 0 5px rgb(24, 45, 234), 0 0 5px rgb(24, 45, 234), 0 0 5px rgb(24, 45, 234);
+		background: var(--pink-bright);
+		box-shadow: 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright);
 	}
 
 	50% {
-		background: rgba(24, 45, 234, 0.555);
-		box-shadow: 0 0 5px rgba(24, 45, 234, 0.555), 0 0 5px rgba(24, 45, 234, 0.555), 0 0 5px rgba(24, 45, 234, 0.555), 0 0 5px rgba(24, 45, 234, 0.555);
+		background: rgb(255, 30, 199, 0.555);
+		box-shadow: 0 0 5px rgb(255, 30, 199, 0.555), 0 0 5px rgb(255, 30, 199, 0.555), 0 0 5px rgb(255, 30, 199, 0.555), 0 0 5px rgb(255, 30, 199, 0.555);
 	}
 }
 
