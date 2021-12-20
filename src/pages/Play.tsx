@@ -157,7 +157,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 		this.checkMusic()
 
 		window.addEventListener('beforeunload', () => {
-			const { isSnow, isMusic, isGarland, garlandColor } = this.state
+			const { isSnow, isMusic, isGarland, garlandColor, previousWorks } = this.state
 			// const { itemsSetted, itemsNotSetted, isSnow, isMusic, isGarland, garlandColor } = this.state
 			const { scene, tree, lights } = options
 
@@ -167,6 +167,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 
 			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
 			setData<PlaySettings>(LocalStorage.PlaySettings, playSettings)
+			setData<PreviousWork[]>(LocalStorage.PreviousWorks, previousWorks)
 		})
 
 		const treeImages = Object.keys(treesPaths).map(key => treesPaths[key])
@@ -346,21 +347,21 @@ class Play extends Component<Record<string, never>, PlayState> {
 			garlandColor,
 			leftAsideHidden,
 			rightAsideHidden,
-			// previousWorks,
+			previousWorks,
 		} = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
 
-		const previousWorks = [
-			{ id: 1, imageUrl: 'images/test.png' },
-			{ id: 2, imageUrl: 'images/test.png' },
-			{ id: 3, imageUrl: 'images/test.png' },
-			{ id: 4, imageUrl: 'images/test.png' },
-			{ id: 5, imageUrl: 'images/test.png' },
-			{ id: 6, imageUrl: 'images/test.png' },
-			{ id: 7, imageUrl: 'images/test.png' },
-			{ id: 8, imageUrl: 'images/test.png' },
-		]
+		// const previousWorks = [
+		// 	{ id: 1, imageUrl: 'images/test.png' },
+		// 	{ id: 2, imageUrl: 'images/test.png' },
+		// 	{ id: 3, imageUrl: 'images/test.png' },
+		// 	{ id: 4, imageUrl: 'images/test.png' },
+		// 	{ id: 5, imageUrl: 'images/test.png' },
+		// 	{ id: 6, imageUrl: 'images/test.png' },
+		// 	{ id: 7, imageUrl: 'images/test.png' },
+		// 	{ id: 8, imageUrl: 'images/test.png' },
+		// ]
 
 		if (!isLoaded) {
 			return <Loader />
