@@ -297,7 +297,6 @@ class Play extends Component<Record<string, never>, PlayState> {
 	// eslint-disable-next-line react/no-unused-class-component-methods, class-methods-use-this
 	save() {
 		const { previousWorks, isSnow, isMusic, isGarland, garlandColor, options, itemsSetted, itemsNotSetted } = this.state
-		// const options: Partial<Options> = {}
 		let newPreviousWork: PreviousWork
 		const newPreviousWorkId = previousWorks.length + 2
 
@@ -314,10 +313,12 @@ class Play extends Component<Record<string, never>, PlayState> {
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
 			tempcanvas.width = 100
-			tempcanvas.height = 125
+			tempcanvas.height = 100
 			const context = tempcanvas.getContext('2d')!
 
 			context.drawImage(canvas, 0, 0, 100, (100 * canvas.height) / canvas.width)
+			// context.drawImage(canvas, 0, 0, 100, (100 * canvas.height) / canvas.width)
+
 			const imageUrl = tempcanvas.toDataURL('image/jpg')
 
 			newPreviousWork = {
@@ -331,6 +332,12 @@ class Play extends Component<Record<string, never>, PlayState> {
 			const updatedPreviousWorks = [...previousWorks, newPreviousWork]
 			this.setState({ previousWorks: updatedPreviousWorks })
 		})
+	}
+
+	restorePreviousWork(id: number) {
+		const { previousWorks } = this.state
+		const selectedWork = previousWorks.find(work => work.id === id)
+		console.log(selectedWork)
 	}
 
 	render() {
@@ -351,17 +358,6 @@ class Play extends Component<Record<string, never>, PlayState> {
 		} = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
-
-		// const previousWorks = [
-		// 	{ id: 1, imageUrl: 'images/test.png' },
-		// 	{ id: 2, imageUrl: 'images/test.png' },
-		// 	{ id: 3, imageUrl: 'images/test.png' },
-		// 	{ id: 4, imageUrl: 'images/test.png' },
-		// 	{ id: 5, imageUrl: 'images/test.png' },
-		// 	{ id: 6, imageUrl: 'images/test.png' },
-		// 	{ id: 7, imageUrl: 'images/test.png' },
-		// 	{ id: 8, imageUrl: 'images/test.png' },
-		// ]
 
 		if (!isLoaded) {
 			return <Loader />
@@ -492,7 +488,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 									<div className="previous-works__empty">Decorate your first tree!</div>
 								) : (
 									previousWorks.map(previousWork => (
-										<div key={previousWork.id} className="previous-work">
+										<div onClick={() => this.restorePreviousWork(previousWork.id)} role="presentation" key={previousWork.id} className="previous-work">
 											<img className="previous-work" src={previousWork.imageUrl} alt="previous work" />
 										</div>
 									))
