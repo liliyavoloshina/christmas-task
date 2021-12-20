@@ -7,7 +7,7 @@
 	overflow: hidden;
 	background: var(--bg-light);
 
-	@media (max-width: 768px) {
+	@media (max-width: 850px) {
 		position: relative;
 	}
 }
@@ -48,14 +48,17 @@
 		flex-direction: column;
 		justify-content: space-between;
 		overflow: auto;
+		height: 100%;
 		padding: 0.5rem;
+		row-gap: 1rem;
 	}
 
 	&__header {
 		display: none;
 
-		@media (max-width: 768px) {
+		@media (max-width: 850px) {
 			display: block;
+			height: 0;
 		}
 	}
 
@@ -66,9 +69,10 @@
 		align-items: center;
 		justify-content: center;
 		padding: 0;
+		background: var(--bg-dark);
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 850px) {
 		position: absolute;
 		top: 0;
 		z-index: 1000;
@@ -119,10 +123,9 @@
 	display: flex;
 	justify-content: space-between;
 
-	&__block {
-		display: flex;
-		align-items: center;
-		column-gap: 0.7rem;
+	@media (max-width: 850px) {
+		flex-direction: column;
+		row-gap: 1rem;
 	}
 }
 

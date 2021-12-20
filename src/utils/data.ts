@@ -3,6 +3,8 @@ import { Item } from '../types/Item'
 import { GarlandColor } from '../types/Play'
 import { LocalStorage } from '../types/utils'
 
+const generateStrictKey = (key: string) => `sober-koala-${key}`
+
 const serverRequest = async <T>(url: string): Promise<T> => {
 	const req = await fetch(url)
 	const res = await req.json()
@@ -25,11 +27,11 @@ const updateItemsArrayToSelected = (arr: Item[]) => {
 
 const setData = <T>(key: LocalStorage, value: T) => {
 	const stringified = JSON.stringify(value)
-	window.localStorage.setItem(key, stringified)
+	window.localStorage.setItem(generateStrictKey(key), stringified)
 }
 
 const getData = async (key: LocalStorage) => {
-	const stored = window.localStorage.getItem(key)
+	const stored = window.localStorage.getItem(generateStrictKey(key))
 
 	if (stored) {
 		return JSON.parse(stored)
@@ -51,7 +53,7 @@ const getData = async (key: LocalStorage) => {
 
 	// difference between PlaySelectedItems and SelectedItems in structure (ex PlaySelectedItems has id and coords)
 	if (key === LocalStorage.PlaySelectedItems) {
-		const selectedItems = JSON.parse(window.localStorage.getItem(LocalStorage.SelectedItems)!)
+		const selectedItems = JSON.parse(window.localStorage.getItem(generateStrictKey(LocalStorage.SelectedItems))!)
 
 		if (!selectedItems) {
 			const storedItems = await serverRequest<Item[]>('data/items.json')

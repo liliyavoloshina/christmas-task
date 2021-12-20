@@ -10,7 +10,7 @@ import Select from '../components/Select'
 import Pagination from '../layout/Pagination'
 import { CatalogSettings, CatalogFilters, SortKey, CatalogFiltersValues, RadiusKeys, CatalogView } from '../types/Catalog'
 import { FlippedProps, LocalStorage } from '../types/utils'
-import { mergeSelectedAndOriginal } from '../utils/utils'
+import { loadResources, mergeSelectedAndOriginal } from '../utils/utils'
 import { getData, setData } from '../utils/data'
 import { filterArray, sortArray, searchArray } from '../utils/filters'
 import { SELECTED_MAX_QUANTITY } from '../utils/constants'
@@ -55,8 +55,12 @@ class Catalog extends Component<{}, CatalogState> {
 
 		this.setState({ originalItems: storedItems, settings: storedSettings, defaultFilters, selectedItems }, () => {
 			this.filter()
-			this.setState({ isLoaded: true })
 		})
+
+		const imagesToPreload = ['images/41.png', 'images/9.png', 'images/23.png', 'images/50.png', 'images/38.png', 'images/33.png', 'images/28.png', 'images/45.png', 'images/24.png']
+
+		await loadResources(imagesToPreload)
+		this.setState({ isLoaded: true })
 
 		window.addEventListener('beforeunload', () => {
 			const { settings } = this.state
