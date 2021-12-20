@@ -60,10 +60,10 @@ interface PlayState {
 	rightAsideHidden: boolean
 }
 
-class Play extends Component<{}, PlayState> {
+class Play extends Component<Record<string, never>, PlayState> {
 	private audio: HTMLAudioElement
 
-	constructor(props: Readonly<{}>) {
+	constructor(props: Readonly<Record<string, never>>) {
 		super(props)
 		this.state = {
 			options: {

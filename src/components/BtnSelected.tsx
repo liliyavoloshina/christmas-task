@@ -6,7 +6,7 @@ interface BtnSelectedProps {
 	onSelect(isSelected: boolean): void
 }
 
-class BtnSelected extends Component<BtnSelectedProps, {}> {
+class BtnSelected extends Component<BtnSelectedProps, Record<string, never>> {
 	constructor(props: BtnSelectedProps) {
 		super(props)
 		this.state = {}

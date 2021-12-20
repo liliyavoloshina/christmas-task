@@ -3,7 +3,7 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["airbnb", "airbnb-typescript", "plugin:react/recommended", "prettier", "plugin:react/jsx-runtime"],
+	"extends": ["airbnb", "airbnb-typescript", "plugin:react/recommended", "plugin:@typescript-eslint/recommended", "prettier", "plugin:react/jsx-runtime"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"project": "./tsconfig.json",
@@ -28,6 +28,7 @@
 		// according to task requirements search input should be autofocused
 		"jsx-a11y/no-autofocus": "off",
 		"no-plusplus": "off",
-		"no-return-assign": "off"
+		"no-return-assign": "off",
+		"@typescript-eslint/no-non-null-assertion": "off"
 	}
 }

@@ -15,7 +15,7 @@ interface RangeProps {
 	onFilter(options: RangeOptions): void
 }
 
-class Range extends React.Component<RangeProps, Readonly<{}>> {
+class Range extends React.Component<RangeProps, Readonly<Record<string, never>>> {
 	constructor(props: RangeProps) {
 		super(props)
 		this.state = {}

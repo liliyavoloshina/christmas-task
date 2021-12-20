@@ -8,7 +8,7 @@ interface PlayOptionsProps {
 	onSelect(optionType: string, optionIndex: number): void
 }
 
-class PlayOptions extends Component<PlayOptionsProps, {}> {
+class PlayOptions extends Component<PlayOptionsProps, Record<string, never>> {
 	constructor(props: PlayOptionsProps) {
 		super(props)
 		this.state = {}

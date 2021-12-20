@@ -8,7 +8,7 @@ interface PaginationProps {
 	onPageChanged(pageNum: number): void
 }
 
-class Pagination extends Component<PaginationProps, {}> {
+class Pagination extends Component<PaginationProps, Record<string, never>> {
 	constructor(props: PaginationProps) {
 		super(props)
 		this.state = {}

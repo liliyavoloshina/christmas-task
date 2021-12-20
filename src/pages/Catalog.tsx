@@ -29,8 +29,8 @@ interface CatalogState {
 	currentPage: number
 }
 
-class Catalog extends Component<{}, CatalogState> {
-	constructor(props: Readonly<{}>) {
+class Catalog extends Component<Record<string, never>, CatalogState> {
+	constructor(props: Readonly<Record<string, never>>) {
 		super(props)
 		this.state = {
 			isLoaded: false,
