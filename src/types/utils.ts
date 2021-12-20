@@ -9,6 +9,7 @@ enum LocalStorage {
 	SelectedItems = 'selectedItems',
 	PlaySettings = 'playSettings',
 	PlaySelectedItems = 'playSelectedItems',
+	PreviousWorks = 'previousWorks',
 }
 
 export { LocalStorage }

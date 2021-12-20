@@ -47,7 +47,7 @@ const getData = async (key: LocalStorage) => {
 		return defaultFilters.filters
 	}
 
-	if (key === LocalStorage.SelectedItems) {
+	if (key === LocalStorage.SelectedItems || key === LocalStorage.PreviousWorks) {
 		return []
 	}
 
@@ -55,7 +55,7 @@ const getData = async (key: LocalStorage) => {
 	if (key === LocalStorage.PlaySelectedItems) {
 		const selectedItems = JSON.parse(window.localStorage.getItem(generateStrictKey(LocalStorage.SelectedItems))!)
 
-		if (!selectedItems) {
+		if (!selectedItems || selectedItems.length === 0) {
 			const storedItems = await serverRequest<Item[]>('data/items.json')
 			const firstTwentyItems = storedItems.slice(0, 20)
 			const updatedSelectedItems = updateItemsArrayToSelected(firstTwentyItems)
@@ -83,4 +83,8 @@ const getData = async (key: LocalStorage) => {
 	return initialItemsFromServer
 }
 
-export { setData, getData }
+const removeData = (key: string) => {
+	window.localStorage.removeItem(generateStrictKey(key))
+}
+
+export { setData, getData, removeData }

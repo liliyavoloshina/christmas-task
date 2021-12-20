@@ -1,12 +1,13 @@
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
+import html2canvas, { Options } from 'html2canvas'
 import PlayOptions from '../components/PlayOptions'
 import Btn from '../components/Btn'
 import Loader from '../components/Loader'
 import Garland from '../layout/GarlandOptions'
 import Checkbox from '../components/Checkbox'
 import { idToInitial, getSnowflakes, calculateGarlandOffset, loadResources } from '../utils/utils'
-import { getData, setData } from '../utils/data'
+import { getData, removeData, setData } from '../utils/data'
 import { LocalStorage } from '../types/utils'
 import {
 	PlayOptionsObject,
@@ -18,6 +19,7 @@ import {
 	GarlandColor,
 	PlayOptionName,
 	PlayCheckboxName,
+	PreviousWork,
 } from '../types/Play'
 // TODO: is there another way to load images from src folder ???
 import mainBg from '../img/wallpaper/main.jpg'
@@ -58,6 +60,7 @@ interface PlayState {
 	garlandColor: GarlandColor
 	leftAsideHidden: boolean
 	rightAsideHidden: boolean
+	previousWorks: PreviousWork[]
 }
 
 class Play extends Component<Record<string, never>, PlayState> {
@@ -114,6 +117,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 			garlandColor: GarlandColor.Multicolor,
 			leftAsideHidden: false,
 			rightAsideHidden: false,
+			previousWorks: [],
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
@@ -124,6 +128,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 		const { options, treesPaths, scenePaths } = this.state
 		const playSelectedItems = await getData(LocalStorage.PlaySelectedItems)
 		const storedPlaySettings = await getData(LocalStorage.PlaySettings)
+		const storedPreviousWorks = await getData(LocalStorage.PreviousWorks)
 
 		let setted: PlaySelectedItemCopy[] = []
 		let notSetted: PlaySelectedItemCopy[] = []
@@ -146,6 +151,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 			isMusic: storedPlaySettings.isMusic,
 			isGarland: storedPlaySettings.isGarland,
 			garlandColor: storedPlaySettings.garlandColor,
+			previousWorks: storedPreviousWorks,
 		})
 
 		this.checkMusic()
@@ -261,8 +267,8 @@ class Play extends Component<Record<string, never>, PlayState> {
 
 		this.audio.pause()
 		this.audio = new Audio('/audio/1.mp3')
-		this.setState({ options, isSnow: false, isMusic: false })
-		window.localStorage.removeItem(LocalStorage.PlaySettings)
+		this.setState({ options, isSnow: false, isMusic: false, isGarland: false, garlandColor: GarlandColor.Multicolor })
+		removeData(LocalStorage.PlaySettings)
 	}
 
 	checkMusic() {
@@ -287,11 +293,74 @@ class Play extends Component<Record<string, never>, PlayState> {
 		}
 	}
 
+	// eslint-disable-next-line react/no-unused-class-component-methods, class-methods-use-this
+	save() {
+		const { previousWorks, isSnow, isMusic, isGarland, garlandColor, options, itemsSetted, itemsNotSetted } = this.state
+		// const options: Partial<Options> = {}
+		let newPreviousWork: PreviousWork
+		const newPreviousWorkId = previousWorks.length + 2
+
+		const playSettings: PlaySettings = {
+			activeScene: options.scene.active,
+			activeTree: options.tree.active,
+			activeLights: options.lights.active,
+			isSnow,
+			isMusic,
+			isGarland,
+			garlandColor,
+		}
+
+		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
+			const tempcanvas = document.createElement('canvas')
+			tempcanvas.width = 100
+			tempcanvas.height = 125
+			const context = tempcanvas.getContext('2d')!
+
+			context.drawImage(canvas, 0, 0, 100, (100 * canvas.height) / canvas.width)
+			const imageUrl = tempcanvas.toDataURL('image/jpg')
+
+			newPreviousWork = {
+				id: newPreviousWorkId,
+				imageUrl,
+				playSettings,
+				itemsSetted,
+				itemsNotSetted,
+			}
+
+			const updatedPreviousWorks = [...previousWorks, newPreviousWork]
+			this.setState({ previousWorks: updatedPreviousWorks })
+		})
+	}
+
 	render() {
-		const { options, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isSnow, isMusic, isLoaded, isGarland, garlandColor, leftAsideHidden, rightAsideHidden } =
-			this.state
+		const {
+			options,
+			playSelectedItems,
+			treesPaths,
+			itemsSetted,
+			itemsNotSetted,
+			isSnow,
+			isMusic,
+			isLoaded,
+			isGarland,
+			garlandColor,
+			leftAsideHidden,
+			rightAsideHidden,
+			// previousWorks,
+		} = this.state
 		const { tree, scene } = options
 		const treeContainerClass = `tree-container scene-${scene.active}`
+
+		const previousWorks = [
+			{ id: 1, imageUrl: 'images/test.png' },
+			{ id: 2, imageUrl: 'images/test.png' },
+			{ id: 3, imageUrl: 'images/test.png' },
+			{ id: 4, imageUrl: 'images/test.png' },
+			{ id: 5, imageUrl: 'images/test.png' },
+			{ id: 6, imageUrl: 'images/test.png' },
+			{ id: 7, imageUrl: 'images/test.png' },
+			{ id: 8, imageUrl: 'images/test.png' },
+		]
 
 		if (!isLoaded) {
 			return <Loader />
@@ -299,14 +368,14 @@ class Play extends Component<Record<string, never>, PlayState> {
 
 		return (
 			<div className="play-container fullpage">
-				<aside className={`aside aside-left ${leftAsideHidden ? 'hidden' : ''}`}>
+				<aside className={`aside aside-left${leftAsideHidden ? ' hidden' : ''}`}>
 					<div className="aside__header">
 						<Btn
 							onClick={() => {
 								this.toggleAside(AsideName.Left)
 							}}
 							additionalClass="aside__toggler"
-							icon="chevron_right"
+							icon={leftAsideHidden ? 'chevron_right' : 'chevron_left'}
 							form="square"
 						/>
 					</div>
@@ -326,7 +395,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 						</div>
 						<div className="actions">
 							<Btn onClick={() => this.clear()} text="Clear" />
-							<Btn text="Shine Christmas Tree!" accented />
+							<Btn onClick={() => this.save()} text="Save" accented />
 						</div>
 					</div>
 				</aside>
@@ -380,14 +449,14 @@ class Play extends Component<Record<string, never>, PlayState> {
 					</map>
 					<img src={treesPaths[tree.active]} className="tree-main-image" useMap="#tree-map" alt="tree" />
 				</div>
-				<aside className={`aside aside-right ${rightAsideHidden ? 'hidden' : ''}`}>
+				<aside className={`aside aside-right${rightAsideHidden ? ' hidden' : ''}`}>
 					<div className="aside__header">
 						<Btn
 							onClick={() => {
 								this.toggleAside(AsideName.Right)
 							}}
 							additionalClass="aside__toggler"
-							icon="chevron_left"
+							icon={rightAsideHidden ? 'chevron_left' : 'chevron_right'}
 							form="square"
 						/>
 					</div>
@@ -414,6 +483,20 @@ class Play extends Component<Record<string, never>, PlayState> {
 									</div>
 								)
 							})}
+						</div>
+						<div className="previous-works">
+							<h3 className="previous-works__title">Previous works</h3>
+							<div className="previous-works__content">
+								{previousWorks.length === 0 ? (
+									<div className="previous-works__empty">Decorate your first tree!</div>
+								) : (
+									previousWorks.map(previousWork => (
+										<div key={previousWork.id} className="previous-work">
+											<img className="previous-work" src={previousWork.imageUrl} alt="previous work" />
+										</div>
+									))
+								)}
+							</div>
 						</div>
 					</div>
 				</aside>

@@ -58,5 +58,13 @@ interface PlaySettings {
 	garlandColor: GarlandColor
 }
 
-export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings }
+interface PreviousWork {
+	id: number
+	imageUrl: string
+	playSettings: PlaySettings
+	itemsSetted: PlaySelectedItemCopy[]
+	itemsNotSetted: PlaySelectedItemCopy[]
+}
+
+export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings, PreviousWork }
 export { LightsOffsetType, GarlandColor, PlayOptionName, PlayCheckboxName }

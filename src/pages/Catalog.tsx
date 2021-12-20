@@ -11,7 +11,7 @@ import Pagination from '../layout/Pagination'
 import { CatalogSettings, CatalogFilters, SortKey, CatalogFiltersValues, RadiusKeys, CatalogView } from '../types/Catalog'
 import { FlippedProps, LocalStorage } from '../types/utils'
 import { loadResources, mergeSelectedAndOriginal } from '../utils/utils'
-import { getData, setData } from '../utils/data'
+import { getData, removeData, setData } from '../utils/data'
 import { filterArray, sortArray, searchArray } from '../utils/filters'
 import { SELECTED_MAX_QUANTITY } from '../utils/constants'
 import Loader from '../components/Loader'
@@ -155,8 +155,9 @@ class Catalog extends Component<Record<string, never>, CatalogState> {
 		this.setState({ selectedItems: [], filteredItems: originalItems, settings, search: '' }, () => {
 			this.filter()
 		})
-		window.localStorage.removeItem(LocalStorage.SelectedItems)
-		window.localStorage.removeItem(LocalStorage.CatalogSettings)
+
+		removeData(LocalStorage.SelectedItems)
+		removeData(LocalStorage.CatalogSettings)
 	}
 
 	reset() {
