@@ -335,9 +335,21 @@ class Play extends Component<Record<string, never>, PlayState> {
 	}
 
 	restorePreviousWork(id: number) {
-		const { previousWorks } = this.state
+		const { previousWorks, options } = this.state
 		const selectedWork = previousWorks.find(work => work.id === id)
-		console.log(selectedWork)
+		options.scene.active = selectedWork!.playSettings.activeScene
+		options.tree.active = selectedWork!.playSettings.activeTree
+		options.lights.active = selectedWork!.playSettings.activeLights
+
+		this.setState({
+			itemsSetted: selectedWork!.itemsSetted,
+			itemsNotSetted: selectedWork!.itemsNotSetted,
+			options,
+			isSnow: selectedWork!.playSettings.isSnow,
+			isMusic: selectedWork!.playSettings.isMusic,
+			isGarland: selectedWork!.playSettings.isGarland,
+			garlandColor: selectedWork!.playSettings.garlandColor,
+		})
 	}
 
 	render() {
