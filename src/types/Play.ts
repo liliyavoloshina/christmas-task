@@ -22,12 +22,6 @@ enum PlayCheckboxName {
 	Music = 'music',
 }
 
-interface PlayOptionItem {
-	className: PlayOptionName
-	active: number
-	quantity: number
-}
-
 interface PlaySelectedItemCopy {
 	id: string
 	coords: [string, string]
@@ -44,14 +38,9 @@ interface ObjectIndexNumber {
 	[key: number]: string
 }
 
-interface PlayOptionsObject {
-	[key: string]: PlayOptionItem
-}
-
 interface PlaySettings {
-	activeScene: number
-	activeTree: number
-	activeLights: number
+	scene: number
+	tree: number
 	isSnow: boolean
 	isMusic: boolean
 	isGarland: boolean
@@ -66,5 +55,5 @@ interface PreviousWork {
 	itemsNotSetted: PlaySelectedItemCopy[]
 }
 
-export type { PlayOptionItem, PlayOptionsObject, ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings, PreviousWork }
+export type { ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings, PreviousWork }
 export { LightsOffsetType, GarlandColor, PlayOptionName, PlayCheckboxName }

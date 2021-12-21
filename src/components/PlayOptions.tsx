@@ -1,10 +1,11 @@
 import '../styles/layout/__play-options.scss'
 import { Component } from 'react'
-import { PlayOptionItem } from '../types/Play'
 
 interface PlayOptionsProps {
 	title: string
-	options: PlayOptionItem
+	active: number
+	className: string
+	quantity: number
 	onSelect(optionType: string, optionIndex: number): void
 }
 
@@ -20,8 +21,7 @@ class PlayOptions extends Component<PlayOptionsProps, Record<string, never>> {
 	}
 
 	render() {
-		const { title, options } = this.props
-		const { quantity, active, className } = options
+		const { title, active, className, quantity } = this.props
 
 		return (
 			<section className="options-section">

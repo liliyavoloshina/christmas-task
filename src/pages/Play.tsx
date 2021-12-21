@@ -1,16 +1,15 @@
 import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
-import html2canvas, { Options } from 'html2canvas'
+import html2canvas from 'html2canvas'
 import PlayOptions from '../components/PlayOptions'
 import Btn from '../components/Btn'
 import Loader from '../components/Loader'
-import Garland from '../layout/GarlandOptions'
+import GarlandOptions from '../layout/GarlandOptions'
 import Checkbox from '../components/Checkbox'
 import { idToInitial, getSnowflakes, calculateGarlandOffset, loadResources } from '../utils/utils'
 import { getData, removeData, setData } from '../utils/data'
 import { LocalStorage } from '../types/utils'
 import {
-	PlayOptionsObject,
 	ObjectIndexNumber,
 	PlaySelectedItem,
 	PlaySelectedItemCopy,
@@ -45,7 +44,7 @@ enum AsideName {
 }
 
 interface PlayState {
-	options: PlayOptionsObject
+	settings: PlaySettings
 	playSelectedItems: PlaySelectedItem[]
 	itemsSetted: PlaySelectedItemCopy[]
 	itemsNotSetted: PlaySelectedItemCopy[]
@@ -53,11 +52,7 @@ interface PlayState {
 	scenePaths: ObjectIndexNumber
 	draggableId: string
 	isAlreadyOnTheTree: boolean
-	isSnow: boolean
-	isMusic: boolean
 	isLoaded: boolean
-	isGarland: boolean
-	garlandColor: GarlandColor
 	leftAsideHidden: boolean
 	rightAsideHidden: boolean
 	previousWorks: PreviousWork[]
@@ -69,23 +64,18 @@ class Play extends Component<Record<string, never>, PlayState> {
 	constructor(props: Readonly<Record<string, never>>) {
 		super(props)
 		this.state = {
-			options: {
-				scene: {
-					className: PlayOptionName.Scene,
-					active: 1,
-					quantity: 9,
-				},
-				tree: {
-					className: PlayOptionName.Tree,
-					active: 1,
-					quantity: 6,
-				},
-				lights: {
-					className: PlayOptionName.Lights,
-					active: 1,
-					quantity: 5,
-				},
+			settings: {
+				scene: 1,
+				tree: 1,
+				isSnow: false,
+				isMusic: false,
+				isGarland: false,
+				garlandColor: GarlandColor.Multicolor,
 			},
+			playSelectedItems: [],
+			previousWorks: [],
+			itemsSetted: [],
+			itemsNotSetted: [],
 			treesPaths: {
 				1: tree1,
 				2: tree2,
@@ -105,27 +95,20 @@ class Play extends Component<Record<string, never>, PlayState> {
 				8: scene8,
 				9: scene9,
 			},
-			itemsSetted: [],
-			itemsNotSetted: [],
 			draggableId: '',
-			playSelectedItems: [],
 			isAlreadyOnTheTree: false,
-			isSnow: false,
-			isMusic: false,
 			isLoaded: false,
-			isGarland: false,
-			garlandColor: GarlandColor.Multicolor,
 			leftAsideHidden: false,
 			rightAsideHidden: false,
-			previousWorks: [],
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
 		this.audio.loop = true
+		this.audio.volume = 0.2
 	}
 
 	async componentDidMount() {
-		const { options, treesPaths, scenePaths } = this.state
+		const { treesPaths, scenePaths } = this.state
 		const playSelectedItems = await getData(LocalStorage.PlaySelectedItems)
 		const storedPlaySettings = await getData(LocalStorage.PlaySettings)
 		const storedPreviousWorks = await getData(LocalStorage.PreviousWorks)
@@ -138,35 +121,20 @@ class Play extends Component<Record<string, never>, PlayState> {
 			notSetted = [...notSetted, ...item.itemsNotSetted]
 		})
 
-		options.scene.active = storedPlaySettings.activeScene
-		options.tree.active = storedPlaySettings.activeTree
-		options.lights.active = storedPlaySettings.activeLights
-
 		this.setState({
+			settings: storedPlaySettings,
 			playSelectedItems,
 			itemsSetted: setted,
 			itemsNotSetted: notSetted,
-			options,
-			isSnow: storedPlaySettings.isSnow,
-			isMusic: storedPlaySettings.isMusic,
-			isGarland: storedPlaySettings.isGarland,
-			garlandColor: storedPlaySettings.garlandColor,
 			previousWorks: storedPreviousWorks,
 		})
 
 		this.checkMusic()
 
 		window.addEventListener('beforeunload', () => {
-			const { isSnow, isMusic, isGarland, garlandColor, previousWorks } = this.state
-			// const { itemsSetted, itemsNotSetted, isSnow, isMusic, isGarland, garlandColor } = this.state
-			const { scene, tree, lights } = options
+			const { previousWorks, settings } = this.state
 
-			// TODO: saving toys position
-			// const updatedFavoriteItems = favoriteItems.map((item: FavoriteItem) => ({ id: item.id, amount: item.amount, itemsSetted, itemsNotSetted }))
-			const playSettings: PlaySettings = { activeScene: scene.active, activeTree: tree.active, activeLights: lights.active, isSnow, isMusic, isGarland, garlandColor }
-
-			// setData<FavoriteItem[]>('favoriteItems', updatedFavoriteItems)
-			setData<PlaySettings>(LocalStorage.PlaySettings, playSettings)
+			setData<PlaySettings>(LocalStorage.PlaySettings, settings)
 			setData<PreviousWork[]>(LocalStorage.PreviousWorks, previousWorks)
 		})
 
@@ -178,12 +146,20 @@ class Play extends Component<Record<string, never>, PlayState> {
 		this.setState({ isLoaded: true })
 	}
 
+	componentWillUnmount() {
+		this.audio.pause()
+	}
+
+	// setSavedSettings(settings) {}
+
 	handleCheckbox(type: PlayCheckboxName) {
+		const { settings } = this.state
+
 		if (type === PlayCheckboxName.Snow) {
-			const { isSnow } = this.state
-			this.setState({ isSnow: !isSnow })
+			settings.isSnow = !settings.isSnow
+			this.setState({ settings })
 		} else {
-			const { isMusic } = this.state
+			const { isMusic } = settings
 
 			if (!isMusic) {
 				this.audio.play()
@@ -191,7 +167,8 @@ class Play extends Component<Record<string, never>, PlayState> {
 				this.audio.pause()
 			}
 
-			this.setState({ isMusic: !isMusic })
+			settings.isMusic = !settings.isMusic
+			this.setState({ settings })
 		}
 	}
 
@@ -211,9 +188,10 @@ class Play extends Component<Record<string, never>, PlayState> {
 	}
 
 	handleSelectOption(optionType: string, optionIndex: number) {
-		const { options } = this.state
-		options[optionType].active = optionIndex
-		this.setState({ options })
+		const { settings } = this.state
+
+		settings[optionType] = optionIndex
+		this.setState({ settings })
 	}
 
 	onDragStart(id: string) {
@@ -252,28 +230,37 @@ class Play extends Component<Record<string, never>, PlayState> {
 	}
 
 	toggleGarland(checked: boolean) {
-		this.setState({ isGarland: checked })
+		const { settings } = this.state
+		settings.isGarland = checked
+		this.setState({ settings })
 	}
 
 	switchGarlandLight(light: GarlandColor) {
-		this.setState({ garlandColor: light })
+		const { settings } = this.state
+		settings.garlandColor = light
+		this.setState({ settings })
 	}
 
 	clear() {
-		const { options } = this.state
-
-		options.scene.active = 1
-		options.tree.active = 1
-		options.lights.active = 1
+		const { settings } = this.state
 
 		this.audio.pause()
 		this.audio = new Audio('/audio/1.mp3')
-		this.setState({ options, isSnow: false, isMusic: false, isGarland: false, garlandColor: GarlandColor.Multicolor })
+
+		settings.scene = 1
+		settings.tree = 1
+		settings.isSnow = false
+		settings.isMusic = false
+		settings.isGarland = false
+		settings.garlandColor = GarlandColor.Multicolor
+
+		this.setState({ settings })
 		removeData(LocalStorage.PlaySettings)
 	}
 
 	checkMusic() {
-		const { isMusic } = this.state
+		const { settings } = this.state
+		const { isMusic } = settings
 
 		if (isMusic) {
 			const playMusicOnClick = () => {
@@ -287,6 +274,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 
 	toggleAside(type: AsideName) {
 		const { leftAsideHidden, rightAsideHidden } = this.state
+
 		if (type === AsideName.Left) {
 			this.setState({ leftAsideHidden: !leftAsideHidden })
 		} else {
@@ -294,21 +282,11 @@ class Play extends Component<Record<string, never>, PlayState> {
 		}
 	}
 
-	// eslint-disable-next-line react/no-unused-class-component-methods, class-methods-use-this
 	save() {
-		const { previousWorks, isSnow, isMusic, isGarland, garlandColor, options, itemsSetted, itemsNotSetted } = this.state
+		const { previousWorks, settings, itemsSetted, itemsNotSetted } = this.state
+		// const { isMusic, isGarland, garlandColor } = settings
 		let newPreviousWork: PreviousWork
 		const newPreviousWorkId = previousWorks.length + 2
-
-		const playSettings: PlaySettings = {
-			activeScene: options.scene.active,
-			activeTree: options.tree.active,
-			activeLights: options.lights.active,
-			isSnow,
-			isMusic,
-			isGarland,
-			garlandColor,
-		}
 
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
@@ -324,7 +302,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 			newPreviousWork = {
 				id: newPreviousWorkId,
 				imageUrl,
-				playSettings,
+				playSettings: settings,
 				itemsSetted,
 				itemsNotSetted,
 			}
@@ -335,41 +313,28 @@ class Play extends Component<Record<string, never>, PlayState> {
 	}
 
 	restorePreviousWork(id: number) {
-		const { previousWorks, options } = this.state
+		const { previousWorks, settings } = this.state
 		const selectedWork = previousWorks.find(work => work.id === id)
-		options.scene.active = selectedWork!.playSettings.activeScene
-		options.tree.active = selectedWork!.playSettings.activeTree
-		options.lights.active = selectedWork!.playSettings.activeLights
+
+		// TODO: rewrite
+		settings.scene = selectedWork!.playSettings.scene
+		settings.tree = selectedWork!.playSettings.tree
+		settings.isSnow = selectedWork!.playSettings.isSnow
+		settings.isGarland = selectedWork!.playSettings.isGarland
+		settings.isMusic = selectedWork!.playSettings.isMusic
+		settings.garlandColor = selectedWork!.playSettings.garlandColor
 
 		this.setState({
+			settings,
 			itemsSetted: selectedWork!.itemsSetted,
 			itemsNotSetted: selectedWork!.itemsNotSetted,
-			options,
-			isSnow: selectedWork!.playSettings.isSnow,
-			isMusic: selectedWork!.playSettings.isMusic,
-			isGarland: selectedWork!.playSettings.isGarland,
-			garlandColor: selectedWork!.playSettings.garlandColor,
 		})
 	}
 
 	render() {
-		const {
-			options,
-			playSelectedItems,
-			treesPaths,
-			itemsSetted,
-			itemsNotSetted,
-			isSnow,
-			isMusic,
-			isLoaded,
-			isGarland,
-			garlandColor,
-			leftAsideHidden,
-			rightAsideHidden,
-			previousWorks,
-		} = this.state
-		const { tree, scene } = options
-		const treeContainerClass = `tree-container scene-${scene.active}`
+		const { settings, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isLoaded, leftAsideHidden, rightAsideHidden, previousWorks } = this.state
+		const { isSnow, isMusic, garlandColor, isGarland, scene, tree } = settings
+		const treeContainerClass = `tree-container scene-${scene}`
 
 		if (!isLoaded) {
 			return <Loader />
@@ -390,9 +355,21 @@ class Play extends Component<Record<string, never>, PlayState> {
 					</div>
 
 					<div className="aside__container">
-						<PlayOptions title="Background" options={options.scene} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
-						<PlayOptions title="Tree" options={options.tree} onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)} />
-						<Garland
+						<PlayOptions
+							title="Background"
+							active={scene}
+							className={PlayOptionName.Scene}
+							quantity={9}
+							onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)}
+						/>
+						<PlayOptions
+							title="Tree"
+							active={tree}
+							className={PlayOptionName.Tree}
+							quantity={6}
+							onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)}
+						/>
+						<GarlandOptions
 							toggleGarland={checked => this.toggleGarland(checked)}
 							switchGarlandLight={(light: GarlandColor) => this.switchGarlandLight(light)}
 							isGarland={isGarland}
@@ -456,7 +433,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 							)
 						})}
 					</map>
-					<img src={treesPaths[tree.active]} className="tree-main-image" useMap="#tree-map" alt="tree" />
+					<img src={treesPaths[tree]} className="tree-main-image" useMap="#tree-map" alt="tree" />
 				</div>
 				<aside className={`aside aside-right${rightAsideHidden ? ' hidden' : ''}`}>
 					<div className="aside__header">

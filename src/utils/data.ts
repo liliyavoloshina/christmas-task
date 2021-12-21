@@ -69,8 +69,8 @@ const getData = async (key: LocalStorage) => {
 	if (key === LocalStorage.PlaySettings) {
 		const defaultPlaySettings = {
 			activeScene: 1,
-			activeTree: 2,
-			activeLights: 4,
+			activeTree: 1,
+			activeLights: 1,
 			isSnow: false,
 			isMusic: false,
 			isGarland: false,
