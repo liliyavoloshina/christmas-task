@@ -283,10 +283,7 @@ class Play extends Component<Record<string, never>, PlayState> {
 	}
 
 	save() {
-		const { previousWorks, settings, itemsSetted, itemsNotSetted } = this.state
-		// const { isMusic, isGarland, garlandColor } = settings
-		let newPreviousWork: PreviousWork
-		const newPreviousWorkId = previousWorks.length + 2
+		const { settings, previousWorks, itemsSetted, itemsNotSetted } = this.state
 
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
@@ -295,20 +292,18 @@ class Play extends Component<Record<string, never>, PlayState> {
 			const context = tempcanvas.getContext('2d')!
 
 			context.drawImage(canvas, 0, 0, 100, (100 * canvas.height) / canvas.width)
-			// context.drawImage(canvas, 0, 0, 100, (100 * canvas.height) / canvas.width)
 
 			const imageUrl = tempcanvas.toDataURL('image/jpg')
 
-			newPreviousWork = {
-				id: newPreviousWorkId,
+			const newPreviousWork: PreviousWork = {
+				id: previousWorks.length + 1,
 				imageUrl,
-				playSettings: settings,
+				playSettings: { ...settings },
 				itemsSetted,
 				itemsNotSetted,
 			}
 
-			const updatedPreviousWorks = [...previousWorks, newPreviousWork]
-			this.setState({ previousWorks: updatedPreviousWorks })
+			this.setState({ previousWorks: [...previousWorks, newPreviousWork] })
 		})
 	}
 
