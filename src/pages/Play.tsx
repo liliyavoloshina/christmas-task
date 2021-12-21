@@ -58,10 +58,10 @@ interface PlayState {
 	previousWorks: PreviousWork[]
 }
 
-class Play extends Component<Record<string, never>, PlayState> {
+class Play extends Component<Record<string, unknown>, PlayState> {
 	private audio: HTMLAudioElement
 
-	constructor(props: Readonly<Record<string, never>>) {
+	constructor(props: Record<string, unknown>) {
 		super(props)
 		this.state = {
 			settings: {
@@ -149,8 +149,6 @@ class Play extends Component<Record<string, never>, PlayState> {
 	componentWillUnmount() {
 		this.audio.pause()
 	}
-
-	// setSavedSettings(settings) {}
 
 	handleCheckbox(type: PlayCheckboxName) {
 		const { settings } = this.state
@@ -263,12 +261,22 @@ class Play extends Component<Record<string, never>, PlayState> {
 		const { isMusic } = settings
 
 		if (isMusic) {
-			const playMusicOnClick = () => {
+			const playMusicOnClick = (e: MouseEvent) => {
+				const element = e.target as HTMLElement
+
+				if (element.id === 'music-toggle' || element.classList.contains('nav__link') || element.classList.contains('previous-work')) {
+					return
+				}
+
 				this.audio.play()
-				document.removeEventListener('click', playMusicOnClick)
 			}
 
-			document.addEventListener('click', playMusicOnClick)
+			const clickHandler = (e: MouseEvent) => {
+				playMusicOnClick(e)
+				document.removeEventListener('click', clickHandler)
+			}
+
+			document.addEventListener('click', clickHandler)
 		}
 	}
 
@@ -308,19 +316,11 @@ class Play extends Component<Record<string, never>, PlayState> {
 	}
 
 	restorePreviousWork(id: number) {
-		const { previousWorks, settings } = this.state
+		const { previousWorks } = this.state
 		const selectedWork = previousWorks.find(work => work.id === id)
 
-		// TODO: rewrite
-		settings.scene = selectedWork!.playSettings.scene
-		settings.tree = selectedWork!.playSettings.tree
-		settings.isSnow = selectedWork!.playSettings.isSnow
-		settings.isGarland = selectedWork!.playSettings.isGarland
-		settings.isMusic = selectedWork!.playSettings.isMusic
-		settings.garlandColor = selectedWork!.playSettings.garlandColor
-
 		this.setState({
-			settings,
+			settings: selectedWork!.playSettings,
 			itemsSetted: selectedWork!.itemsSetted,
 			itemsNotSetted: selectedWork!.itemsNotSetted,
 		})
