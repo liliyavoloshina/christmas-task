@@ -3,8 +3,8 @@ import { Component } from 'react'
 
 interface BtnProps {
 	text?: string
-	size?: 'md' | 'lg'
-	action?: 'reset' | 'clear'
+	size?: 'md' | 'lg' | 'sm'
+	action?: 'reset' | 'clear' | 'delete'
 	accented?: boolean
 	icon?: string
 	form?: 'square'
@@ -35,7 +35,7 @@ class Btn extends Component<BtnProps> {
 			options.push('accented')
 		}
 
-		const classes = options.join(' ').trim()
+		const classes = options.join(' ').replace(/\s+/g, ' ').trim()
 
 		return (
 			<button onClick={() => this.handleClick()} type="button" className={classes} title={title}>

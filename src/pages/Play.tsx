@@ -269,7 +269,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 			const playMusicOnClick = (e: MouseEvent) => {
 				const element = e.target as HTMLElement
 
-				if (element.id === 'music-toggle' || element.classList.contains('nav__link')) {
+				if (element.id === 'music-toggle' || element.classList.contains('nav__link') || element.classList.contains('previous-work__btn')) {
 					return
 				}
 
@@ -318,8 +318,17 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 			context.drawImage(canvas, 0, 0, tempcanvas.width, tempcanvas.height)
 			const imageUrl = tempcanvas.toDataURL('image/jpg')
 
+			const lastPreviousWork = previousWorks[previousWorks.length - 1]
+			let id
+
+			if (lastPreviousWork) {
+				id = lastPreviousWork.id + 1
+			} else {
+				id = previousWorks.length + 1
+			}
+
 			const newPreviousWork: PreviousWork = {
-				id: previousWorks.length + 1,
+				id,
 				imageUrl,
 				playSettings: { ...settings },
 				itemsSetted,
@@ -350,6 +359,15 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 				this.checkMusic()
 			}
 		)
+	}
+
+	deletePreviousWork(id: number) {
+		const { previousWorks } = this.state
+		const updatedPreviousWorks = previousWorks.filter(work => work.id !== id)
+
+		this.setState({ previousWorks: updatedPreviousWorks }, () => {
+			setData<PreviousWork[]>(LocalStorage.PreviousWorks, updatedPreviousWorks)
+		})
 	}
 
 	render() {
@@ -498,8 +516,15 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 									<div className="previous-works__empty">Decorate your first tree!</div>
 								) : (
 									previousWorks.map(previousWork => (
-										<div onClick={() => this.restorePreviousWork(previousWork.id)} role="presentation" key={previousWork.id} className="previous-work">
-											<img className="previous-work" src={previousWork.imageUrl} alt="previous work" />
+										<div className="previous-work" key={previousWork.id}>
+											<Btn onClick={() => this.deletePreviousWork(previousWork.id)} additionalClass="previous-work__btn" icon="delete" size="sm" action="delete" title="delete" />
+											<img
+												className="previous-work__image"
+												onClick={() => this.restorePreviousWork(previousWork.id)}
+												role="presentation"
+												src={previousWork.imageUrl}
+												alt="previous work"
+											/>
 										</div>
 									))
 								)}

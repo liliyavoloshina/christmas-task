@@ -97,7 +97,11 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 							<li
 								key={option}
 								onClick={() => this.toggleOption(option, isSelected)}
-								role="presentation"
+								onKeyPress={() => this.toggleOption(option, isSelected)}
+								role="option"
+								aria-checked="false"
+								aria-labelledby="foo"
+								aria-selected="false"
 								id={`${type}-${index}`}
 								className={`multiselect-option ${isSelected ? 'option-selected' : null}`}
 							>

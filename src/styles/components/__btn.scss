@@ -38,11 +38,10 @@
 
 	&.md {
 		flex: 1 1 200px;
-		font-size: 1rem;
 	}
 
-	&.lg {
-		font-size: 1rem;
+	&.sm {
+		padding: 0.2rem;
 	}
 
 	&.clear {
@@ -51,6 +50,16 @@
 
 	&.reset {
 		box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
+	}
+
+	&.delete {
+		color: var(--red-bright);
+		border-color: var(--red-bright);
+		background-color: var(--bg-dark);
+
+		&:hover {
+			box-shadow: 0 0 2px var(--red-bright), 0 0 4px var(--red-bright), 0 0 4px var(--red-bright), 0 0 4px var(--red-bright);
+		}
 	}
 
 	&.square {
