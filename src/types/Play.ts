@@ -51,6 +51,8 @@ interface PreviousWork {
 	id: number
 	imageUrl: string
 	playSettings: PlaySettings
+	itemsSetted: PlaySelectedItemCopy[]
+	itemsNotSetted: PlaySelectedItemCopy[]
 	playSelectedItems: PlaySelectedItem[]
 }
 

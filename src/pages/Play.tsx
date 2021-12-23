@@ -132,10 +132,9 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		this.checkMusic()
 
 		window.addEventListener('beforeunload', () => {
-			const { previousWorks, settings } = this.state
+			const { settings } = this.state
 
 			setData<PlaySettings>(LocalStorage.PlaySettings, settings)
-			setData<PreviousWork[]>(LocalStorage.PreviousWorks, previousWorks)
 		})
 
 		const treeImages = Object.keys(treesPaths).map(key => treesPaths[key])
@@ -305,18 +304,27 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 				id: previousWorks.length + 1,
 				imageUrl,
 				playSettings: { ...settings },
+				itemsSetted,
+				itemsNotSetted,
 				playSelectedItems,
 			}
 
-			this.setState({ previousWorks: [...previousWorks, newPreviousWork] })
+			const updatedPreviousWorks = [...previousWorks, newPreviousWork]
+
+			this.setState({ previousWorks: updatedPreviousWorks }, () => {
+				setData<PreviousWork[]>(LocalStorage.PreviousWorks, updatedPreviousWorks)
+			})
 		})
 	}
 
 	restorePreviousWork(id: number) {
 		const { previousWorks } = this.state
 		const selectedWork = previousWorks.find(work => work.id === id)
+
 		this.setState({
 			settings: { ...selectedWork!.playSettings },
+			itemsSetted: selectedWork!.itemsSetted,
+			itemsNotSetted: selectedWork!.itemsNotSetted,
 			playSelectedItems: [...selectedWork!.playSelectedItems],
 		})
 	}
