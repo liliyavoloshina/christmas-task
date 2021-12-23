@@ -315,6 +315,10 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 
 		this.setState({ isCountdownHidden: false })
 
+		setTimeout(() => {
+			this.setState({ isCountdownHidden: true })
+		}, 5000)
+
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
 			tempcanvas.width = 150
@@ -522,7 +526,10 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 							<h3 className="previous-works__title">Previous works</h3>
 							<div className="previous-works__content">
 								{previousWorks.length === 0 ? (
-									<div className="previous-works__empty">Decorate your first tree!</div>
+									<div className="previous-works__empty">
+										<div className="first">Let&apos;s Decorate</div>
+										<div className="second">your first tree!</div>
+									</div>
 								) : (
 									previousWorks.map(previousWork => (
 										<div className="previous-work" key={previousWork.id}>
