@@ -259,23 +259,41 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		const { settings } = this.state
 		const { isMusic } = settings
 
+		this.audio.pause()
+
+		this.audio = new Audio('/audio/1.mp3')
+		this.audio.loop = true
+		this.audio.volume = 0.2
+
 		if (isMusic) {
 			const playMusicOnClick = (e: MouseEvent) => {
 				const element = e.target as HTMLElement
 
-				if (element.id === 'music-toggle' || element.classList.contains('nav__link') || element.classList.contains('previous-work')) {
+				if (element.id === 'music-toggle' || element.classList.contains('nav__link')) {
+					return
+				}
+
+				if (element.classList.contains('previous-work')) {
+					document.addEventListener(
+						'click',
+						ev => {
+							playMusicOnClick(ev)
+						},
+						{ once: true }
+					)
 					return
 				}
 
 				this.audio.play()
 			}
 
-			const clickHandler = (e: MouseEvent) => {
-				playMusicOnClick(e)
-				document.removeEventListener('click', clickHandler)
-			}
-
-			document.addEventListener('click', clickHandler)
+			document.addEventListener(
+				'click',
+				e => {
+					playMusicOnClick(e)
+				},
+				{ once: true }
+			)
 		}
 	}
 
@@ -294,10 +312,10 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
-			tempcanvas.width = 100
-			tempcanvas.height = 100
+			tempcanvas.width = 150
+			tempcanvas.height = 200
 			const context = tempcanvas.getContext('2d')!
-			context.drawImage(canvas, 0, 0, 100, (100 * canvas.height) / canvas.width)
+			context.drawImage(canvas, 0, 0, tempcanvas.width, tempcanvas.height)
 			const imageUrl = tempcanvas.toDataURL('image/jpg')
 
 			const newPreviousWork: PreviousWork = {
@@ -321,12 +339,17 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		const { previousWorks } = this.state
 		const selectedWork = previousWorks.find(work => work.id === id)
 
-		this.setState({
-			settings: { ...selectedWork!.playSettings },
-			itemsSetted: selectedWork!.itemsSetted,
-			itemsNotSetted: selectedWork!.itemsNotSetted,
-			playSelectedItems: [...selectedWork!.playSelectedItems],
-		})
+		this.setState(
+			{
+				settings: { ...selectedWork!.playSettings },
+				itemsSetted: selectedWork!.itemsSetted,
+				itemsNotSetted: selectedWork!.itemsNotSetted,
+				playSelectedItems: [...selectedWork!.playSelectedItems],
+			},
+			() => {
+				this.checkMusic()
+			}
+		)
 	}
 
 	render() {
