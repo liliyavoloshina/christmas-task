@@ -3,7 +3,7 @@
 	bottom: 0;
 	z-index: 10;
 	width: 100%;
-	height: 80px;
+	height: var(--nav-h);
 	padding: 1.5rem;
 	display: flex;
 	align-items: center;
@@ -60,7 +60,6 @@
 		left: 0;
 		right: 0;
 		width: 100%;
-		height: var(--nav-h);
 		padding: unset;
 	}
 }

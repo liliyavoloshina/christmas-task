@@ -2,6 +2,7 @@ import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import html2canvas from 'html2canvas'
 import PlayOptions from '../components/PlayOptions'
+import Countdown from '../components/Countdown'
 import Btn from '../components/Btn'
 import Loader from '../components/Loader'
 import GarlandOptions from '../layout/GarlandOptions'
@@ -48,6 +49,7 @@ interface PlayState {
 	playSelectedItems: PlaySelectedItem[]
 	itemsSetted: PlaySelectedItemCopy[]
 	itemsNotSetted: PlaySelectedItemCopy[]
+	previousWorks: PreviousWork[]
 	treesPaths: ObjectIndexNumber
 	scenePaths: ObjectIndexNumber
 	draggableId: string
@@ -55,7 +57,7 @@ interface PlayState {
 	isLoaded: boolean
 	leftAsideHidden: boolean
 	rightAsideHidden: boolean
-	previousWorks: PreviousWork[]
+	isCountdownHidden: boolean
 }
 
 class Play extends Component<Record<string, unknown>, PlayState> {
@@ -100,6 +102,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 			isLoaded: false,
 			leftAsideHidden: false,
 			rightAsideHidden: false,
+			isCountdownHidden: true,
 		}
 
 		this.audio = new Audio('/audio/1.mp3')
@@ -310,6 +313,8 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 	async save() {
 		const { settings, previousWorks, itemsSetted, itemsNotSetted, playSelectedItems } = this.state
 
+		this.setState({ isCountdownHidden: false })
+
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
 			tempcanvas.width = 150
@@ -318,7 +323,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 			context.drawImage(canvas, 0, 0, tempcanvas.width, tempcanvas.height)
 			const imageUrl = tempcanvas.toDataURL('image/jpg')
 
-			const lastPreviousWork = previousWorks[previousWorks.length - 1]
+			const lastPreviousWork = previousWorks[0]
 			let id
 
 			if (lastPreviousWork) {
@@ -336,7 +341,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 				playSelectedItems,
 			}
 
-			const updatedPreviousWorks = [...previousWorks, newPreviousWork]
+			const updatedPreviousWorks = [newPreviousWork, ...previousWorks]
 
 			this.setState({ previousWorks: updatedPreviousWorks }, () => {
 				setData<PreviousWork[]>(LocalStorage.PreviousWorks, updatedPreviousWorks)
@@ -370,8 +375,12 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		})
 	}
 
+	closeCountdown() {
+		this.setState({ isCountdownHidden: true })
+	}
+
 	render() {
-		const { settings, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isLoaded, leftAsideHidden, rightAsideHidden, previousWorks } = this.state
+		const { settings, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isLoaded, leftAsideHidden, rightAsideHidden, previousWorks, isCountdownHidden } = this.state
 		const { isSnow, isMusic, garlandColor, isGarland, scene, tree } = settings
 		const treeContainerClass = `tree-container scene-${scene}`
 
@@ -532,6 +541,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 						</div>
 					</div>
 				</aside>
+				<Countdown onClose={() => this.closeCountdown()} isHidden={isCountdownHidden} />
 			</div>
 		)
 	}

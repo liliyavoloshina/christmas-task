@@ -118,6 +118,7 @@
 
 .previous-works {
 	&__title {
+		margin-bottom: 1rem;
 		font-size: 1rem;
 	}
 
@@ -128,6 +129,7 @@
 		grid-auto-flow: column;
 		grid-auto-columns: 40%;
 		overflow-x: auto;
+		overflow-y: hidden;
 	}
 
 	&__empty {
@@ -139,12 +141,15 @@
 		transition: 0.3s;
 		cursor: pointer;
 
+		overflow: hidden;
+
 		&__btn {
 			position: absolute;
 			top: 0;
 			right: 0;
 			z-index: 2;
 		}
+
 		&__image {
 			position: absolute;
 			top: 0;
@@ -155,9 +160,10 @@
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+			transition: 0.3s;
 
 			&:hover {
-				box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 10px var(--accent), 0 0 10px var(--accent);
+				transform: scale(1.2);
 			}
 		}
 	}

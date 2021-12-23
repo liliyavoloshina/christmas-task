@@ -1,0 +1,53 @@
+@import '../layout/_garland-options';
+
+:root {
+	--neon-countdown-color: #ffdd1b;
+}
+
+.countdown {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	z-index: 1000;
+	transform: translateX(-50%);
+	width: 80vw;
+	max-width: 500px;
+	padding: 1rem;
+	background: var(--bg-black);
+	transition: 0.3s;
+	border-radius: 4px;
+
+	box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 30px #fff, 0 0 10px var(--neon-countdown-color), 0 0 10px var(--neon-countdown-color), 0 0 10px var(--neon-countdown-color),
+		0 0 10px var(--neon-countdown-color), 0 0 10px var(--neon-countdown-color);
+
+	&.hidden {
+		bottom: -100%;
+		opacity: 0;
+		z-index: -1;
+	}
+
+	&__title {
+		text-align: center;
+		font-size: 1.5rem;
+		animation: neon3 1.5s ease-in-out infinite alternate;
+	}
+
+	&__counter {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10%;
+		font-size: 1rem;
+		text-align: center;
+	}
+
+	@keyframes neon3 {
+		from {
+			text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px var(--neon-countdown-color), 0 0 70px var(--neon-countdown-color), 0 0 80px var(--neon-countdown-color),
+				0 0 100px var(--neon-countdown-color), 0 0 150px var(--neon-countdown-color);
+		}
+		to {
+			text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px var(--neon-countdown-color), 0 0 35px var(--neon-countdown-color), 0 0 40px var(--neon-countdown-color),
+				0 0 50px var(--neon-countdown-color), 0 0 75px var(--neon-countdown-color);
+		}
+	}
+}
