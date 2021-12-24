@@ -1,7 +1,24 @@
+@import '../base/_mixins';
+
 .start-page {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	align-items: center;
+
+	padding: 10rem 0;
+
+	&__logo {
+		font-size: 3rem;
+		text-align: center;
+		@include neon-text-yellow();
+	}
+
+	&__info {
+		padding: 1rem 0;
+		font-size: 1.5rem;
+		text-align: center;
+	}
 
 	&__action .btn {
 		width: 200px;

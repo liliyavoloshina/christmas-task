@@ -74,8 +74,8 @@ class SearchPanel extends Component<SearchPanelProps> {
 				<Checkbox label="Only granny's favorite" name="only-favorite" isChecked={areOnlyFavorite} onChange={() => this.handleFilter('areOnlyFavorite', !areOnlyFavorite)} />
 
 				<div className="search-panel__actions">
-					<Btn onClick={() => onReset()} text="Reset filters" size="lg" action="reset" />
-					<Btn onClick={() => onClear()} text="Clear all" size="lg" action="clear" />
+					<Btn onClick={() => onReset()} text="Reset filters" action="reset" />
+					<Btn onClick={() => onClear()} text="Clear all" action="clear" />
 				</div>
 			</div>
 		)

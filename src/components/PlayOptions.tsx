@@ -1,4 +1,4 @@
-import '../styles/layout/__play-options.scss'
+import '../styles/components/__play-options.scss'
 import { Component } from 'react'
 
 interface PlayOptionsProps {

@@ -10,6 +10,7 @@
 		cursor: pointer;
 		transition: 0.3s;
 		background-color: var(--bg-light);
+		-webkit-user-drag: none;
 
 		&_active,
 		&:hover {

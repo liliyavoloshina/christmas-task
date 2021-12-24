@@ -1,8 +1,9 @@
+import '../styles/layout/__main.scss'
+
 import { Routes, Route } from 'react-router-dom'
 import Start from '../pages/Start'
 import Catalog from '../pages/Catalog'
 import Play from '../pages/Play'
-import '../styles/layout/__main.scss'
 
 function Main() {
 	return (

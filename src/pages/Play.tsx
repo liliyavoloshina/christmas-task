@@ -197,8 +197,11 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		e.stopPropagation()
 		const { draggableId, itemsNotSetted, itemsSetted, isAlreadyOnTheTree } = this.state
 
+		if (!draggableId) return
+
 		// TODO: is there another way to access element without e.target ???
 		const node = e.target as HTMLElement
+
 		const rect = node.getBoundingClientRect()
 		const leftCoord = e.clientX - rect.left - 20
 		const rightCoord = e.clientY - rect.top - 20
@@ -455,7 +458,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 							)
 						})}
 					</map>
-					<img src={treesPaths[tree]} className="tree-main-image" useMap="#tree-map" alt="tree" />
+					<img src={treesPaths[tree]} className="tree-main-image" useMap="#tree-map" alt="tree" draggable="false" />
 				</div>
 				<aside className={`aside aside-right${rightAsideHidden ? ' hidden' : ''}`}>
 					<div className="aside__header">
@@ -510,6 +513,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 												role="presentation"
 												src={previousWork.imageUrl}
 												alt="previous work"
+												draggable="false"
 											/>
 										</div>
 									))

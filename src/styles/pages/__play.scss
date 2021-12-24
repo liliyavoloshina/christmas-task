@@ -137,8 +137,6 @@
 	&__empty {
 		margin-top: 20px;
 
-		font-size: 1.3rem;
-
 		.first {
 			@include flicker(-0.3s);
 		}
