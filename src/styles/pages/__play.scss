@@ -129,7 +129,7 @@
 		grid-gap: 5px;
 		grid-template-rows: minmax(250px, 1fr);
 		grid-auto-flow: column;
-		grid-auto-columns: 40%;
+		grid-auto-columns: 50%;
 		overflow-x: auto;
 		overflow-y: hidden;
 	}
@@ -150,7 +150,6 @@
 		position: relative;
 		transition: 0.3s;
 		cursor: pointer;
-
 		overflow: hidden;
 
 		&__btn {

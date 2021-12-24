@@ -4,7 +4,10 @@ import ReactDOM from 'react-dom'
 import Main from './layout/Main'
 import Footer from './layout/Footer'
 import Nav from './layout/Nav'
+import { logging } from './utils/utils'
 import reportWebVitals from './reportWebVitals'
+
+logging()
 
 ReactDOM.render(
 	<BrowserRouter>

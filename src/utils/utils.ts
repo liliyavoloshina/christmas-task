@@ -96,4 +96,19 @@ const loadResources = async (arr: string[]) => {
 	)
 }
 
-export { firstToUpperCase, idToInitial, getSnowflakes, mergeSelectedAndOriginal, calculateGarlandOffset, loadResources }
+const logging = () => {
+	console.log(`
+  Score: 220 / 220
+  ✅ Вёрстка страниц приложения и навигация между ними + 30
+  ✅ Меню с настройками + 50 
+  ✅ Гирлянда + 40
+  ✅ Игрушки в избранном + 80
+  ✅ Дополнительный функционал на выбор + 20
+      - сохранение состояния страницы + 10
+      - удаление сохраненных елок (ккнопка корзины на карточках елок)
+      - появление окна с обратным отсчетом до нг после нажатия на кнопку "Save"
+      - несколько режимов гирлянды: нажимая на кнопку включения (возле выбора цвета гирлянды) можно сделать её мигающей, статичной или совсем выключить
+  `)
+}
+
+export { firstToUpperCase, idToInitial, getSnowflakes, mergeSelectedAndOriginal, calculateGarlandOffset, loadResources, logging }

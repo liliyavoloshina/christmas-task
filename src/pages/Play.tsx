@@ -313,8 +313,8 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
-			tempcanvas.width = 150
-			tempcanvas.height = 200
+			tempcanvas.width = 200
+			tempcanvas.height = 250
 			const context = tempcanvas.getContext('2d')!
 			context.drawImage(canvas, 0, 0, tempcanvas.width, tempcanvas.height)
 			const imageUrl = tempcanvas.toDataURL('image/jpg')

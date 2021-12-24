@@ -10,7 +10,7 @@
 	max-width: 500px;
 	padding: 1rem;
 	background: var(--bg-black);
-	transition: 0.3s;
+	transition: 1s;
 	border-radius: 4px;
 
 	box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 30px #fff, 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright),
@@ -25,7 +25,6 @@
 	&__title {
 		text-align: center;
 		font-size: 1.5rem;
-
 		@include neon-text-yellow();
 	}
 
