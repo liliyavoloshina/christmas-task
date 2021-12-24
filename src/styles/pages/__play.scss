@@ -333,41 +333,6 @@
 	}
 }
 
-.snowflakes {
-	position: absolute;
-	top: -50%;
-	left: 0;
-	right: 0;
-	bottom: 100px;
-	overflow: hidden;
-	z-index: 10;
-	pointer-events: none;
-
-	.snowflake {
-		display: inline-block;
-		color: #fff;
-		padding: 1rem;
-		animation: falling linear forwards infinite;
-		pointer-events: none;
-		user-select: none;
-	}
-
-	.snowflake::before {
-		content: '*';
-		pointer-events: none;
-		user-select: none;
-	}
-}
-
-@keyframes falling {
-	from {
-		transform: translateY(0);
-	}
-	to {
-		transform: translateY(calc(100vh - 300px));
-	}
-}
-
 .miniature-wrapper {
 	display: none;
 }

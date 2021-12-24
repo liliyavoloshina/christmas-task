@@ -8,7 +8,8 @@ import Loader from '../components/Loader'
 import GarlandOptions from '../layout/GarlandOptions'
 import Checkbox from '../components/Checkbox'
 import Garland from '../layout/Garland'
-import { idToInitial, getSnowflakes, loadResources } from '../utils/utils'
+import Snowflakes from '../layout/Snowflakes'
+import { idToInitial, loadResources } from '../utils/utils'
 import { getData, removeData, setData } from '../utils/data'
 import { LocalStorage } from '../types/utils'
 import { ObjectIndexNumber, PlaySelectedItem, PlaySelectedItemCopy, PlaySettings, GarlandColor, PlayOptionName, PlayCheckboxName, PreviousWork, GarlandStatus } from '../types/Play'
@@ -427,18 +428,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 				</aside>
 				<div className={treeContainerClass}>
 					<Garland garlandStatus={garlandStatus} garlandColor={garlandColor} />
-					<div className="snowflakes">
-						{/* TODO: How to prevent rerender??? */}
-						{isSnow
-							? getSnowflakes().map(snowflake => (
-									<div
-										key={snowflake.id}
-										style={{ opacity: snowflake.opacity, animationDuration: snowflake.animationDuration, fontSize: snowflake.fontSize }}
-										className="snowflake"
-									/>
-							  ))
-							: null}
-					</div>
+					<Snowflakes isHidden={isSnow} />
 					<map name="tree-map" className="tree-map">
 						<area
 							className="droppable"
