@@ -13,7 +13,7 @@ function Start() {
 			</div>
 			<div className="start-page__action">
 				<Link to="/catalog">
-					<Btn text="Start" />
+					<Btn text="Start" accented size="lg" />
 				</Link>
 			</div>
 		</div>

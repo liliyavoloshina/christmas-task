@@ -48,6 +48,10 @@
 			top: 2px;
 			transform: translateX(-50%);
 		}
+
+		&.flicker {
+			animation: switch-flicker 2s infinite;
+		}
 	}
 
 	input:checked + i {
@@ -61,5 +65,16 @@
 
 	&:hover {
 		cursor: pointer;
+	}
+}
+
+@keyframes switch-flicker {
+	0%,
+	100% {
+		box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
+	}
+
+	50% {
+		box-shadow: 0 0 2px rgba(255, 176, 30, 0.555), 0 0 5px rgba(255, 176, 30, 0.555), 0 0 5px rgba(255, 176, 30, 0.555), 0 0 5px rgba(255, 176, 30, 0.555);
 	}
 }

@@ -2,25 +2,16 @@ import '../styles/pages/__play.scss'
 import React, { Component } from 'react'
 import html2canvas from 'html2canvas'
 import PlayOptions from '../components/PlayOptions'
-import Countdown from '../components/Countdown'
+import Countdown from '../layout/Countdown'
 import Btn from '../components/Btn'
 import Loader from '../components/Loader'
 import GarlandOptions from '../layout/GarlandOptions'
 import Checkbox from '../components/Checkbox'
-import { idToInitial, getSnowflakes, calculateGarlandOffset, loadResources } from '../utils/utils'
+import Garland from '../layout/Garland'
+import { idToInitial, getSnowflakes, loadResources } from '../utils/utils'
 import { getData, removeData, setData } from '../utils/data'
 import { LocalStorage } from '../types/utils'
-import {
-	ObjectIndexNumber,
-	PlaySelectedItem,
-	PlaySelectedItemCopy,
-	PlaySettings,
-	LightsOffsetType,
-	GarlandColor,
-	PlayOptionName,
-	PlayCheckboxName,
-	PreviousWork,
-} from '../types/Play'
+import { ObjectIndexNumber, PlaySelectedItem, PlaySelectedItemCopy, PlaySettings, GarlandColor, PlayOptionName, PlayCheckboxName, PreviousWork, GarlandStatus } from '../types/Play'
 // TODO: is there another way to load images from src folder ???
 import mainBg from '../img/wallpaper/main.jpg'
 import tree1 from '../img/tree/1.png'
@@ -71,7 +62,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 				tree: 1,
 				isSnow: false,
 				isMusic: false,
-				isGarland: false,
+				garlandStatus: GarlandStatus.Off,
 				garlandColor: GarlandColor.Multicolor,
 			},
 			playSelectedItems: [],
@@ -229,9 +220,10 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		itemToReplace!.coords[1] = `${rightCoord}px`
 	}
 
-	toggleGarland(checked: boolean) {
+	toggleGarland(garlandStatus: GarlandStatus) {
 		const { settings } = this.state
-		settings.isGarland = checked
+		settings.garlandStatus = garlandStatus
+
 		this.setState({ settings })
 	}
 
@@ -251,7 +243,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		settings.tree = 1
 		settings.isSnow = false
 		settings.isMusic = false
-		settings.isGarland = false
+		settings.garlandStatus = GarlandStatus.Off
 		settings.garlandColor = GarlandColor.Multicolor
 
 		this.setState({ settings })
@@ -314,10 +306,6 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		const { settings, previousWorks, itemsSetted, itemsNotSetted, playSelectedItems } = this.state
 
 		this.setState({ isCountdownHidden: false })
-
-		setTimeout(() => {
-			this.setState({ isCountdownHidden: true })
-		}, 5000)
 
 		html2canvas(document.querySelector('.tree-container')!).then(canvas => {
 			const tempcanvas = document.createElement('canvas')
@@ -385,7 +373,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 
 	render() {
 		const { settings, playSelectedItems, treesPaths, itemsSetted, itemsNotSetted, isLoaded, leftAsideHidden, rightAsideHidden, previousWorks, isCountdownHidden } = this.state
-		const { isSnow, isMusic, garlandColor, isGarland, scene, tree } = settings
+		const { isSnow, isMusic, garlandColor, garlandStatus, scene, tree } = settings
 		const treeContainerClass = `tree-container scene-${scene}`
 
 		if (!isLoaded) {
@@ -422,10 +410,10 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 							onSelect={(optionType: string, optionIndex: number) => this.handleSelectOption(optionType, optionIndex)}
 						/>
 						<GarlandOptions
-							toggleGarland={checked => this.toggleGarland(checked)}
-							switchGarlandLight={(light: GarlandColor) => this.switchGarlandLight(light)}
-							isGarland={isGarland}
+							garlandStatus={garlandStatus}
 							activeLight={garlandColor}
+							toggleGarland={status => this.toggleGarland(status)}
+							switchGarlandLight={(light: GarlandColor) => this.switchGarlandLight(light)}
 						/>
 						<div className="settings">
 							<Checkbox label="Music" name="music-toggle" isChecked={isMusic} onChange={() => this.handleCheckbox(PlayCheckboxName.Music)} />
@@ -438,22 +426,14 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 					</div>
 				</aside>
 				<div className={treeContainerClass}>
-					<ul className={`garland ${isGarland ? `${garlandColor}` : 'hidden'}`}>
-						{Array(80)
-							.fill(null)
-							.map((light, index) => {
-								const topOffset = calculateGarlandOffset(LightsOffsetType.Top, index)
-								const leftOffset = calculateGarlandOffset(LightsOffsetType.Left, index)
-								const gap = index % 2 === 0 ? index + 1 : index
-								return <li key={index} className="garland__light" style={{ top: `${topOffset + gap}%`, left: `${leftOffset + index * 3.5}%` }} />
-							})}
-					</ul>
+					<Garland garlandStatus={garlandStatus} garlandColor={garlandColor} />
 					<div className="snowflakes">
+						{/* TODO: How to prevent rerender??? */}
 						{isSnow
 							? getSnowflakes().map(snowflake => (
 									<div
 										key={snowflake.id}
-										style={{ right: snowflake.paddingLeft, opacity: snowflake.opacity, animationDuration: snowflake.animationDuration, fontSize: snowflake.fontSize }}
+										style={{ opacity: snowflake.opacity, animationDuration: snowflake.animationDuration, fontSize: snowflake.fontSize }}
 										className="snowflake"
 									/>
 							  ))

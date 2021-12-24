@@ -1,6 +1,6 @@
 import { CatalogSettings } from '../types/Catalog'
 import { Item } from '../types/Item'
-import { GarlandColor } from '../types/Play'
+import { GarlandColor, GarlandStatus } from '../types/Play'
 import { LocalStorage } from '../types/utils'
 
 const generateStrictKey = (key: string) => `sober-koala-${key}`
@@ -73,7 +73,7 @@ const getData = async (key: LocalStorage) => {
 			lights: 1,
 			isSnow: false,
 			isMusic: false,
-			isGarland: false,
+			garlandStatus: GarlandStatus.Off,
 			garlandColor: GarlandColor.Multicolor,
 		}
 		return defaultPlaySettings

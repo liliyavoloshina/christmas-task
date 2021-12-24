@@ -31,11 +31,10 @@ const getSnowflakes = () =>
 	Array(SNOWFLAKES_COUNT)
 		.fill(null)
 		.map((value, index) => {
-			const randomPaddingLeft = `${Math.random() * 10}px`
-			const randomAnimationDuration = `${Math.random() * 5 + 3}s`
+			const randomAnimationDuration = `${Math.random() * 5 + 5}s`
 			const randomOpacity = Math.random() * 1
 			const randomFontSize = `${Math.random() * (1 - 1.4) + 1.4}rem`
-			const snowflake = { id: index, paddingLeft: randomPaddingLeft, animationDuration: randomAnimationDuration, opacity: randomOpacity, fontSize: randomFontSize }
+			const snowflake = { id: index, animationDuration: randomAnimationDuration, opacity: randomOpacity, fontSize: randomFontSize }
 			return snowflake
 		})
 

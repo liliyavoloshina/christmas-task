@@ -1,7 +1,6 @@
-/* eslint-disable react/no-unused-state */
-import '../styles/components/__countdown.scss'
+import '../styles/layout/__countdown.scss'
 import { Component } from 'react'
-import Btn from './Btn'
+import Btn from '../components/Btn'
 
 interface CountdownProps {
 	isHidden: boolean
@@ -41,6 +40,12 @@ class Countdown extends Component<CountdownProps, CountdownState> {
 		clearInterval(this.timerID!)
 	}
 
+	handleClose() {
+		const { onClose } = this.props
+		clearInterval(this.timerID!)
+		onClose()
+	}
+
 	updateClock() {
 		const { timeNextYear } = this.state
 		const timeNow = new Date()
@@ -60,12 +65,12 @@ class Countdown extends Component<CountdownProps, CountdownState> {
 	}
 
 	render() {
-		const { isHidden, onClose } = this.props
+		const { isHidden } = this.props
 		const { days, hours, minutes, seconds } = this.state
 
 		return (
 			<div className={`countdown${isHidden ? ' hidden' : ''}`}>
-				<Btn onClick={onClose} icon="close" title="close" />
+				<Btn onClick={() => this.handleClose()} icon="close" title="close" />
 				<div className="countdown__title">New Year Is Coming!</div>
 				<div className="countdown__counter">
 					<div className="countdown__display">

@@ -22,6 +22,12 @@ enum PlayCheckboxName {
 	Music = 'music',
 }
 
+enum GarlandStatus {
+	On = 'on',
+	Off = 'off',
+	Flicker = 'flicker',
+}
+
 interface PlaySelectedItemCopy {
 	id: string
 	coords: [string, string]
@@ -43,7 +49,7 @@ interface PlaySettings {
 	tree: number
 	isSnow: boolean
 	isMusic: boolean
-	isGarland: boolean
+	garlandStatus: GarlandStatus
 	garlandColor: GarlandColor
 }
 
@@ -57,4 +63,4 @@ interface PreviousWork {
 }
 
 export type { ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings, PreviousWork }
-export { LightsOffsetType, GarlandColor, PlayOptionName, PlayCheckboxName }
+export { LightsOffsetType, GarlandColor, PlayOptionName, PlayCheckboxName, GarlandStatus }

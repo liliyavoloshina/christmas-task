@@ -1,7 +1,7 @@
-import '../styles/layout/__garland-options.scss'
+import '../styles/layout/__garland.scss'
 import '../styles/components/__switch.scss'
 import { Component } from 'react'
-import { GarlandColor } from '../types/Play'
+import { GarlandColor, GarlandStatus } from '../types/Play'
 
 interface LightItem {
 	id: number
@@ -9,10 +9,10 @@ interface LightItem {
 }
 
 interface GarlandOptionsProps {
-	isGarland: boolean
+	garlandStatus: GarlandStatus
 	activeLight: GarlandColor
-	toggleGarland(checked: boolean): void
-	switchGarlandLight(checked: GarlandColor): void
+	toggleGarland(garlandStatus: GarlandStatus): void
+	switchGarlandLight(garlandColor: GarlandColor): void
 }
 
 interface GarlandOptionsState {
@@ -33,8 +33,26 @@ class GarlandOptions extends Component<GarlandOptionsProps, GarlandOptionsState>
 		}
 	}
 
+	calculateGarland() {
+		const { toggleGarland, garlandStatus } = this.props
+
+		let tempStatus = garlandStatus
+
+		if (garlandStatus === GarlandStatus.Off) {
+			tempStatus = GarlandStatus.On
+		}
+		if (garlandStatus === GarlandStatus.On) {
+			tempStatus = GarlandStatus.Flicker
+		}
+		if (garlandStatus === GarlandStatus.Flicker) {
+			tempStatus = GarlandStatus.Off
+		}
+
+		toggleGarland(tempStatus)
+	}
+
 	render() {
-		const { toggleGarland, switchGarlandLight, isGarland, activeLight } = this.props
+		const { switchGarlandLight, garlandStatus, activeLight } = this.props
 		const { lights } = this.state
 
 		return (
@@ -51,8 +69,8 @@ class GarlandOptions extends Component<GarlandOptionsProps, GarlandOptionsState>
 					))}
 				</div>
 				<label htmlFor="garland-switch" className="switch">
-					<input onChange={e => toggleGarland(e.target.checked)} checked={isGarland} type="checkbox" id="garland-switch" />
-					<i />
+					<input onChange={() => this.calculateGarland()} checked={garlandStatus !== GarlandStatus.Off} type="checkbox" id="garland-switch" />
+					<i className={garlandStatus} />
 				</label>
 			</div>
 		)

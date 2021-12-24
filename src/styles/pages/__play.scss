@@ -335,25 +335,27 @@
 
 .snowflakes {
 	position: absolute;
-	top: -100%;
+	top: -50%;
 	left: 0;
 	right: 0;
 	bottom: 100px;
 	overflow: hidden;
-	z-index: 100;
+	z-index: 10;
 	pointer-events: none;
 
 	.snowflake {
 		display: inline-block;
 		color: #fff;
 		padding: 1rem;
-		animation: falling 5s linear forwards infinite;
+		animation: falling linear forwards infinite;
 		pointer-events: none;
 		user-select: none;
 	}
 
 	.snowflake::before {
 		content: '*';
+		pointer-events: none;
+		user-select: none;
 	}
 }
 
@@ -362,7 +364,7 @@
 		transform: translateY(0);
 	}
 	to {
-		transform: translateY(calc(100vh - 200px));
+		transform: translateY(calc(100vh - 300px));
 	}
 }
 
