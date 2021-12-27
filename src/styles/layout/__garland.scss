@@ -132,43 +132,43 @@
 
 	&.multicolor .garland {
 		&__light:nth-child(1n + 1) {
-			animation-name: yellow;
+			animation-name: garland-yellow;
 		}
 
 		&__light:nth-child(2n + 2) {
-			animation-name: pink;
+			animation-name: garland-pink;
 		}
 
 		&__light:nth-child(3n + 3) {
-			animation-name: green;
+			animation-name: garland-green;
 		}
 
 		&__light:nth-child(4n + 4) {
-			animation-name: red;
+			animation-name: garland-red;
 		}
 	}
 
 	&.yellow .garland {
 		&__light {
-			animation-name: yellow;
+			animation-name: garland-yellow;
 		}
 	}
 
 	&.green .garland {
 		&__light {
-			animation-name: green;
+			animation-name: garland-green;
 		}
 	}
 
 	&.pink .garland {
 		&__light {
-			animation-name: pink;
+			animation-name: garland-pink;
 		}
 	}
 
 	&.red .garland {
 		&__light {
-			animation-name: red;
+			animation-name: garland-red;
 		}
 	}
 }
@@ -225,7 +225,7 @@
 	}
 }
 
-@keyframes yellow {
+@keyframes garland-yellow {
 	0%,
 	100% {
 		background: var(--yellow-bright);
@@ -238,7 +238,7 @@
 	}
 }
 
-@keyframes green {
+@keyframes garland-green {
 	0%,
 	100% {
 		background: var(--green-bright);
@@ -251,7 +251,7 @@
 	}
 }
 
-@keyframes pink {
+@keyframes garland-pink {
 	0%,
 	100% {
 		background: var(--pink-bright);
@@ -264,7 +264,7 @@
 	}
 }
 
-@keyframes red {
+@keyframes garland-red {
 	0%,
 	100% {
 		background: var(--red-bright);
