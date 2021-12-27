@@ -97,6 +97,7 @@ const loadResources = async (arr: string[]) => {
 }
 
 const logging = () => {
+	// eslint-disable-next-line no-console
 	console.log(`
   Score: 220 / 220
   ✅ Вёрстка страниц приложения и навигация между ними + 30
