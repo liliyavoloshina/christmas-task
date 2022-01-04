@@ -10,7 +10,8 @@ interface BtnProps {
 	form?: 'square'
 	title?: string
 	additionalClass?: string
-	onClick?(): void
+	onClick?: void | (() => void)
+	// onClick?(): void
 }
 
 class Btn extends Component<BtnProps> {

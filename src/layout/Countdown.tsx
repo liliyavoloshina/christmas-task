@@ -30,6 +30,7 @@ class Countdown extends Component<CountdownProps, CountdownState> {
 			seconds: 0,
 		}
 		this.timerID = null
+		this.handleClose = this.handleClose.bind(this)
 	}
 
 	componentDidMount() {
@@ -70,7 +71,7 @@ class Countdown extends Component<CountdownProps, CountdownState> {
 
 		return (
 			<div className={`countdown${isHidden ? ' hidden' : ''}`}>
-				<Btn onClick={() => this.handleClose()} icon="close" title="close" />
+				<Btn onClick={this.handleClose} icon="close" title="close" />
 				<div className="countdown__title">New Year Is Coming!</div>
 				<div className="countdown__counter">
 					<div className="countdown__display">

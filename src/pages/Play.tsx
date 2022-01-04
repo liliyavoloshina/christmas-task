@@ -100,6 +100,8 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 		this.audio = new Audio('/audio/1.mp3')
 		this.audio.loop = true
 		this.audio.volume = 0.2
+		this.save = this.save.bind(this)
+		this.clear = this.clear.bind(this)
 	}
 
 	async componentDidMount() {
@@ -388,14 +390,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 			<div className="play-container fullpage">
 				<aside className={`aside aside-left${leftAsideHidden ? ' hidden' : ''}`}>
 					<div className="aside__header">
-						<Btn
-							onClick={() => {
-								this.toggleAside(AsideName.Left)
-							}}
-							additionalClass="aside__toggler"
-							icon={leftAsideHidden ? 'chevron_right' : 'chevron_left'}
-							form="square"
-						/>
+						<Btn onClick={() => this.toggleAside(AsideName.Left)} additionalClass="aside__toggler" icon={leftAsideHidden ? 'chevron_right' : 'chevron_left'} form="square" />
 					</div>
 
 					<div className="aside__container">
@@ -424,8 +419,8 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 							<Checkbox label="Snow" name="snow-toggle" isChecked={isSnow} onChange={() => this.handleCheckbox(PlayCheckboxName.Snow)} />
 						</div>
 						<div className="actions">
-							<Btn onClick={() => this.clear()} text="Clear" />
-							<Btn onClick={() => this.save()} text="Save" accented />
+							<Btn onClick={this.clear} text="Clear" />
+							<Btn onClick={this.save} text="Save" accented />
 						</div>
 					</div>
 				</aside>
@@ -462,14 +457,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 				</div>
 				<aside className={`aside aside-right${rightAsideHidden ? ' hidden' : ''}`}>
 					<div className="aside__header">
-						<Btn
-							onClick={() => {
-								this.toggleAside(AsideName.Right)
-							}}
-							additionalClass="aside__toggler"
-							icon={rightAsideHidden ? 'chevron_left' : 'chevron_right'}
-							form="square"
-						/>
+						<Btn onClick={() => this.toggleAside(AsideName.Right)} additionalClass="aside__toggler" icon={rightAsideHidden ? 'chevron_left' : 'chevron_right'} form="square" />
 					</div>
 					<div className="aside__container">
 						<div className="items-play">
