@@ -3,12 +3,12 @@
 Link to deployment - https://liliyavoloshina-christmas-task.netlify.app/
 
 Stack:
-1 React
-2 Typescript
+1. React
+2. Typescript
 
 Used libs:
-1 react-router/react-router-dom
-2 html2canvas: used to take a screenshot of the Christmas tree on the game page and return its data URI
+1. react-router/react-router-dom
+2. html2canvas ([doc](https://html2canvas.hertzen.com/)): used to take a screenshot of the Christmas tree on the game page and return its data URI
 
 ## Available Scripts
 
