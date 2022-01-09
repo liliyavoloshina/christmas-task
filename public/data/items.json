@@ -2,601 +2,661 @@
 	{
 		"id": "1",
 		"name": "Large ball with a pattern",
-		"amount": "2",
+		"amount": 2,
 		"year": "1960",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "2",
 		"name": "Green ball with flowers",
-		"amount": "5",
+		"amount": 5,
 		"year": "2000",
 		"shape": "ball",
 		"color": "green",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "3",
 		"name": "Red matte ball",
-		"amount": "3",
+		"amount": 3,
 		"year": "1990",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "4",
 		"name": "Red Icicle",
-		"amount": "2",
+		"amount": 2,
 		"year": "1980",
 		"shape": "figure",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "5",
 		"name": "Red grapes",
-		"amount": "4",
+		"amount": 4,
 		"year": "1980",
 		"shape": "figure",
 		"color": "red",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "6",
 		"name": "Red ball with pattern",
-		"amount": "6",
+		"amount": 6,
 		"year": "2010",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "7",
 		"name": "Milky white ball",
-		"amount": "12",
+		"amount": 12,
 		"year": "1960",
 		"shape": "ball",
 		"color": "white",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "8",
 		"name": "Red ball",
-		"amount": "10",
+		"amount": 10,
 		"year": "2010",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "9",
 		"name": "Bell vintage",
-		"amount": "2",
+		"amount": 2,
 		"year": "1950",
 		"shape": "bell",
 		"color": "white",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "10",
 		"name": "White retro ball",
-		"amount": "7",
+		"amount": 7,
 		"year": "1960",
 		"shape": "ball",
 		"color": "white",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "11",
 		"name": "White fir cone",
-		"amount": "11",
+		"amount": 11,
 		"year": "1960",
 		"shape": "cone",
 		"color": "white",
 		"size": "small",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "12",
 		"name": "White ball with flowers",
-		"amount": "5",
+		"amount": 5,
 		"year": "1980",
 		"shape": "ball",
 		"color": "white",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "13",
 		"name": "Painted ball «River»",
-		"amount": "3",
+		"amount": 3,
 		"year": "1970",
 		"shape": "ball",
 		"color": "blue",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "14",
 		"name": "Painted ball «Village»",
-		"amount": "4",
+		"amount": 4,
 		"year": "1970",
 		"shape": "ball",
 		"color": "blue",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "15",
 		"name": "Painted bell",
-		"amount": "3",
+		"amount": 3,
 		"year": "1970",
 		"shape": "bell",
 		"color": "blue",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "16",
 		"name": "Painted fir cone «Landscape»",
-		"amount": "3",
+		"amount": 3,
 		"year": "1970",
 		"shape": "cone",
 		"color": "blue",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "17",
 		"name": "Painted fir cone",
-		"amount": "7",
+		"amount": 7,
 		"year": "1970",
 		"shape": "cone",
 		"color": "red",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "18",
 		"name": "Yellow ball with bow",
-		"amount": "2",
+		"amount": 2,
 		"year": "2010",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "19",
 		"name": "Yellow ball with sequins",
-		"amount": "12",
+		"amount": 12,
 		"year": "1980",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "20",
 		"name": "Red ball with bow",
-		"amount": "8",
+		"amount": 8,
 		"year": "1950",
 		"shape": "ball",
 		"color": "red",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "21",
 		"name": "Red ball with stars",
-		"amount": "4",
+		"amount": 4,
 		"year": "1970",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "22",
 		"name": "Golden fir cone",
-		"amount": "11",
+		"amount": 11,
 		"year": "1990",
 		"shape": "cone",
 		"color": "yellow",
 		"size": "small",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "23",
 		"name": "Bell vintage",
-		"amount": "9",
+		"amount": 9,
 		"year": "1950",
 		"shape": "bell",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "24",
 		"name": "Elegant snowflake",
-		"amount": "1",
+		"amount": 1,
 		"year": "1940",
 		"shape": "snowflake",
 		"color": "white",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "25",
 		"name": "Pink ball with sparkles",
-		"amount": "12",
+		"amount": 12,
 		"year": "2010",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "26",
 		"name": "Ruby gold ball",
-		"amount": "8",
+		"amount": 8,
 		"year": "1960",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "27",
 		"name": "Red ball with pattern",
-		"amount": "4",
+		"amount": 4,
 		"year": "2010",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "28",
 		"name": "Brown ball with pattern",
-		"amount": "10",
+		"amount": 10,
 		"year": "2010",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "29",
 		"name": "Vintage ball with flowers",
-		"amount": "5",
+		"amount": 5,
 		"year": "1950",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "30",
 		"name": "Vintage ball with pattern",
-		"amount": "8",
+		"amount": 8,
 		"year": "1950",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "31",
 		"name": "Red ball with sparkles",
-		"amount": "8",
+		"amount": 8,
 		"year": "2010",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "32",
 		"name": "Blue ball «Universe»",
-		"amount": "11",
+		"amount": 11,
 		"year": "1970",
 		"shape": "ball",
 		"color": "blue",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "33",
 		"name": "Blue ball with snowflake",
-		"amount": "6",
+		"amount": 6,
 		"year": "2010",
 		"shape": "ball",
 		"color": "blue",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "34",
 		"name": "Green ball with pattern",
-		"amount": "8",
+		"amount": 8,
 		"year": "2010",
 		"shape": "ball",
 		"color": "green",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "35",
 		"name": "Figure «Fox in a scarf»",
-		"amount": "8",
+		"amount": 8,
 		"year": "1950",
 		"shape": "figure",
 		"color": "yellow",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "36",
 		"name": "Lilac ball «Blizzard»",
-		"amount": "1",
+		"amount": 1,
 		"year": "2000",
 		"shape": "ball",
 		"color": "blue",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "37",
 		"name": "Green ball «Blizzard»",
-		"amount": "6",
+		"amount": 6,
 		"year": "2000",
 		"shape": "ball",
 		"color": "green",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "38",
 		"name": "Blue ball «Blizzard»",
-		"amount": "6",
+		"amount": 6,
 		"year": "2000",
 		"shape": "ball",
 		"color": "blue",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "39",
 		"name": "Red snowflake",
-		"amount": "6",
+		"amount": 6,
 		"year": "1990",
 		"shape": "snowflake",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "40",
 		"name": "Golden snowflake",
-		"amount": "12",
+		"amount": 12,
 		"year": "2020",
 		"shape": "snowflake",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "41",
 		"name": "Arctic snowflake",
-		"amount": "11",
+		"amount": 11,
 		"year": "2020",
 		"shape": "snowflake",
 		"color": "white",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "42",
 		"name": "Green ball",
-		"amount": "10",
+		"amount": 10,
 		"year": "1980",
 		"shape": "ball",
 		"color": "green",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "43",
 		"name": "Two-color snowflake",
-		"amount": "6",
+		"amount": 6,
 		"year": "1960",
 		"shape": "snowflake",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "44",
 		"name": "Figure «Angel»",
-		"amount": "11",
+		"amount": 11,
 		"year": "1940",
 		"shape": "figure",
 		"color": "red",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "45",
 		"name": "Christmas snowflake",
-		"amount": "1",
+		"amount": 1,
 		"year": "1980",
 		"shape": "snowflake",
 		"color": "white",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "46",
 		"name": "Figure «Amanita»",
-		"amount": "10",
+		"amount": 10,
 		"year": "1950",
 		"shape": "figure",
 		"color": "red",
 		"size": "small",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "47",
 		"name": "Figure «Well»",
-		"amount": "6",
+		"amount": 6,
 		"year": "1950",
 		"shape": "figure",
 		"color": "red",
 		"size": "small",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "48",
 		"name": "Yellow ball with bow",
-		"amount": "6",
+		"amount": 6,
 		"year": "1960",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "49",
 		"name": "Snowflake with turquoise",
-		"amount": "4",
+		"amount": 4,
 		"year": "1980",
 		"shape": "snowflake",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "50",
 		"name": "Big Bell",
-		"amount": "3",
+		"amount": 3,
 		"year": "2020",
 		"shape": "bell",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "51",
 		"name": "Fir cone with with frost",
-		"amount": "12",
+		"amount": 12,
 		"year": "1970",
 		"shape": "cone",
 		"color": "red",
 		"size": "small",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "52",
 		"name": "Red ball with an inscription",
-		"amount": "12",
+		"amount": 12,
 		"year": "1990",
 		"shape": "ball",
 		"color": "red",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "53",
 		"name": "Silver snowflake",
-		"amount": "6",
+		"amount": 6,
 		"year": "2020",
 		"shape": "snowflake",
 		"color": "white",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "54",
 		"name": "Green ball with drawing",
-		"amount": "6",
+		"amount": 6,
 		"year": "2010",
 		"shape": "ball",
 		"color": "green",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "55",
 		"name": "Gingerbread house",
-		"amount": "1",
+		"amount": 1,
 		"year": "1940",
 		"shape": "figure",
 		"color": "yellow",
 		"size": "large",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "56",
 		"name": "Gingerbread mansion",
-		"amount": "1",
+		"amount": 1,
 		"year": "1940",
 		"shape": "figure",
 		"color": "yellow",
 		"size": "small",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "57",
 		"name": "Gingerbread hut",
-		"amount": "1",
+		"amount": 1,
 		"year": "1940",
 		"shape": "figure",
 		"color": "yellow",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "58",
 		"name": "Figure «White Bear»",
-		"amount": "2",
+		"amount": 2,
 		"year": "1980",
 		"shape": "figure",
 		"color": "white",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	},
 	{
 		"id": "59",
 		"name": "Yellow ball with an inscription",
-		"amount": "10",
+		"amount": 10,
 		"year": "1990",
 		"shape": "ball",
 		"color": "yellow",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": true,
+		"isSelected": false
 	},
 	{
 		"id": "60",
 		"name": "Figure «Dove»",
-		"amount": "12",
+		"amount": 12,
 		"year": "1940",
 		"shape": "figure",
 		"color": "white",
 		"size": "medium",
-		"isFavorite": false
+		"isFavorite": false,
+		"isSelected": false
 	}
 ]

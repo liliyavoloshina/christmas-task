@@ -1,0 +1,38 @@
+@import '../base/_mixins';
+
+.countdown {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	z-index: 1000;
+	transform: translateX(-50%);
+	width: 80vw;
+	max-width: 500px;
+	padding: 1rem;
+	background: var(--bg-black);
+	transition: 1s;
+	border-radius: 4px;
+
+	box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 30px #fff, 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright),
+		0 0 10px var(--yellow-bright);
+
+	&.hidden {
+		bottom: -100%;
+		opacity: 0;
+		z-index: -1;
+	}
+
+	&__title {
+		text-align: center;
+		font-size: 1.5rem;
+		@include neon-text-yellow();
+	}
+
+	&__counter {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10%;
+		font-size: 1rem;
+		text-align: center;
+	}
+}

@@ -1,6 +1,7 @@
 @mixin flicker($delay: 0s) {
 	animation: flicker-animation 5s linear infinite;
 	animation-delay: $delay;
+
 	@keyframes flicker-animation {
 		0%,
 		14%,
@@ -21,6 +22,21 @@
 		100% {
 			opacity: 0.4;
 			color: var(--black);
+		}
+	}
+}
+
+@mixin neon-text-yellow() {
+	animation: neon-text-animation 1.5s ease-in-out infinite alternate;
+
+	@keyframes neon-text-animation {
+		from {
+			text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px var(--yellow-bright), 0 0 70px var(--yellow-bright), 0 0 80px var(--yellow-bright),
+				0 0 100px var(--yellow-bright), 0 0 150px var(--yellow-bright);
+		}
+		to {
+			text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px var(--yellow-bright), 0 0 35px var(--yellow-bright), 0 0 40px var(--yellow-bright),
+				0 0 50px var(--yellow-bright), 0 0 75px var(--yellow-bright);
 		}
 	}
 }

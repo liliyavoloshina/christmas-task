@@ -1,16 +1,16 @@
-import { Component } from 'react'
-import { SortKeys, SortOptions } from '../types/Catalog'
 import '../styles/components/__select.scss'
+import { Component } from 'react'
+import { SortKey, SortOptions, RadiusKeys } from '../types/Catalog'
 
 interface SelectProps {
-	initialSort: SortKeys
-	onSelect(key: string): void
+	initialSort: SortKey | RadiusKeys
+	type: 'sort' | 'pagination'
+	onSelect(key: SortKey | RadiusKeys): void
 }
 
 interface SelectState {
 	isActive: boolean
 	options: SortOptions[]
-	innerText: string
 }
 
 class Select extends Component<SelectProps, SelectState> {
@@ -18,21 +18,32 @@ class Select extends Component<SelectProps, SelectState> {
 		super(props)
 		this.state = {
 			isActive: false,
-			options: [
-				{ key: 'az', text: 'by name from A to Z' },
-				{ key: 'za', text: 'by name from Z to A' },
-				{ key: 'asc', text: 'by quantity ascending' },
-				{ key: 'desc', text: 'by quantity descending' },
-			],
-			innerText: '',
+			options: [],
 		}
 	}
 
 	componentDidMount() {
-		const { initialSort } = this.props
-		const { options } = this.state
-		const initialText = options.find(option => option.key === initialSort)
-		this.setState({ innerText: initialText!.text })
+		const { type } = this.props
+		let options: SortOptions[] = []
+
+		if (type === 'pagination') {
+			options = [
+				{ key: 5, text: '5' },
+				{ key: 10, text: '10' },
+				{ key: 20, text: '20' },
+				{ key: 30, text: '30' },
+				{ key: 60, text: '60' },
+			]
+		} else {
+			options = [
+				{ key: SortKey.Az, text: 'by name from A to Z' },
+				{ key: SortKey.Za, text: 'by name from Z to A' },
+				{ key: SortKey.Asc, text: 'by year ascending' },
+				{ key: SortKey.Desc, text: 'by year descending' },
+			]
+		}
+
+		this.setState({ options })
 	}
 
 	toggleSelect() {
@@ -41,21 +52,39 @@ class Select extends Component<SelectProps, SelectState> {
 	}
 
 	chooseOption(e: React.SyntheticEvent) {
-		const { onSelect } = this.props
+		const { onSelect, type } = this.props
 		const { key } = (e.target as HTMLInputElement).dataset
-		const text = (e.target as HTMLInputElement).innerHTML
-		this.setState({ isActive: false, innerText: text })
-		onSelect(key!)
+		this.setState({ isActive: false })
+
+		if (type === 'pagination') {
+			onSelect(+key! as RadiusKeys)
+		} else {
+			onSelect(key! as SortKey)
+		}
 	}
 
 	render() {
-		const { isActive, innerText, options } = this.state
+		const { type, initialSort } = this.props
+		const { isActive, options } = this.state
+
+		let selectedText: string | number = initialSort
+		let label = 'Toys per page'
+
+		if (type === 'sort') {
+			const sortOption = options.find(option => option.key === initialSort)!
+
+			if (sortOption) {
+				selectedText = sortOption.text
+			}
+
+			label = 'Sort'
+		}
 
 		return (
 			<div className="select-wrapper">
-				<h3 className="search-panel-label">Sort</h3>
+				<h3 className="search-panel-label">{label}</h3>
 				<div className={`select ${isActive ? 'active' : ''}`} role="presentation" onClick={() => this.toggleSelect()}>
-					{innerText}
+					{selectedText}
 				</div>
 				<ul className="select-options">
 					{options.map(option => (

@@ -1,15 +1,17 @@
-import { Component } from 'react'
 import '../styles/components/__btn.scss'
+import { Component } from 'react'
 
 interface BtnProps {
 	text?: string
-	size?: 'md'
-	action?: 'save' | 'clear'
+	size?: 'md' | 'lg' | 'sm'
+	action?: 'reset' | 'clear' | 'delete'
 	accented?: boolean
 	icon?: string
 	form?: 'square'
 	title?: string
-	onClick?(): void
+	additionalClass?: string
+	onClick?: void | (() => void)
+	// onClick?(): void
 }
 
 class Btn extends Component<BtnProps> {
@@ -27,14 +29,14 @@ class Btn extends Component<BtnProps> {
 	}
 
 	render() {
-		const { text, size, action, icon, form, title, accented } = this.props
-		const options = ['btn', size, action, form]
+		const { text, size, action, icon, form, title, accented, additionalClass } = this.props
+		const options = ['btn', size, action, form, additionalClass]
 
 		if (accented) {
 			options.push('accented')
 		}
 
-		const classes = options.join(' ').trim()
+		const classes = options.join(' ').replace(/\s+/g, ' ').trim()
 
 		return (
 			<button onClick={() => this.handleClick()} type="button" className={classes} title={title}>

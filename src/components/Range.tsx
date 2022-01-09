@@ -1,6 +1,6 @@
+import '../styles/components/__range.scss'
 import React from 'react'
 import ReactSlider from 'react-slider'
-import '../styles/components/__range.scss'
 import { firstToUpperCase } from '../utils/utils'
 import { RangeOptions } from '../types/Catalog'
 
@@ -15,7 +15,7 @@ interface RangeProps {
 	onFilter(options: RangeOptions): void
 }
 
-class Range extends React.Component<RangeProps, Readonly<{}>> {
+class Range extends React.Component<RangeProps, Readonly<Record<string, never>>> {
 	constructor(props: RangeProps) {
 		super(props)
 		this.state = {}

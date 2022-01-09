@@ -1,10 +1,10 @@
 import '../styles/components/__multiselect.scss'
 import React, { Component } from 'react'
-import { MultiselectOptions } from '../types/Catalog'
+import { MultiselectOptions, MultiselectOption } from '../types/Catalog'
 import { firstToUpperCase } from '../utils/utils'
 
 interface MultiselectProps {
-	type: 'shape' | 'color' | 'size'
+	type: MultiselectOption.Shape | MultiselectOption.Color | MultiselectOption.Size
 	options: MultiselectOptions
 	initialFilter: string[]
 	onFilter(options: string[]): void
@@ -97,7 +97,11 @@ class Multiselect extends Component<MultiselectProps, MultiselectState> {
 							<li
 								key={option}
 								onClick={() => this.toggleOption(option, isSelected)}
-								role="presentation"
+								onKeyPress={() => this.toggleOption(option, isSelected)}
+								role="option"
+								aria-checked="false"
+								aria-labelledby="foo"
+								aria-selected="false"
 								id={`${type}-${index}`}
 								className={`multiselect-option ${isSelected ? 'option-selected' : null}`}
 							>

@@ -1,11 +1,66 @@
-interface PlayOptionItem {
-  className: string
-  active: number
-  quantity: number
+enum LightsOffsetType {
+	Top = 'top',
+	Left = 'left',
 }
 
-interface PlayOptionsObject {
-  [key: string]: PlayOptionItem
+enum GarlandColor {
+	Multicolor = 'multicolor',
+	Yellow = 'yellow',
+	Red = 'red',
+	Pink = 'pink',
+	Green = 'green',
 }
 
-export type { PlayOptionItem, PlayOptionsObject } 
+enum PlayOptionName {
+	Scene = 'scene',
+	Tree = 'tree',
+	Lights = 'lights',
+}
+
+enum PlayCheckboxName {
+	Snow = 'snow',
+	Music = 'music',
+}
+
+enum GarlandStatus {
+	On = 'on',
+	Off = 'off',
+	Flicker = 'flicker',
+}
+
+interface PlaySelectedItemCopy {
+	id: string
+	coords: [string, string]
+}
+
+interface PlaySelectedItem {
+	id: string
+	amount: number
+	itemsSetted: PlaySelectedItemCopy[]
+	itemsNotSetted: PlaySelectedItemCopy[]
+}
+
+interface ObjectIndexNumber {
+	[key: number]: string
+}
+
+interface PlaySettings {
+	scene: number
+	tree: number
+	isSnow: boolean
+	isMusic: boolean
+	garlandStatus: GarlandStatus
+	garlandColor: GarlandColor
+}
+
+interface PreviousWork {
+	id: number
+	imageUrl: string
+	playSettings: PlaySettings
+	itemsSetted: PlaySelectedItemCopy[]
+	itemsNotSetted: PlaySelectedItemCopy[]
+	playSelectedItems: PlaySelectedItem[]
+}
+
+export type { ObjectIndexNumber, PlaySelectedItemCopy, PlaySelectedItem, PlaySettings, PreviousWork }
+export { LightsOffsetType, GarlandColor, PlayOptionName, PlayCheckboxName, GarlandStatus }

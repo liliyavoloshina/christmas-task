@@ -1,47 +1,74 @@
-type Shapes = 'ball' | 'figure' | 'bell' | 'cone' | 'snowflake'
-type Colors = 'green' | 'white' | 'red' | 'blue' | 'yellow'
-type Sizes = 'large' | 'medium' | 'small'
-type SortKeys = 'az' | 'za' | 'asc' | 'desc'
-type MultiselectOptions = Shapes[] | Colors[] | Sizes[]
-type CatalogSettingsValues = CatalogFilters | SortKeys | number | boolean
+import { ItemColor, ItemShape, ItemSize } from './Item'
+
+enum SortKey {
+	Az = 'az',
+	Za = 'za',
+	Asc = 'asc',
+	Desc = 'desc',
+}
+
+enum CatalogView {
+	List = 'list',
+	Grid = 'grid',
+}
+
+enum MultiselectOption {
+	Shape = 'shape',
+	Color = 'color',
+	Size = 'size',
+}
+
+type RadiusKeys = 5 | 10 | 20 | 30 | 60
+type MultiselectOptions = ItemShape[] | ItemColor[] | ItemSize[]
+type CatalogSettingsValues = CatalogFilters | SortKey | number | boolean | RadiusKeys
 type CatalogFiltersValues = RangeOptions | MultiselectOptions | boolean
 
 interface RangeOptions {
-  min: number
-  max: number
+	min: number
+	max: number
 }
 
 interface CatalogSettingsObject {
-  [key: string]: CatalogSettingsValues
+	[key: string]: CatalogSettingsValues
 }
 
 interface CatalogFiltersObject {
-  [key: string]: RangeOptions | MultiselectOptions | boolean
+	[key: string]: RangeOptions | MultiselectOptions | boolean
 }
 
 interface SortOptionsObject {
-  [key: string]: SortKeys | string
+	[key: string]: string | number
 }
 
 interface CatalogFilters extends CatalogFiltersObject {
-  year: RangeOptions
-  amount: RangeOptions
-  shape: Shapes[],
-  color: Colors[],
-  size: Sizes[],
-  areOnlyFavorite: boolean,
+	year: RangeOptions
+	amount: RangeOptions
+	shape: ItemShape[]
+	color: ItemColor[]
+	size: ItemSize[]
+	areOnlyFavorite: boolean
+	areOnlySelected: boolean
 }
 
 interface CatalogSettings extends CatalogSettingsObject {
-  filters: CatalogFilters
-  sort: SortKeys,
-  favoriteItemsQuantity: number,
-  isCardExpanded: boolean
+	filters: CatalogFilters
+	sort: SortKey
+	itemsPerPage: RadiusKeys
+	isCardExpanded: boolean
 }
 
 interface SortOptions extends SortOptionsObject {
-  key: SortKeys
-  text: string
+	key: string | number
+	text: string
 }
 
-export type { CatalogSettings, CatalogFilters, SortKeys, CatalogFiltersValues, MultiselectOptions, RangeOptions, Shapes, Colors, Sizes, SortOptions }
+interface PaginationData {
+	currentPage: number
+	pageLimit: number
+	totalItems: number
+	totalPages: number
+}
+
+export type { CatalogSettings, CatalogFilters, CatalogFiltersValues, MultiselectOptions, RangeOptions, SortOptions, RadiusKeys, PaginationData }
+
+export { SortKey, CatalogView, MultiselectOption }

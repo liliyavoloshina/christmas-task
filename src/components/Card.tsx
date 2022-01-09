@@ -1,42 +1,44 @@
 import '../styles/components/__card.scss'
 import { Component } from 'react'
-import BtnFavorite from './BtnFavorite'
+import BtnSelected from './BtnSelected'
 import { FlippedProps } from '../types/utils'
+import { ItemColor, ItemShape, ItemSize } from '../types/Item'
 
-interface ItemProps {
+interface CardProps {
 	id: string
 	name: string
 	amount: number
 	year: number
-	shape: 'ball' | 'figure' | 'bell' | 'cone' | 'snowflake'
-	color: 'green' | 'white' | 'red' | 'blue' | 'yellow'
-	size: 'large' | 'medium' | 'small'
+	shape: ItemShape
+	color: ItemColor
+	size: ItemSize
 	isFavorite: boolean
+	isSelected: boolean
 	flippedProps: FlippedProps
 	isCardExpanded: boolean
-	onFavorite(id: string, isFavorite: boolean): void
+	onSelect(id: string, isSelected: boolean): void
 }
 
-class Card extends Component<ItemProps> {
-	constructor(props: ItemProps) {
+class Card extends Component<CardProps> {
+	constructor(props: CardProps) {
 		super(props)
 		this.state = {}
 	}
 
-	handleFavorite(isFavorite: boolean) {
-		const { id, onFavorite } = this.props
-		onFavorite(id, isFavorite)
+	handleSelect(isSelected: boolean) {
+		const { id, onSelect } = this.props
+		onSelect(id, isSelected)
 	}
 
 	render() {
-		const { id, name, amount, year, shape, color, size, isFavorite, flippedProps, isCardExpanded } = this.props
+		const { id, name, amount, year, shape, color, size, isFavorite, isSelected, flippedProps, isCardExpanded } = this.props
 		const imageSrc = `images/${id}.png`
 
 		return (
 			<div className={`card${isCardExpanded ? ' expanded' : ''}`} {...flippedProps}>
 				<div className="card__header">
 					<h3 className="card__title">{name}</h3>
-					<BtnFavorite onFavorite={props => this.handleFavorite(props)} isFavorite={isFavorite} />
+					<BtnSelected onSelect={props => this.handleSelect(props)} isSelected={isSelected} />
 				</div>
 				<div className="card__img">
 					<img src={imageSrc} alt={name} />
@@ -56,6 +58,9 @@ class Card extends Component<ItemProps> {
 					</li>
 					<li className="info">
 						Size: <span className="info__value">{size}</span>
+					</li>
+					<li className="info">
+						Granny&apos;s favorite: <span className="info__value">{`${isFavorite ? 'yes' : 'no'}`}</span>
 					</li>
 				</ul>
 			</div>

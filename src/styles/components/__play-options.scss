@@ -1,0 +1,38 @@
+.options {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5em;
+
+	&__option {
+		position: relative;
+		border: 1px solid var(--grey);
+		cursor: pointer;
+		transition: 0.3s;
+		background-color: var(--bg-light);
+		-webkit-user-drag: none;
+
+		&_active,
+		&:hover {
+			box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 10px var(--accent), 0 0 10px var(--accent);
+		}
+	}
+
+	.switch {
+		margin-left: auto;
+	}
+}
+
+.options__option-scene {
+	flex: 1 1 70px;
+	height: 60px;
+	border-radius: 4px;
+	background-size: cover;
+}
+
+.options__option-tree {
+	flex: 1 1 80px;
+	height: 100px;
+	border-radius: 4px;
+	background-size: cover;
+}

@@ -1,93 +1,99 @@
-import Item from '../types/Item'
-import { CatalogSettings, SortKeys, CatalogFilters } from '../types/Catalog'
-
-type DataKey = 'originalItems' | 'catalogSettings' | 'defaultFilters'
-
-const FAVORITE_MAX_QUANTITY = 5
+import { Item } from '../types/Item'
+import { LightsOffsetType } from '../types/Play'
+import { SNOWFLAKES_COUNT } from './constants'
 
 const firstToUpperCase = (string: string) => {
-  const first = string.charAt(0).toUpperCase()
-  return first + string.slice(1)
+	const first = string.charAt(0).toUpperCase()
+	return first + string.slice(1)
 }
 
-const searchOptions = (value: string, options: string[] = [], exclude: string[] = []) =>
-  options.filter((option: string) => {
-    const matches = option.toLowerCase().indexOf(value.toLowerCase()) === 0
-    return matches && exclude.indexOf(option) < 0
-  })
+const mergeSelectedAndOriginal = (selected: Item[], original: Item[]): Item[] => {
+	const resettedOriginal = original.map(item => ({ ...item, isSelected: false }))
 
-const filterArray = async (items: Item[], filters: CatalogFilters) => {
-  const isCorrectYear = (item: Item) => item.year >= filters.year.min && item.year <= filters.year.max
-  const isCorrectAmount = (item: Item) => item.amount >= filters.amount.min && item.amount <= filters.amount.max
-  const isCorrectShape = (item: Item) => filters.shape.includes(item.shape)
-  const isCorrectColor = (item: Item) => filters.color.includes(item.color)
-  const isCorrectSize = (item: Item) => filters.size.includes(item.size)
-  const isCorrectFavorite = (item: Item) => {
-    if (filters.areOnlyFavorite === true) {
-      return item.isFavorite === filters.areOnlyFavorite
-    }
+	const merged = [...resettedOriginal]
 
-    return true
-  }
+	if (selected.length > 0) {
+		selected.forEach((selectedItem: Item) => {
+			const selectedItemIndex = merged.findIndex((item: Item) => item.id === selectedItem.id)
 
-  return items.filter(item => isCorrectYear(item) && isCorrectAmount(item) && isCorrectShape(item) && isCorrectColor(item) && isCorrectSize(item) && isCorrectFavorite(item))
+			if (selectedItemIndex !== -1) {
+				merged[selectedItemIndex].isSelected = true
+			}
+		})
+	}
+
+	return merged
 }
 
-const sortArray = async (array: Item[], key: SortKeys) => {
-  if (key === 'az') {
-    return array.sort((a, b) => a.name.localeCompare(b.name))
-  }
-  if (key === 'za') {
-    return array.sort((a, b) => b.name.localeCompare(a.name))
-  }
-  if (key === 'asc') {
-    return array.sort((a, b) => a.amount - b.amount)
-  }
-  if (key === 'desc') {
-    return array.sort((a, b) => b.amount - a.amount)
-  }
+const idToInitial = (id: string) => id.split('-').slice(0, 1).join('')
 
-  return array
+const getSnowflakes = () =>
+	Array(SNOWFLAKES_COUNT)
+		.fill(null)
+		.map((value, index) => {
+			const randomAnimationDuration = `${Math.random() * 5 + 5}s`
+			const randomOpacity = Math.random() * 1
+			const randomFontSize = `${Math.random() * (1 - 1.4) + 1.4}rem`
+			const snowflake = { id: index, animationDuration: randomAnimationDuration, opacity: randomOpacity, fontSize: randomFontSize }
+			return snowflake
+		})
+
+const calculateGarlandOffset = (type: LightsOffsetType, index: number) => {
+	if (type === LightsOffsetType.Top) {
+		if (index <= 4) {
+			return 5
+		}
+		if (index > 4 && index <= 12) {
+			return 10
+		}
+		if (index > 12 && index <= 24) {
+			return 15
+		}
+		if (index > 24 && index <= 38) {
+			return 20
+		}
+		if (index > 38 && index <= 58) {
+			return 22
+		}
+		if (index > 58 && index <= 80) {
+			return 23
+		}
+	}
+
+	if (index <= 4) {
+		return 40
+	}
+	if (index > 4 && index <= 12) {
+		return 20
+	}
+	if (index > 12 && index <= 24) {
+		return -15
+	}
+	if (index > 24 && index <= 38) {
+		return -60
+	}
+	if (index > 38 && index <= 58) {
+		return -120
+	}
+	if (index > 58 && index <= 80) {
+		return -200
+	}
+
+	return 0
 }
 
-const searchArray = (array: Item[], key: string) =>
-  array.filter(item => {
-    if (key === '') {
-      return item
-    }
-    return item.name.toLocaleLowerCase().includes(key.toLowerCase())
-  })
+const loadResources = async (arr: string[]) => {
+	const loadResource = async (resource: string) => {
+		const img = new Image()
+		img.src = resource
+		await img.decode()
+	}
 
-const serverRequest = async <T>(url: string): Promise<T> => {
-  const req = await fetch(url)
-  const res = await req.json()
-  return res
+	await Promise.all(
+		arr.map(async resource => {
+			await loadResource(resource)
+		})
+	)
 }
 
-const setData = <T>(key: DataKey, value: T) => {
-  const stringified = JSON.stringify(value)
-  window.localStorage.setItem(key, stringified)
-}
-
-const getData = async (key: DataKey) => {
-  const stored = window.localStorage.getItem(key)
-
-  if (stored) {
-    return JSON.parse(stored)
-  }
-
-  if (key === 'catalogSettings') {
-    const defaultSettingsFromServer = await serverRequest<CatalogSettings>('data/catalogSettings.json')
-    return defaultSettingsFromServer
-  }
-
-  if (key === 'defaultFilters') {
-    const defaultFilters = await serverRequest<CatalogSettings>('data/catalogSettings.json')
-    return defaultFilters.filters
-  }
-
-  const initialItemsFromServer = await serverRequest<Item[]>('data/items.json')
-  return initialItemsFromServer
-}
-
-export { firstToUpperCase, searchOptions, filterArray, setData, getData, sortArray, searchArray, FAVORITE_MAX_QUANTITY }
+export { firstToUpperCase, idToInitial, getSnowflakes, mergeSelectedAndOriginal, calculateGarlandOffset, loadResources }

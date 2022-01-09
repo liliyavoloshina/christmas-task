@@ -1,0 +1,278 @@
+.garland {
+	position: absolute;
+	top: 150px;
+	bottom: 130px;
+	z-index: 9;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 400px;
+	pointer-events: none;
+
+	&.hidden {
+		display: none;
+	}
+
+	&__light {
+		position: absolute;
+		width: 5px;
+		height: 5px;
+		margin: 0 10px;
+		// animation-fill-mode: both;
+		// animation-iteration-count: infinite;
+		border-radius: 100%;
+		border: none;
+	}
+
+	&__light:nth-child(1n + 1) {
+		animation-duration: 1s;
+	}
+
+	&__light:nth-child(2n + 2) {
+		animation-duration: 1.2s;
+	}
+
+	&__light:nth-child(3n + 3) {
+		animation-duration: 1.3s;
+	}
+
+	&__light:nth-child(4n + 4) {
+		animation-duration: 1.4s;
+	}
+}
+
+.garland-options {
+	display: flex;
+	justify-content: space-between;
+}
+
+.lights {
+	.light {
+		position: relative;
+		display: inline-block;
+		width: 12px;
+		height: 28px;
+		margin: 0 15px;
+		padding: 0;
+		border-radius: 50%;
+		background: #fff;
+		border: none;
+		outline: none;
+		cursor: pointer;
+
+		&:before {
+			content: '';
+			position: absolute;
+			background: #000;
+			width: 10px;
+			height: 9px;
+			border-radius: 3px;
+			top: -4px;
+			left: 1px;
+		}
+
+		&:after {
+			content: '';
+			top: -14px;
+			left: 9px;
+			position: absolute;
+			width: 52px;
+			height: 19px;
+			border-bottom: solid #000 2px;
+			border-radius: 30%;
+		}
+
+		&.multicolor {
+			background: linear-gradient(11deg, var(--red-bright) 0%, var(--pink-bright) 30%, var(--yellow-bright) 50%, var(--green-bright) 100%);
+
+			&-active {
+				box-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--green-bright);
+			}
+		}
+
+		&.yellow {
+			background-color: var(--yellow-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright), 0 0 10px var(--yellow-bright);
+			}
+		}
+
+		&.pink {
+			background-color: var(--pink-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright), 0 0 10px var(--pink-bright);
+			}
+		}
+
+		&.green {
+			background-color: var(--green-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright), 0 0 10px var(--green-bright);
+			}
+		}
+
+		&.red {
+			background-color: var(--red-bright);
+
+			&-active {
+				box-shadow: 0 0 5px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright), 0 0 10px var(--red-bright);
+			}
+		}
+	}
+}
+
+.flicker {
+	.garland__light {
+		animation-fill-mode: both;
+		animation-iteration-count: infinite;
+	}
+
+	&.multicolor .garland {
+		&__light:nth-child(1n + 1) {
+			animation-name: garland-yellow;
+		}
+
+		&__light:nth-child(2n + 2) {
+			animation-name: garland-pink;
+		}
+
+		&__light:nth-child(3n + 3) {
+			animation-name: garland-green;
+		}
+
+		&__light:nth-child(4n + 4) {
+			animation-name: garland-red;
+		}
+	}
+
+	&.yellow .garland {
+		&__light {
+			animation-name: garland-yellow;
+		}
+	}
+
+	&.green .garland {
+		&__light {
+			animation-name: garland-green;
+		}
+	}
+
+	&.pink .garland {
+		&__light {
+			animation-name: garland-pink;
+		}
+	}
+
+	&.red .garland {
+		&__light {
+			animation-name: garland-red;
+		}
+	}
+}
+
+.on {
+	&.multicolor .garland {
+		&__light:nth-child(1n + 1) {
+			background: var(--yellow-bright);
+			box-shadow: 0 0 2px var(--yellow-bright), 0 0 5px var(--yellow-bright), 0 0 5px var(--yellow-bright), 0 0 5px var(--yellow-bright);
+		}
+
+		&__light:nth-child(2n + 2) {
+			background: var(--pink-bright);
+			box-shadow: 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright);
+		}
+
+		&__light:nth-child(3n + 3) {
+			background: var(--green-bright);
+			box-shadow: 0 0 5px var(--green-bright), 0 0 5px var(--green-bright), 0 0 5px var(--green-bright), 0 0 5px var(--green-bright);
+		}
+
+		&__light:nth-child(4n + 4) {
+			background: var(--red-bright);
+			box-shadow: 0 0 5px var(--red-bright), 0 0 5px var(--red-bright), 0 0 5px var(--red-bright), 0 0 5px var(--red-bright);
+		}
+	}
+
+	&.yellow .garland {
+		&__light {
+			background: var(--yellow-bright);
+			box-shadow: 0 0 2px var(--yellow-bright), 0 0 5px var(--yellow-bright), 0 0 5px var(--yellow-bright), 0 0 5px var(--yellow-bright);
+		}
+	}
+
+	&.green .garland {
+		&__light {
+			background: var(--green-bright);
+			box-shadow: 0 0 5px var(--green-bright), 0 0 5px var(--green-bright), 0 0 5px var(--green-bright), 0 0 5px var(--green-bright);
+		}
+	}
+
+	&.pink .garland {
+		&__light {
+			background: var(--pink-bright);
+			box-shadow: 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright);
+		}
+	}
+
+	&.red .garland {
+		&__light {
+			background: var(--red-bright);
+			box-shadow: 0 0 5px var(--red-bright), 0 0 5px var(--red-bright), 0 0 5px var(--red-bright), 0 0 5px var(--red-bright);
+		}
+	}
+}
+
+@keyframes garland-yellow {
+	0%,
+	100% {
+		background: var(--yellow-bright);
+		box-shadow: 0 0 2px var(--yellow-bright), 0 0 5px var(--yellow-bright), 0 0 5px var(--yellow-bright), 0 0 5px var(--yellow-bright);
+	}
+
+	50% {
+		background: rgba(255, 176, 30, 0.555);
+		box-shadow: 0 0 2px rgba(255, 176, 30, 0.555), 0 0 5px rgba(255, 176, 30, 0.555), 0 0 5px rgba(255, 176, 30, 0.555), 0 0 5px rgba(255, 176, 30, 0.555);
+	}
+}
+
+@keyframes garland-green {
+	0%,
+	100% {
+		background: var(--green-bright);
+		box-shadow: 0 0 5px var(--green-bright), 0 0 5px var(--green-bright), 0 0 5px var(--green-bright), 0 0 5px var(--green-bright);
+	}
+
+	50% {
+		background: rgba(30, 255, 69, 0.555);
+		box-shadow: 0 0 5px rgba(30, 255, 69, 0.555), 0 0 5px rgba(30, 255, 69, 0.555), 0 0 5px rgba(30, 255, 69, 0.555), 0 0 5px rgba(30, 255, 69, 0.555);
+	}
+}
+
+@keyframes garland-pink {
+	0%,
+	100% {
+		background: var(--pink-bright);
+		box-shadow: 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright), 0 0 5px var(--pink-bright);
+	}
+
+	50% {
+		background: rgba(255, 30, 199, 0.555);
+		box-shadow: 0 0 5px rgba(255, 30, 199, 0.555), 0 0 5px rgba(255, 30, 199, 0.555), 0 0 5px rgba(255, 30, 199, 0.555), 0 0 5px rgba(255, 30, 199, 0.555);
+	}
+}
+
+@keyframes garland-red {
+	0%,
+	100% {
+		background: var(--red-bright);
+		box-shadow: 0 0 5px var(--red-bright), 0 0 5px var(--red-bright), 0 0 5px var(--red-bright), 0 0 5px var(--red-bright);
+	}
+
+	50% {
+		background: rgba(255, 30, 30, 0.555);
+		box-shadow: 0 0 5px rgba(255, 30, 30, 0.555), 0 0 5px rgba(255, 30, 30, 0.555), 0 0 5px rgba(255, 30, 30, 0.555), 0 0 5px rgba(255, 30, 30, 0.555);
+	}
+}
