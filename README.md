@@ -1,6 +1,6 @@
 # Christmas Tree
 
-Link to deployment - https://liliyavoloshina-christmas-task.netlify.app/
+Deployment link - [christmas-tree](https://liliyavoloshina-christmas-task.netlify.app/)
 
 Stack:
 
