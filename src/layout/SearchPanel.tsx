@@ -1,6 +1,6 @@
 import '../styles/layout/__search-panel.scss'
 import { Component } from 'react'
-import Multiselect from '../components/Multiselect'
+import Multiselect from '../components/MultiSelect'
 import Select from '../components/Select'
 import Btn from '../components/Btn'
 import Range from '../components/Range'

@@ -1,12 +1,12 @@
 .garland {
 	position: absolute;
-	top: 150px;
 	bottom: 130px;
 	z-index: 9;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	width: 400px;
+	height: 625px;
 	pointer-events: none;
 
 	&.hidden {
