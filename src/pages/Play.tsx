@@ -99,7 +99,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 
 		this.audio = new Audio('/audio/1.mp3')
 		this.audio.loop = true
-		this.audio.volume = 0.2
+		this.audio.volume = 0.1
 		this.save = this.save.bind(this)
 		this.clear = this.clear.bind(this)
 	}
@@ -264,7 +264,7 @@ class Play extends Component<Record<string, unknown>, PlayState> {
 
 		this.audio = new Audio('/audio/1.mp3')
 		this.audio.loop = true
-		this.audio.volume = 0.2
+		this.audio.volume = 0.1
 
 		if (isMusic) {
 			const playMusicOnClick = (e: MouseEvent) => {
